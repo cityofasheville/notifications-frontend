@@ -1,25 +1,3 @@
-.signup {
-  /* margin: 2em 5vw; */
-}
-
-.signup .form-section {
-  padding: 2em 0;
-  border-top: 1px solid #e6e6e6;
-}
-
-.form-section label, .form-section input {
-  margin: 0 1em;
-  font-size: 1.5em;
-}
-
-.form-section input {
-  min-width: 20em;
-}
-
-.form-section.centered {
-  text-align: center;
-}
-
 button {
   font-size: 1.5em;
   color: white;
@@ -32,6 +10,28 @@ button:hover {
   background-color: #50601f;
   color: #f6fcff;
   cursor: pointer;
+}
+
+.centered {
+  text-align: center;
+}
+
+.signup .form-section {
+  padding: 2em 0;
+  border-top: 1px solid #e6e6e6;
+}
+
+.form-section label {
+  margin: 0em 0.5em;
+}
+
+.form-section input {
+  min-width: 17.5em;
+}
+
+.tag-checkbox {
+  display: inline-block;
+  padding: 0 1em;
 }
 
 .form-section.email span {
@@ -49,4 +49,8 @@ button:hover {
 .form-section.email a:hover {
   color: #50601f;
   cursor: pointer;
+}
+
+#email-input {
+  font-size: 1.25em;
 }
