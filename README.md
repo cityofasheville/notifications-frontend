@@ -1,8 +1,14 @@
-# React Starter Template
+# Notifications
 
-This is the starter template for all City of Asheville React web projects. It contains the basic file structure, shared templates and icons (e.g., navbar, authentication, language components). It is intended to be paired with a back-end application based on the [GraphQL Starter Template](https://github.com/cityofasheville/graphql-starter-template). 
+This small application lets users sign up for notifications about city data events.  Currently, the only topic is new permit applications.
 
-To create a new React web app that derives from this one, create the new repo (e.g., NEW-REPO) and then:
+It is intended to be used with (the notifications API)[https://github.com/cityofasheville/notifications-api], which is based on the city's backend starter template.
+
+## Based on React Starter Template
+
+This is based on the starter template for all City of Asheville React web projects. It contains the basic file structure, shared templates and icons (e.g., navbar, authentication, language components). It is intended to be paired with a back-end application based on the [GraphQL Starter Template](https://github.com/cityofasheville/graphql-starter-template).
+
+To create a new React web app that derives from the starter template, create the new repo (e.g., NEW-REPO) and then:
 
 ````
 git clone  https://github.com/cityofasheville/react-starter-template NEW-REPO

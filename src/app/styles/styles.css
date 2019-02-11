@@ -2,6 +2,9 @@
 This is a file for global css, if needed for your app.
 */
 
-h1 {
-  /* color: red; */ /*Don't actually make this red... */
+#content {
+  min-height: 60vh;
+  width: 80vw;
+  margin-left: 12.5vw;
+  margin-top: 2em;
 }

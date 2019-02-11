@@ -1,15 +1,18 @@
 /*
-This file is how you configure the app in relation to the template. Do NOT edit any files inside the TEMPLATE file in your app's repo. Instead, you should just need to adjust the configuration settings in this file for the template portions of your project to work as expected.
+This file is how you configure the app in relation to the template.
+Do NOT edit any files inside the TEMPLATE file in your app's repo.
+Instead, you should just need to adjust the configuration settings in this file
+for the template portions of your project to work as expected.
 */
 
 const config = {
   // main configurations
   appTitle: {
-    defaultText: 'A react app',
+    defaultText: 'Notifications',
     translations: [
       {
         language: 'en', // use ISO codes
-        text: 'A react app',
+        text: 'Notifications',
       },
     ],
   },
@@ -22,8 +25,8 @@ const config = {
       },
     ],
   },
-  langSwitcher: true, // Set to false if you do NOT want language translation to be enabled
-  authControl: true, // Set to false if you do NOT want authentication to be enabled
+  langSwitcher: false, // Set to false if you do NOT want language translation to be enabled
+  authControl: false, // Set to false if you do NOT want authentication to be enabled
   footer: true, // Set to false if you do NOT want footer to be shown
   languages: [ // languages for langSwitcher component
     {
@@ -87,7 +90,7 @@ const config = {
   hasFeedbackForm: true,
   feedbackURL: 'https://docs.google.com/a/ashevillenc.gov/forms/d/e/1FAIpQLSdjNwOmoDY3PjQOVreeSL07zgI8otIIPWjY7BnejWMAjci8-w/viewform?c=0&w=1', // eslint-disable-line
   hasGitHubURL: true,
-  gitHubURL: 'https://github.com/cityofasheville/simplicity2',
+  gitHubURL: 'https://github.com/cityofasheville/notifications-frontend',
 
 };
 
