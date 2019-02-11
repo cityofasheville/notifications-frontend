@@ -7,7 +7,7 @@ const SignupForm = () => (
     <div class="form-section centered email">
       <label>Email: </label>
       <input type="email" name="email" />
-      <a href="edit">Already signed up?  Receive a link to edit your preferences</a>
+      <span>Already signed up?  <a href="edit">Get a link to edit your preferences</a></span>
     </div>
 
     <div class="form-section">

@@ -34,12 +34,15 @@ button:hover {
   cursor: pointer;
 }
 
-.form-section.email a {
+.form-section.email span {
   display: inline-block;
   width: 100%;
   font-size: 0.75em;
-  color: #607425;
   padding: 1em 0 0;
+}
+
+.form-section.email a {
+  color: #607425;
   text-decoration: underline;
 }
 

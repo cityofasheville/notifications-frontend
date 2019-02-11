@@ -2,6 +2,10 @@
 This is a file for global css, if needed for your app.
 */
 
+html, body {
+  overflow-x: hidden;
+}
+
 #content {
   min-height: 60vh;
   width: 75vw;
