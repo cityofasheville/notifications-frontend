@@ -4,7 +4,7 @@ This is a file for global css, if needed for your app.
 
 #content {
   min-height: 60vh;
-  width: 80vw;
+  width: 75vw;
   margin-left: 12.5vw;
   margin-top: 2em;
 }

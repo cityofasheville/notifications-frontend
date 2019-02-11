@@ -9,6 +9,10 @@ const SignupForm = () => (
       <input type="email" name="email" />
     </div>
 
+    <div class="form-section">
+      <h2>Notification Topics</h2>
+    </div>
+
     <div class="form-section centered">
       <button type="submit" name="Send Verification Email">Send Verification Email</button>
     </div>
