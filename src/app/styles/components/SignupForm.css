@@ -12,6 +12,11 @@ button:hover {
   cursor: pointer;
 }
 
+.signup {
+  margin-left: 7.5%;
+  width: 85%;
+}
+
 .centered {
   text-align: center;
 }
@@ -32,6 +37,10 @@ button:hover {
 .tag-checkbox {
   display: inline-block;
   padding: 0 1em;
+}
+
+.notification-category {
+  padding: 1em 0;
 }
 
 .form-section.email span {

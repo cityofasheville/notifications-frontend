@@ -12,7 +12,7 @@ const SignupForm = () => (
 
     <div className="form-section">
       <h2 className="centered" >Notification Categories</h2>
-      <div>
+      <div class="notification-category">
         <h3>Large Scale Development</h3>
         {['All notifications', '28001', '28802', '28803', '28804', '28805', 'Affordable Housing'].map(d => {
           return (<div className="tag-checkbox" key={d}>
