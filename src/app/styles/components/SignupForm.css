@@ -1,0 +1,36 @@
+.signup {
+  /* margin: 2em 5vw; */
+}
+
+.signup .form-section {
+  padding: 2em 0;
+  border-top: 1px solid #f2f2f2;
+}
+
+.form-section label, .form-section input {
+  margin: 0 1em;
+  font-size: 1.5em;
+}
+
+.form-section input {
+  min-width: 20em;
+}
+
+.form-section.centered {
+  text-align: center;
+}
+
+button {
+  font-size: 1.5em;
+  color: #325d81;
+  border: 1px solid #c3ebff;
+  background-color: #f6fcff;
+  border-radius: 4px;
+}
+
+button:hover {
+  background-color: #325d81;
+  border: 1px solid #c3ebff;
+  color: #f6fcff;
+  cursor: pointer;
+}

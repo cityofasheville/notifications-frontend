@@ -1,6 +1,6 @@
 import React from 'react';
-import example from 'app/assets/example.svg';
 import 'app/styles/components/Home.css';
+import SignupForm from './SignupForm';
 
 const Home = () => (
   <div>
@@ -16,6 +16,7 @@ const Home = () => (
     <p>
       This application does not handle emergency alerts.  You can sign up for those at <a href="https://member.everbridge.net/index/453003085611892#/login">AVL Alert</a>.
     </p>
+    <SignupForm/>
   </div>
 );
 
