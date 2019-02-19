@@ -13,7 +13,9 @@ const SignupForm = () => (
     <div className="form-section">
       <h2 className="centered" >Notification Categories</h2>
       <div class="notification-category">
-        <h3>Large Scale Development</h3>
+        <h3>Applications for Building and Development Permits</h3>
+        <p>When a land owner or developer wants to build something or do significantly renovate something in the City of Asheville, they have to submit applications for permissions and permits.  Sign up to be notified when these applications are received by the City.</p>
+        <p><a href="https://simplicity.ashevillenc.gov/development/major" target="_blank" rel="noopener noreferrer">Learn more about the land development approval process in Asheville</a>.</p>
         {['All notifications', '28001', '28802', '28803', '28804', '28805', 'Affordable Housing'].map(d => {
           return (<div className="tag-checkbox" key={d}>
             <input type="checkbox" id={d} name={d}/>

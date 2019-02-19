@@ -8,7 +8,7 @@ const Home = () => (
       Sign up for City Notifications
     </h1>
     <p>
-      Want to keep up with what's happening in Asheville?  Sign up to receive email notifications!
+      How do I keep up with what's being built downtown or down the street?  What is this building going to look like?  Who is building it?
     </p>
     <p>
       This is a pilot application to let people anonymously sign up for non-emergency alerts based on city data.  Our first topic is new, large-scale development permit applications.  Use the feedback form to tell us what should be next.
