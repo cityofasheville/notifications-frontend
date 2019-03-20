@@ -9,6 +9,7 @@
     "graphql": "*",
     "graphql-tag": "*",
     "moment": "*",
+    "node-sass": "^4.11.0",
     "prop-types": "*",
     "query-string": "^6.4.0",
     "react": "*",

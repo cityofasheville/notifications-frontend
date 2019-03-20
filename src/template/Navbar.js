@@ -64,6 +64,7 @@ class Navbar extends React.Component {
     if (config.langSwitcher) {
       position = { top: 0, right: 90 };
     }
+    position = {}
     if (windowWidth > 600) {
       return (
         <div className="Navbar-container">
@@ -74,48 +75,50 @@ class Navbar extends React.Component {
                 style={position}
                 aria-label="main-menu"
               >
-                {/* <div id="skip">
-                  <a href="#content">Skip to Main Content</a>
-                </div> */}
-                {
-                  config.menu_items.map(item => (
+                <ul>
+                  {/* <div id="skip">
+                    <a href="#content">Skip to Main Content</a>
+                  </div> */}
+                  {config.menu_items.map(item => (
                     item.external ? (
-                      <a
-                        href={item.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={item.active ? 'active' : ''}
-                        alt={this.translateMenuItem(item.defaultText)}
-                        key={item.defaultText}
-                      >
-                        {item.icon ? <Icon path={item.icon} size={24} />
-                          : this.translateMenuItem(item.defaultText)}
-                      </a>
-                    )
-                      : (
-                        <Link
-                          to={item.href}
+                      <li>
+                        <a
+                          href={item.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className={item.active ? 'active' : ''}
                           alt={this.translateMenuItem(item.defaultText)}
                           key={item.defaultText}
                         >
                           {item.icon ? <Icon path={item.icon} size={24} />
                             : this.translateMenuItem(item.defaultText)}
+                        </a>
+                      </li>
+                    ) : (
+                      <li key={item.defaultText}>
+                        <Link
+                          to={item.href}
+                          className={item.active ? 'active' : ''}
+                          alt={this.translateMenuItem(item.defaultText)}
+                        >
+                          {item.icon ? <Icon path={item.icon} size={24} />
+                            : this.translateMenuItem(item.defaultText)}
                         </Link>
-                      )
+                      </li>
+                    )
                   ))
-                }
-                {config.authControl && <AuthControl />}
+                  }
+                  {config.authControl && <li><AuthControl /></li>}
+                  {config.langSwitcher && <li><LangSwitcher /></li>}
+                </ul>
               </nav>
             )
           }
-          {config.langSwitcher && <LangSwitcher />}
         </div>
       );
     }
     return (
       <div className="Navbar-container narrow">
-        {config.langSwitcher && <LangSwitcher />}
         {(config.menu_items.length > 0 || config.authControl)
           && (
             <nav
@@ -146,27 +149,26 @@ class Navbar extends React.Component {
                             rel="noopener noreferrer"
                             className={item.active ? 'active' : ''}
                             alt={this.translateMenuItem(item.defaultText)}
-                            key={item.defaultText}
                           >
                             {item.icon ? <Icon path={item.icon} size={24} />
                               : this.translateMenuItem(item.defaultText)}
                           </a>
+                        ) : (
+                          <Link
+                            to={item.href}
+                            className={item.active ? 'active' : ''}
+                            alt={this.translateMenuItem(item.defaultText)}
+                          >
+                            {item.icon ? <Icon path={item.icon} size={24} />
+                              : this.translateMenuItem(item.defaultText)}
+                          </Link>
                         )
-                          : (
-                            <Link
-                              to={item.href}
-                              className={item.active ? 'active' : ''}
-                              alt={this.translateMenuItem(item.defaultText)}
-                            >
-                              {item.icon ? <Icon path={item.icon} size={24} />
-                                : this.translateMenuItem(item.defaultText)}
-                            </Link>
-                          )
                       }
                     </li>
                   ))
                 }
                 {config.authControl && <li><AuthControl /></li>}
+                {config.langSwitcher && <li><LangSwitcher /></li>}
               </ul>
             </nav>
           )}

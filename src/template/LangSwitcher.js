@@ -43,6 +43,7 @@ const LangSwitcher = (props) => {
             </option>
           ))}
       </select>
+      <div className="LangSwitcher-arrowAfter"></div>
     </div>
   );
 };
