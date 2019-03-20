@@ -1,33 +1,51 @@
 {
   "name": "react-starter-app",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "apollo-cache-inmemory": "^1.2.9",
-    "apollo-client": "^2.4.1",
-    "apollo-link-http": "^1.5.4",
-    "graphql": "^14.0.0",
-    "graphql-tag": "^2.9.2",
-    "moment": "^2.22.2",
-    "prop-types": "^15.6.2",
-    "query-string": "5",
-    "react": "^16.4.2",
-    "react-apollo": "^2.1.11",
-    "react-dom": "^16.4.2",
-    "react-router": "^4.3.1",
-    "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.5"
+    "apollo-cache-inmemory": "*",
+    "apollo-client": "*",
+    "apollo-link-http": "*",
+    "graphql": "*",
+    "graphql-tag": "*",
+    "moment": "*",
+    "prop-types": "*",
+    "query-string": "^6.4.0",
+    "react": "*",
+    "react-apollo": "*",
+    "react-dom": "*",
+    "react-router": "^5.0.0",
+    "react-router-dom": "^5.0.0",
+    "react-scripts": "^2.1.8"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "update:packages": "node wipe-dependencies.js && rm -rf node_modules && npm update --save-dev && npm update --save"
   },
   "devDependencies": {
-    "eslint": "^5.4.0",
-    "eslint-config-airbnb": "^17.1.0",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-react": "^7.11.1"
-  }
+    "eslint-config-airbnb": "*",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-react": "*"
+  },
+  "description": "This is the starter template for all City of Asheville React web projects. It contains the basic file structure, shared templates and icons (e.g., navbar, authentication, language components). It is intended to be paired with a back-end application based on the [GraphQL Starter Template](https://github.com/cityofasheville/graphql-starter-template).",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cityofasheville/react-starter-template.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cityofasheville/react-starter-template/issues"
+  },
+  "homepage": "https://github.com/cityofasheville/react-starter-template#readme",
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }

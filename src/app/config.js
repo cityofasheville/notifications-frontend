@@ -87,8 +87,8 @@ const config = {
     ],
   },
   // footer
-  hasFeedbackForm: true,
-  feedbackURL: 'https://docs.google.com/a/ashevillenc.gov/forms/d/e/1FAIpQLSdjNwOmoDY3PjQOVreeSL07zgI8otIIPWjY7BnejWMAjci8-w/viewform?c=0&w=1', // eslint-disable-line
+  hasFeedbackForm: false,
+  feedbackURL: '', // eslint-disable-line
   hasGitHubURL: true,
   gitHubURL: 'https://github.com/cityofasheville/notifications-frontend',
 
