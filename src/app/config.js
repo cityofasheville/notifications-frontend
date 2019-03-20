@@ -26,7 +26,7 @@ const config = {
     ],
   },
   langSwitcher: false, // Set to false if you do NOT want language translation to be enabled
-  authControl: false, // Set to false if you do NOT want authentication to be enabled
+  authControl: true, // Set to false if you do NOT want authentication to be enabled
   footer: true, // Set to false if you do NOT want footer to be shown
   languages: [ // languages for langSwitcher component
     {
