@@ -7,6 +7,9 @@ h1, h2, body {
 
 .App {
   color: #002e5c;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
 
 .App-header {
@@ -23,6 +26,9 @@ h1, h2, body {
 }
 
 .App-header a:focus {
-  border: 1px solid blue;
+  border: 1px solid #c3ebff;
 }
 
+main {
+  flex: 1;
+}

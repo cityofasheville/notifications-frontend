@@ -21,6 +21,7 @@ const Footer = () => (
                   className="inText"
                   href={config.feedbackURL}
                   target="_blank"
+                  rel="noopener noreferrer"
                   title="website feedback form"
                 >
                   feedback form
@@ -29,6 +30,11 @@ const Footer = () => (
               </div>
             )
           }
+          {!config.hasFeedbackForm && (
+            <div>
+              We strive for full accessibility. Report issues to help@ashevillenc.gov.
+            </div>
+          )}
           {config.hasGitHubURL
             && (
               <div>
@@ -36,16 +42,19 @@ const Footer = () => (
                 <a
                   href={config.gitHubURL}
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   GitHub
-                  <span style={{ marginLeft: '2px' }}>
+                  <span style={{ marginLeft: '5px' }}>
                     <Icon
                       path={IM_GITHUB}
-                      size={23}
+                      size={19}
+                      verticalAlign="bottom"
                     />
                   </span>
                 </a>
-              </div>)
+              </div>
+            )
           }
         </div>
       </div>

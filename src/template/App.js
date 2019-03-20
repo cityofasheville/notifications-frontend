@@ -14,20 +14,18 @@ import 'template/styles/components/App.css';
 
 const App = () => (
   <ApolloProvider client={client}>
-    <main>
-      <div className="App">
-        <LanguageProvider>
-          <header className="App-header">
-            <AppTitle />
-            <Navbar />
-          </header>
-          <div className="container" id="content">
-            {mainRoutes}
-          </div>
-          {config.footer && <Footer />}
-        </LanguageProvider>
-      </div>
-    </main>
+    <div className="App">
+      <LanguageProvider>
+        <header className="App-header">
+          <AppTitle />
+          <Navbar />
+        </header>
+        <main className="container" id="content">
+          {mainRoutes}
+        </main>
+        {config.footer && <Footer />}
+      </LanguageProvider>
+    </div>
   </ApolloProvider>
 );
 

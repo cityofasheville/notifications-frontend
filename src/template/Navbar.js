@@ -83,6 +83,7 @@ class Navbar extends React.Component {
                       <a
                         href={item.href}
                         target="_blank"
+                        rel="noopener noreferrer"
                         className={item.active ? 'active' : ''}
                         alt={this.translateMenuItem(item.defaultText)}
                         key={item.defaultText}
@@ -142,6 +143,7 @@ class Navbar extends React.Component {
                           <a
                             href={item.href}
                             target="_blank"
+                            rel="noopener noreferrer"
                             className={item.active ? 'active' : ''}
                             alt={this.translateMenuItem(item.defaultText)}
                             key={item.defaultText}

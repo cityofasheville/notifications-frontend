@@ -1,0 +1,12 @@
+.error-pos-absolute {
+  position: absolute;
+  top: 30vh;
+  margin-left: 15vw;
+  margin-right: 15vw;
+  padding: 1em;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  background-color: #fff;
+  border: 1px solid gray;
+}

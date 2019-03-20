@@ -2,9 +2,19 @@
 This is a file for global css, if needed for your app.
 */
 
-#content {
-  min-height: 60vh;
-  width: 80vw;
-  margin-left: 12.5vw;
-  margin-top: 2em;
+html, body {
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+main {
+  margin: 2vh 15vw;
+}
+
+.alert-danger {
+  color: red !important;
+}
+
+h1 {
+  /* color: red; */ /*Don't actually make this red... */
 }
