@@ -37,7 +37,12 @@ class Categories extends React.Component {
             <ul className="tags-list">
               {cat.tags && cat.tags.map(tag => (
                 <li key={tag.id} className="tag-item">
-                  {tag.name}
+                  <input type="checkbox" name={tag.name} value={tag.id}/>{tag.name}
+                  <select>
+                    <option>
+                      Whole city
+                    </option>
+                  </select>
                 </li>
               ))}
             </ul>
