@@ -18,7 +18,7 @@ const Home = () => {
         if (loggedIn) {
           return (<div>
             <h1>
-              Edit notification preferences for {data.user.email}
+              Set notification preferences for {data.user.email}
             </h1>
             <EditPreferenceForm/>
             <NoEmergencyAlertsNotice />
@@ -29,13 +29,14 @@ const Home = () => {
           <h1>
             Sign up for notifications
           </h1>
-          <p>Want to keep up with what's happening downtown or down the street?</p>
-          <p>Currently we offer notifications about: TODO: GET CATEGORIES HERE</p>
+          <p>Want to keep up with what's happening downtown or down the street?  Thinking about getting more involved with your local government?</p>
+          <p>Sign up to receive notifications!</p>
           <ol>
             <li>Step one</li>
             <li>Step two</li>
             <li>Step three</li>
           </ol>
+          <p>This is a brand new application that is currently in pilot phase.  Currently we offer notifications about: TODO: GET CATEGORIES HERE.  Tell us about your interests or what we can do to improve this tool.</p>
           <NoEmergencyAlertsNotice />
         </div>
         );
