@@ -1,0 +1,21 @@
+.category-item {
+  display: flex;
+  // justify-content: center;
+}
+
+.tags-list {
+  padding: 1em;
+}
+
+.tag-item {
+  padding: 0.5em 0;
+
+  input, span{
+    margin: 0 1em 0 0;
+  }
+
+  select {
+    float: right;
+    margin-left: 10em;
+  }
+}

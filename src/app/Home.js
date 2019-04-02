@@ -1,8 +1,6 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import { GET_USER_INFO } from 'template/Queries';
-import NoEmergencyAlertsNotice from 'app/NoEmergencyAlertsNotice';
-import TextPuck from 'app/TextPuck';
 import UnauthenticatedLanding from 'app/UnauthenticatedLanding';
 import AuthenticatedLanding from 'app/AuthenticatedLanding';
 import 'app/styles/components/Home.scss';
