@@ -1,4 +1,5 @@
 import React from 'react';
+import NoEmergencyAlertsNotice from 'app/NoEmergencyAlertsNotice';
 
 const About = () => (
   <div>
@@ -6,9 +7,7 @@ const About = () => (
     <p>
       This new application allows you to sign up for non-emergency notifications.  The pilot topic is large scale development.  If you have ideas about what you'd like to see next, use our feedback form.
     </p>
-    <p>
-      This application does not handle emergency alerts.  You can sign up for those at <a href="https://member.everbridge.net/index/453003085611892#/login">AVL Alert</a>.
-    </p>
+    <NoEmergencyAlertsNotice />
   </div>
 );
 

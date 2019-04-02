@@ -23,7 +23,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* For when login is not available */
-.Navbar-nav li a.alert-danger {
+.alert-danger, .Navbar-nav li a.alert-danger {
   color: red;
   cursor: text;
 }

@@ -1,7 +1,7 @@
 import React from 'react';
-import 'app/styles/components/SignupForm.css';
+import 'app/styles/components/EditPreferenceForm.css';
 
-const SignupForm = () => (
+const EditPreferenceForm = () => (
   <div className="signup">
     <div className="form-section">
       <h2 className="centered">Notification Categories</h2>
@@ -43,4 +43,4 @@ const SignupForm = () => (
 
 */
 
-export default SignupForm;
+export default EditPreferenceForm;

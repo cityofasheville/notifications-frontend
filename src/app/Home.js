@@ -1,7 +1,8 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import { GET_USER_INFO } from 'template/Queries';
-import SignupForm from './SignupForm';
+import NoEmergencyAlertsNotice from 'app/NoEmergencyAlertsNotice';
+import EditPreferenceForm from 'app/EditPreferenceForm';
 import 'app/styles/components/Home.css';
 
 const Home = () => {
@@ -19,10 +20,8 @@ const Home = () => {
             <h1>
               Edit notification preferences for {data.user.email}
             </h1>
-            <p>
-              This application does not handle emergency alerts.  You can sign up for those with <a href="https://member.everbridge.net/index/453003085611892#/login" target="_blank" rel="noopener noreferrer">AVL Alert</a>.
-            </p>
-            <SignupForm/>
+            <EditPreferenceForm/>
+            <NoEmergencyAlertsNotice />
           </div>
           );
         }
@@ -37,9 +36,7 @@ const Home = () => {
             <li>Step two</li>
             <li>Step three</li>
           </ol>
-          <p>
-            This application does not handle emergency alerts.  You can sign up for those with <a href="https://member.everbridge.net/index/453003085611892#/login" target="_blank" rel="noopener noreferrer">AVL Alert</a>.
-          </p>
+          <NoEmergencyAlertsNotice />
         </div>
         );
       }}
