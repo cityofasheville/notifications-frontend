@@ -1,0 +1,17 @@
+/*
+This is a CSS file for the css for your Home.js page, if needed.
+*/
+
+#content h1 {
+  font-weight: 600;
+  letter-spacing: 0.015em;
+  font-size: 3rem;
+}
+
+@media (max-width: 700px) {
+  #content h1 {
+    font-weight: 600;
+    letter-spacing: 0.015em;
+    font-size: 2rem;
+  }
+}

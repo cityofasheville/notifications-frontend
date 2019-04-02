@@ -1,5 +1,5 @@
 import React from 'react';
-import 'app/styles/components/EditPreferenceForm.css';
+import 'app/styles/components/EditPreferenceForm.scss';
 
 const EditPreferenceForm = () => (
   <div className="signup">
