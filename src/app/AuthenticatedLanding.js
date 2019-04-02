@@ -1,6 +1,8 @@
 import React from 'react';
 import NoEmergencyAlertsNotice from 'app/NoEmergencyAlertsNotice';
-import TextPuck from 'app/TextPuck'
+import TextPuck from 'app/TextPuck';
+import Categories from 'app/Categories';
+import config from 'app/config';
 import 'app/styles/components/AuthenticatedLanding.scss';
 
 const AuthenticatedLanding = ({ data }) => (
@@ -15,7 +17,7 @@ const AuthenticatedLanding = ({ data }) => (
         </div>
         <div className="step-content">
           <div className="list-item-title">Confirm email</div>
-          <p>You are logged in as {data.user.email}.  Not you?</p>
+          <p>You are logged in as {data.user.email}.  <a href={config.logoutURL}>Not you?</a></p>
         </div>
       </li>
       <li>
@@ -33,7 +35,7 @@ const AuthenticatedLanding = ({ data }) => (
         </div>
         <div className="step-content">
           <div className="list-item-title">Choose which notifications you want to get</div>
-          <p>This program is in its pilot phase.  Currently we offer notifications about new, large-scale permit applications only.  Tell us about your interests or what we can do to improve this tool.</p>
+          <Categories />
         </div>
       </li>
     </ul>
