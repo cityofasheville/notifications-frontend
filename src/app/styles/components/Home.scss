@@ -8,6 +8,25 @@ This is a CSS file for the css for your Home.js page, if needed.
   font-size: 3rem;
 }
 
+.landing #intro, .list-item-title {
+  font-size: 1.5rem;
+}
+
+.landing ul {
+  list-style-type: none;
+}
+
+.landing ul li {
+  padding: 1em 0.75em;
+  margin: 1em;
+  background-color: rgba(242, 242, 242, 0.5);
+  border-radius: 6px;
+}
+
+.landing ul li .list-item-title {
+  font-weight: bold;
+}
+
 @media (max-width: 700px) {
   #content h1 {
     font-weight: 600;

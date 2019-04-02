@@ -3,7 +3,7 @@ import NoEmergencyAlertsNotice from 'app/NoEmergencyAlertsNotice';
 import TextPuck from 'app/TextPuck'
 import 'app/styles/components/UnauthenticatedLanding.scss';
 
-const UnauthenticatedLanding = () => (<div id="unauthenticated-landing">
+const UnauthenticatedLanding = () => (<div id="unauthenticated-landing" className="landing">
   <h1>
     Sign up for notifications
   </h1>
