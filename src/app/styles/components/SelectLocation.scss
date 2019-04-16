@@ -1,0 +1,14 @@
+.SelectLocation-container {
+  display: flex;
+}
+
+.SelectLocation-label {
+  margin-right: 1em;
+  padding: 0.25em 0;
+}
+
+.SelectLocation-input {
+  padding: 0.25em;
+  align-content: stretch;
+  flex-grow: 1;
+}

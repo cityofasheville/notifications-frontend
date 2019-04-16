@@ -16,7 +16,7 @@ const Home = () => {
         if (loading) return null;
         if (error) return <a href="#" className="alert-danger">Login Unavailable</a>;
         if (loggedIn) {
-          return <AuthenticatedLanding data={data} />;
+          return <AuthenticatedLanding userData={data} />;
         }
         return <UnauthenticatedLanding />;
       }}
