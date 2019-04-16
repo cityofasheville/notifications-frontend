@@ -70,7 +70,6 @@ class SelectLocation extends React.Component {
 
   handleAddressSubmit(e) {
     e.preventDefault();
-    // TODO: only add ashevile north carolina if index of those in the address text is -1
     let searchText = this.state.addressText;
     if (searchText.indexOf('Asheville') === -1) {
       searchText += ' Asheville';
@@ -111,7 +110,7 @@ class SelectLocation extends React.Component {
         * update preferences, SHOW THAT THEY WERE UPDATED
         * make center default to 70 court plaza
         * if they unfocus and there are not valid coordinates, make next section tell them to select a valid address
-        * reject map clicks outside of asheville-- different city value?  no city value?
+        * reject map clicks outside of asheville-- different city value?  no city value? - give bounding box?
       TODO with simplicity-- check results and show dropdown?
     */
     return (<React.Fragment>
