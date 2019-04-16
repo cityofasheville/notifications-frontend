@@ -1,4 +1,17 @@
-.SelectLocation-container {
+form {
+  display: flex;
+}
+
+input, button {
+  font-size: inherit;
+}
+
+
+form input, form button {
+  border-radius: 6px;
+}
+
+.label-input-assembly {
   display: flex;
 }
 
@@ -7,18 +20,28 @@
   margin-right: 0.5em;
 }
 
-.SelectLocation-container input, .SelectLocation-container button {
-  border-radius: 6px;
-}
-
 .SelectLocation-input {
   padding: 0.15em;
   align-content: stretch;
   flex-grow: 1;
 }
 
-.error-message {
+.address-message {
   padding: 1em 0;
+}
+
+.address-message button {
+  display: block;
+  font-size: inherit;
+  padding: 0.25em;
+  margin: 0.25em 0;
+  background-color: inherit;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.address-message button:hover, .address-message button:focus {
+  background-color: white;
 }
 
 .leaflet-container {
@@ -30,4 +53,14 @@
 
 .footer {
   z-index: 1000;
+}
+
+@media (max-width: 700px) {
+  form {
+    display: unset;
+  }
+  form .form-element {
+    width: 100%;
+    margin: 0.5em 0;
+  }
 }

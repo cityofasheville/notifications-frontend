@@ -85,6 +85,7 @@ class SelectLocation extends React.Component {
     // Update the state as the user types in the input box
     this.setState({
       addressInputText: inputText,
+      addressOutsideCity: false,
     })
   }
 
@@ -109,14 +110,14 @@ class SelectLocation extends React.Component {
         if (result.length === 1) {
           this.setState({
             addressCoords: [result[0].center.lat, result[0].center.lng],
-            selectedAddress: result[0].name,
-            addressInputText: result[0].name,
+            selectedAddress: getAddressString(result),
+            addressInputText: getAddressString(result),
             addressPossibilities: result,
             addressOutsideCity: result[0].properties.address.city !== 'Asheville',
           })
         }
         else {
-          this.setState({ addressPossibilities: result })
+          this.setState({ addressPossibilities: result, addressOutsideCity: false })
         }
       }
     )
@@ -125,12 +126,16 @@ class SelectLocation extends React.Component {
   handlePossibilityClick(possibility) {
     this.setState({
       addressCoords: [possibility.center.lat, possibility.center.lng],
-      selectedAddress: possibility.name,
-      addressInputText: possibility.name,
+      selectedAddress: getAddressString(possibility),
+      addressInputText: getAddressString(possibility),
       addressPossibilities: [possibility],
       addressOutsideCity: possibility.properties.address.city !== 'Asheville',
     })
-}
+  }
+
+  handleFocus(e) {
+    e.target.select();
+  }
 
   render() {
     /*
@@ -150,21 +155,24 @@ class SelectLocation extends React.Component {
     }
 
     return (<React.Fragment>
-      <form className="SelectLocation-container" onSubmit={this.handleAddressSubmit}>
-        <label className="SelectLocation-label form-element">Address:</label>
-        <input
-          className="SelectLocation-input form-element"
-          type="text"
-          value={this.state.addressInputText}
-          onChange={(e) => this.handleAddressTyping(e.target.value)}
-        />
-        <button type="submit">Confirm Address</button>
+      <form onSubmit={this.handleAddressSubmit}>
+        <div className="form-element label-input-assembly">
+          <label className="SelectLocation-label">Address:</label>
+          <input
+            className="SelectLocation-input"
+            type="text"
+            value={this.state.addressInputText}
+            onChange={(e) => this.handleAddressTyping(e.target.value)}
+            onFocus={this.handleFocus}
+          />
+        </div>
+        <button type="submit" className="form-element">Confirm Address</button>
       </form>
       {errorMessage &&
-        <div className="alert-danger error-message">{errorMessage}</div>
+        <div className="alert-danger address-message">{errorMessage}</div>
       }
       {this.state.addressPossibilities && this.state.addressPossibilities.length > 1 &&
-        <div>
+        <div className="address-message">
           <span>Did you mean one of these?</span>
           {this.state.addressPossibilities.map(possibility => {
             return <button key={possibility.properties.place_id} onClick={() => this.handlePossibilityClick(possibility)}>
