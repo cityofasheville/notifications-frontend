@@ -158,7 +158,7 @@ class SelectLocation extends React.Component {
     return (<React.Fragment>
       <form onSubmit={this.handleAddressSubmit}>
         <div className="form-element label-input-assembly">
-          <label className="SelectLocation-label">Address:</label>
+          <label className="SelectLocation-label">Address</label>
           <input
             className="SelectLocation-input"
             type="text"

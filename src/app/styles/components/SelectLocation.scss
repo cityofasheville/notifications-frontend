@@ -8,22 +8,36 @@ input {
 
 form input, form button {
   border-radius: 6px;
-  padding: 0.25em;
+  font-size: inherit;
+}
+
+.form-element.submit-button button {
+  height: 100%;
+  margin-left: 1em;
+  background-color: #0088cc;
+  color: white;
+  font-weight: 500;
+  padding: 0.5rem;
 }
 
 .label-input-assembly {
+  position: relative;
   display: flex;
   flex-grow: 1;
   vertical-align: middle;
 }
 
 .SelectLocation-label {
-  padding: 0.25em 0.5em 0.25em 0;
+  position: absolute;
+  font-size: 0.75em;
+  padding: 0.25rem 0 0 0.5rem;
+  color: gray;
 }
 
 .SelectLocation-input {
   align-content: stretch;
   flex-grow: 1;
+  padding: 1rem 0.25rem 0.25rem 0.25rem;
 }
 
 .address-message {
@@ -33,9 +47,9 @@ form input, form button {
 .address-message button {
   display: block;
   font-size: inherit;
-  padding: 0.25em;
+  padding: 0.5em;
   margin: 0.25em 0;
-  background-color: inherit;
+  background-color: white;
   border-radius: 6px;
   cursor: pointer;
 }
@@ -65,5 +79,8 @@ form input, form button {
   }
   .form-element.submit-button {
     text-align: center;
+  }
+  .form-element.submit-button button {
+    margin-left: 0;
   }
 }
