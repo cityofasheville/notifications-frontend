@@ -33,7 +33,7 @@ const AuthenticatedLanding = ({ userData }) => (
   >
     {({ loading, error, data }) => {
       if (loading) return null;
-      if (error) return <a href="#" className="alert-danger">Error :(</a>;
+      if (error) return <div className="alert-danger">Error :(</div>;
       return (<div id="authenticated-landing" className="landing">
         <h1>
           Set notification preferences
