@@ -22,8 +22,8 @@ function getAddressFromCoords(x, y, callback) {
   });
 }
 
-function getCoordsFromAddress(addressText, callback) {
-  geocoder.geocode(addressText, function(result) {
+function getCoordsFromAddress(addressInputText, callback) {
+  geocoder.geocode(addressInputText, function(result) {
     callback(result);
   })
 }
@@ -32,16 +32,24 @@ class SelectLocation extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      addressText: '',
-      selectedAddress: undefined,
+      // The coordinates of the selected address
       addressCoords: props.x && props.y ? [props.x, props.y] : undefined,
-      addressPossibilities: null,
+      // The current text of the input box
+      addressInputText: '',
+      // The address after it is confirmed to exist
+      selectedAddress: undefined,
+      // Whether or not the address is in the city
       addressOutsideCity: false,
+      // If the entered address matches 0 or more than one, an array of the results
+      addressPossibilities: null,
     }
     this.handleAddressSubmit = this.handleAddressSubmit.bind(this);
   }
 
   componentWillMount() {
+    /*
+      If there are coordinates supplied as props, get the address to display
+    */
     if (this.state.addressCoords) {
       getAddressFromCoords(
         this.state.addressCoords[0],
@@ -49,7 +57,7 @@ class SelectLocation extends React.Component {
         (result) =>
           this.setState({
             selectedAddress: getAddressString(result),
-            addressText: getAddressString(result),
+            addressInputText: getAddressString(result),
             addressOutsideCity: result[0].properties.address.city !== 'Asheville',
           })
       )
@@ -57,33 +65,44 @@ class SelectLocation extends React.Component {
   }
 
   updateCoordsFromMap(x, y) {
+    /*
+      If the user clicks the map, set the address coordinates
+      TODO: only save address if it's in the city?
+    */
     getAddressFromCoords(
       x,
       y,
       (result) => this.setState({
         addressCoords: [ x, y ],
         selectedAddress: getAddressString(result),
-        addressText: getAddressString(result),
+        addressInputText: getAddressString(result),
         addressPossibilities: null,
         addressOutsideCity: result[0].properties.address.city !== 'Asheville',
       }))
   }
 
-  handleAddressTyping(newAddressText) {
+  handleAddressTyping(inputText) {
+    // Update the state as the user types in the input box
     this.setState({
-      addressText: newAddressText,
+      addressInputText: inputText,
     })
   }
 
   handleAddressSubmit(e) {
-    e.preventDefault();
-    let searchText = this.state.addressText;
+    /*
+      If someone clicks the button to confirm the address, check to see if it's a valid address
+    */
+    e.preventDefault(); // Do not refresh the page
+    let searchText = this.state.addressInputText;
     if (searchText.indexOf('Asheville') === -1) {
+      // Narrow down by adding Asheville if it's not already part of the search text
       searchText += ' Asheville';
     }
     if (searchText.indexOf('North Carolina') === -1) {
+      // Narrow down by adding North Carolina if it's not already part of the search text
       searchText += ' North Carolina';
     }
+
     getCoordsFromAddress(
       searchText,
       (result) => {
@@ -91,8 +110,8 @@ class SelectLocation extends React.Component {
           this.setState({
             addressCoords: [result[0].center.lat, result[0].center.lng],
             selectedAddress: result[0].name,
-            addressText: result[0].name,
-            addressPossibilities: null,
+            addressInputText: result[0].name,
+            addressPossibilities: result,
             addressOutsideCity: result[0].properties.address.city !== 'Asheville',
           })
         }
@@ -107,8 +126,9 @@ class SelectLocation extends React.Component {
     this.setState({
       addressCoords: [possibility.center.lat, possibility.center.lng],
       selectedAddress: possibility.name,
-      addressText: possibility.name,
-      addressPossibilities: null,
+      addressInputText: possibility.name,
+      addressPossibilities: [possibility],
+      addressOutsideCity: possibility.properties.address.city !== 'Asheville',
     })
 }
 
@@ -135,15 +155,15 @@ class SelectLocation extends React.Component {
         <input
           className="SelectLocation-input form-element"
           type="text"
-          value={this.state.addressText}
+          value={this.state.addressInputText}
           onChange={(e) => this.handleAddressTyping(e.target.value)}
         />
         <button type="submit">Confirm Address</button>
       </form>
       {errorMessage &&
-        <div className="alert-danger">{errorMessage}</div>
+        <div className="alert-danger error-message">{errorMessage}</div>
       }
-      {this.state.addressPossibilities && this.state.addressPossibilities.length > 0 &&
+      {this.state.addressPossibilities && this.state.addressPossibilities.length > 1 &&
         <div>
           <span>Did you mean one of these?</span>
           {this.state.addressPossibilities.map(possibility => {
