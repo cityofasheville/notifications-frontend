@@ -7,9 +7,18 @@
   padding: 0.25em 0;
 }
 
+.SelectLocation-container input, .SelectLocation-container button {
+  border-radius: 6px;
+}
+
 .SelectLocation-input {
   padding: 0.15em;
   align-content: stretch;
   flex-grow: 1;
+  font-size: inherit;
+  margin-right: 1em;
+}
+
+.SelectLocation-button {
   font-size: inherit;
 }

@@ -33,13 +33,14 @@ class SelectLocation extends React.Component {
   render() {
     // TODO: when someone types, change the text input-- after a few seconds, search?
     return (<div className="SelectLocation-container">
-      <label className="SelectLocation-label">Address:</label>
+      <label className="SelectLocation-label form-element">Address:</label>
       <input
-        className="SelectLocation-input"
+        className="SelectLocation-input form-element"
         type="text"
         defaultValue={this.state.selectedAddress}
         onKeyDown={(e) => { console.log(e.target.value) }}
       />
+      <button className="SelectLocation-button form-element">Confirm Address</button>
     </div>)
   }
 
