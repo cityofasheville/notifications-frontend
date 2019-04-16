@@ -1,20 +1,24 @@
 import React from 'react';
 import L from 'leaflet';
 import 'leaflet-control-geocoder';
-import { Query } from 'react-apollo';
+// import { Query } from 'react-apollo';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import 'app/styles/components/SelectLocation.scss';
 
 const geocoder = L.Control.Geocoder.nominatim();
 
+function getAddressString(reverseGeocodeResults) {
+  return [
+    reverseGeocodeResults[0].properties.address.house_number || '',
+    reverseGeocodeResults[0].properties.address.road || '',
+    reverseGeocodeResults[0].properties.address.city || '',
+    reverseGeocodeResults[0].properties.address.postcode || '',
+  ].join(' ').trim();
+}
+
 function getAddressFromCoords(x, y, callback) {
   geocoder.reverse(L.latLng(x, y), 1, function(result) {
-    callback([
-      result[0].properties.address.house_number || '',
-      result[0].properties.address.road || '',
-      result[0].properties.address.city || '',
-      result[0].properties.address.postcode || '',
-    ].join(' ').trim());
+    callback(result);
   });
 }
 
@@ -32,33 +36,36 @@ class SelectLocation extends React.Component {
       selectedAddress: undefined,
       addressCoords: props.x && props.y ? [props.x, props.y] : undefined,
       addressPossibilities: null,
+      addressOutsideCity: false,
     }
     this.handleAddressSubmit = this.handleAddressSubmit.bind(this);
   }
 
   componentWillMount() {
     if (this.state.addressCoords) {
-      getAddressFromCoords(this.state.addressCoords[0], this.state.addressCoords[1], (result) =>
-        this.setState({
-          selectedAddress: result,
-          addressText: result,
-        })
+      getAddressFromCoords(
+        this.state.addressCoords[0],
+        this.state.addressCoords[1],
+        (result) =>
+          this.setState({
+            selectedAddress: getAddressString(result),
+            addressText: getAddressString(result),
+            addressOutsideCity: result[0].properties.address.city !== 'Asheville',
+          })
       )
     }
   }
 
   updateCoordsFromMap(x, y) {
-    // check to see if point is in the city with simplicity
-    // if it is not, show error message
-    // if it is, setstate with new coords and address
     getAddressFromCoords(
       x,
       y,
       (result) => this.setState({
-        addressCoords: [ x, y],
-        selectedAddress: result,
-        addressText: result,
+        addressCoords: [ x, y ],
+        selectedAddress: getAddressString(result),
+        addressText: getAddressString(result),
         addressPossibilities: null,
+        addressOutsideCity: result[0].properties.address.city !== 'Asheville',
       }))
   }
 
@@ -86,6 +93,7 @@ class SelectLocation extends React.Component {
             selectedAddress: result[0].name,
             addressText: result[0].name,
             addressPossibilities: null,
+            addressOutsideCity: result[0].properties.address.city !== 'Asheville',
           })
         }
         else {
@@ -113,6 +121,14 @@ class SelectLocation extends React.Component {
         * reject map clicks outside of asheville-- different city value?  no city value? - give bounding box?
       TODO with simplicity-- check results and show dropdown?
     */
+
+    let errorMessage = null;
+    if (this.state.addressPossibilities && this.state.addressPossibilities.length < 1) {
+      errorMessage = 'No results found. Please try another address.';
+    } else if (this.state.addressOutsideCity) {
+      errorMessage = 'That location is not in Asheville. This application only sends alerts concerning developments within Asheville city limits. Please select a different address.';
+    }
+
     return (<React.Fragment>
       <form className="SelectLocation-container" onSubmit={this.handleAddressSubmit}>
         <label className="SelectLocation-label form-element">Address:</label>
@@ -124,8 +140,8 @@ class SelectLocation extends React.Component {
         />
         <button type="submit">Confirm Address</button>
       </form>
-      {this.state.addressPossibilities && this.state.addressPossibilities.length < 1 &&
-        <div className="alert-danger">No results found. Please try another Asheville address.</div>
+      {errorMessage &&
+        <div className="alert-danger">{errorMessage}</div>
       }
       {this.state.addressPossibilities && this.state.addressPossibilities.length > 0 &&
         <div>
