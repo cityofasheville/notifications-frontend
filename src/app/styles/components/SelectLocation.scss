@@ -19,8 +19,12 @@
 }
 
 .leaflet-container {
-  height: 200px;
+  height: 250px;
   margin: 0 auto;
   margin: 2em 0;
   text-align: center;
+}
+
+.footer {
+  z-index: 1000;
 }
