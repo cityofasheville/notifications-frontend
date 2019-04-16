@@ -36,7 +36,12 @@ class SelectLocation extends React.Component {
   }
 
   render() {
-    // TODO: search simplicity to confirm address and get x and y to send to backend
+    /*
+      TODO: as they type (debounce this):
+        check simplicity for results and show dropdown
+        if they select one or there is only one result, update preferences
+        if they click the map, update preferences
+    */
     return (<React.Fragment>
       <div className="SelectLocation-container">
         <label className="SelectLocation-label form-element">Address:</label>
@@ -58,7 +63,7 @@ class SelectLocation extends React.Component {
             attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
           />
           <Marker position={[this.props.x, this.props.y]}>
-            <Popup>The address</Popup>
+            <Popup>{this.state.selectedAddress}</Popup>
           </Marker>
         </Map>
       </div>
