@@ -2,26 +2,26 @@ form {
   display: flex;
 }
 
-input, button {
-  font-size: inherit;
+input {
+  overflow: auto;
 }
-
 
 form input, form button {
   border-radius: 6px;
+  padding: 0.25em;
 }
 
 .label-input-assembly {
   display: flex;
+  flex-grow: 1;
+  vertical-align: middle;
 }
 
 .SelectLocation-label {
-  padding: 0.25em 0;
-  margin-right: 0.5em;
+  padding: 0.25em 0.5em 0.25em 0;
 }
 
 .SelectLocation-input {
-  padding: 0.15em;
   align-content: stretch;
   flex-grow: 1;
 }
@@ -62,5 +62,8 @@ form input, form button {
   form .form-element {
     width: 100%;
     margin: 0.5em 0;
+  }
+  .form-element.submit-button {
+    text-align: center;
   }
 }

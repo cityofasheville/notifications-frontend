@@ -167,7 +167,9 @@ class SelectLocation extends React.Component {
             onFocus={this.handleFocus}
           />
         </div>
-        <button type="submit" className="form-element">Confirm Address</button>
+        <div className="form-element submit-button">
+          <button type="submit">Confirm Address</button>
+        </div>
       </form>
       {errorMessage &&
         <div className="alert-danger address-message">{errorMessage}</div>
