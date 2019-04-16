@@ -44,6 +44,7 @@ class SelectLocation extends React.Component {
       addressPossibilities: null,
     }
     this.handleAddressSubmit = this.handleAddressSubmit.bind(this);
+    this.handlePossibilityClick = this.handlePossibilityClick.bind(this);
   }
 
   componentWillMount() {
@@ -126,8 +127,8 @@ class SelectLocation extends React.Component {
   handlePossibilityClick(possibility) {
     this.setState({
       addressCoords: [possibility.center.lat, possibility.center.lng],
-      selectedAddress: getAddressString(possibility),
-      addressInputText: getAddressString(possibility),
+      selectedAddress: getAddressString([possibility]),
+      addressInputText: getAddressString([possibility]),
       addressPossibilities: [possibility],
       addressOutsideCity: possibility.properties.address.city !== 'Asheville',
     })
@@ -174,10 +175,13 @@ class SelectLocation extends React.Component {
       {this.state.addressPossibilities && this.state.addressPossibilities.length > 1 &&
         <div className="address-message">
           <span>Did you mean one of these?</span>
-          {this.state.addressPossibilities.map(possibility => {
-            return <button key={possibility.properties.place_id} onClick={() => this.handlePossibilityClick(possibility)}>
-              {possibility.name}
-            </button>
+          {this.state.addressPossibilities.length > 0 && this.state.addressPossibilities.map(possibility => {
+            return (<button
+              key={possibility.properties.place_id}
+              onClick={() => this.handlePossibilityClick(possibility)}
+            >
+              {getAddressString([possibility])}
+            </button>)
           })}
         </div>
       }
