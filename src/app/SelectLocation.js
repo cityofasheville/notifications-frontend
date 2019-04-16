@@ -86,6 +86,15 @@ class SelectLocation extends React.Component {
     )
   }
 
+  handlePossibilityClick(possibility) {
+    this.setState({
+      addressCoords: [possibility.center.lat, possibility.center.lng],
+      selectedAddress: possibility.name,
+      addressText: possibility.name,
+      addressPossibilities: null,
+    })
+}
+
   render() {
     /*
       TODO: as they type (debounce this):
@@ -112,7 +121,9 @@ class SelectLocation extends React.Component {
         <div>
           <span>Did you mean one of these?</span>
           {this.state.addressPossibilities.map(possibility => {
-            return <button key={possibility.properties.place_id}>{possibility.name}</button>
+            return <button key={possibility.properties.place_id} onClick={() => this.handlePossibilityClick(possibility)}>
+              {possibility.name}
+            </button>
           })}
         </div>
       }
