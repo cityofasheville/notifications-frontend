@@ -48,7 +48,11 @@ class SelectLocation extends React.Component {
         />
       </div>
       <div>
-        <Map center={[this.props.x, this.props.y]} zoom={14}>
+        <Map
+          center={[this.props.x, this.props.y]}
+          zoom={14}
+          onClick={e => console.log(e.latlng)}
+        >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
