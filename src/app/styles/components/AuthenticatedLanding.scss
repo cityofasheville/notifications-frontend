@@ -14,3 +14,15 @@
   width: 100%;
   margin-right: 3em;
 }
+
+@media (max-width: 700px) {
+  #authenticated-landing > ul > li {
+    display: block;
+  }
+
+  #authenticated-landing > ul > li .puck-container {
+    width: 100%;
+    padding: 0 0 1em 0;
+    text-align: center;
+  }
+}
