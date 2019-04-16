@@ -103,9 +103,9 @@ class SelectLocation extends React.Component {
         * update preferences, SHOW THAT THEY WERE UPDATED
         * make center default to 70 court plaza
         * if they unfocus and there are not valid coordinates, make next section tell them to select a valid address
+        * reject map clicks outside of asheville-- different city value?  no city value?
       TODO with simplicity-- check results and show dropdown?
     */
-    console.log(this.state)
     return (<React.Fragment>
       <form className="SelectLocation-container" onSubmit={this.handleAddressSubmit}>
         <label className="SelectLocation-label form-element">Address:</label>
@@ -118,7 +118,7 @@ class SelectLocation extends React.Component {
         <button type="submit">Confirm Address</button>
       </form>
       {this.state.addressPossibilities && this.state.addressPossibilities.length < 1 &&
-        <div className="alert-danger">No results found.  Please try again.</div>
+        <div className="alert-danger">No results found. Please try another Asheville address.</div>
       }
       {this.state.addressPossibilities && this.state.addressPossibilities.length > 0 &&
         <div>
