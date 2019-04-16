@@ -54,7 +54,7 @@ const AuthenticatedLanding = ({ userData }) => (
             </div>
             <div className="step-content">
               <div className="list-item-title">Choose a location</div>
-              <p>Enter any address in the City of Asheville-- work, home, or somewhere else.</p>
+              <p>Click on the map or type to choose any address in the City of Asheville-- work, home, or somewhere else.</p>
               <SelectLocation
                 // x={data.user_preferences ? data.user_preferences.location_x : undefined}
                 // y={data.user_preferences ? data.user_preferences.location_y : undefined}
