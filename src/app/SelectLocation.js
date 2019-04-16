@@ -28,9 +28,10 @@ class SelectLocation extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      addressText: undefined,
+      addressText: '',
       selectedAddress: undefined,
       addressCoords: props.x && props.y ? [props.x, props.y] : undefined,
+      addressPossibilities: null,
     }
     this.handleAddressSubmit = this.handleAddressSubmit.bind(this);
   }
@@ -75,7 +76,8 @@ class SelectLocation extends React.Component {
         if (result.length === 1) {
           this.setState({
             addressCoords: [result[0].center.lat, result[0].center.lng],
-            selectedAddress: this.state.addressText,
+            selectedAddress: result[0].name,
+            addressText: result[0].name,
             addressPossibilities: null,
           })
         }
@@ -97,10 +99,11 @@ class SelectLocation extends React.Component {
 
   render() {
     /*
-      TODO: as they type (debounce this):
-        * check simplicity for results and show dropdown
-        * if they select one or there is only one result, update preferences, SHOW THAT THEY WERE UPDATED
+      TODO:
+        * update preferences, SHOW THAT THEY WERE UPDATED
+        * make center default to 70 court plaza
         * if they unfocus and there are not valid coordinates, make next section tell them to select a valid address
+      TODO with simplicity-- check results and show dropdown?
     */
     console.log(this.state)
     return (<React.Fragment>
@@ -109,7 +112,7 @@ class SelectLocation extends React.Component {
         <input
           className="SelectLocation-input form-element"
           type="text"
-          defaultValue={this.state.selectedAddress}
+          value={this.state.addressText}
           onChange={(e) => this.handleAddressTyping(e.target.value)}
         />
         <button type="submit">Confirm Address</button>
