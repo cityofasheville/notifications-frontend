@@ -4,17 +4,40 @@ This is a file for global css, if needed for your app.
 
 html, body {
   overflow-x: hidden;
-  overflow-y: scroll;
 }
 
-main {
-  margin: 2vh 15vw;
+.text-green {
+  color: rgb(96, 116, 37);
 }
 
-.alert-danger {
-  color: red !important;
+.background-green {
+  background-color: rgb(96, 116, 37);
+}
+
+#content {
+  min-height: 60vh;
+  width: 70vw;
+  margin-left: 15vw;
+  margin-top: 2rem;
+  font-size: 1.15rem;
 }
 
 h1 {
-  /* color: red; */ /*Don't actually make this red... */
+  text-align: center;
+}
+
+/* For when login is not available */
+.alert-danger, .Navbar-nav li a.alert-danger {
+  color: #b30000;
+  cursor: text;
+}
+
+@media (max-width: 769px) {
+  #content {
+    min-height: 60vh;
+    width: 90vw;
+    margin-left: 5vw;
+    margin-top: 1rem;
+    font-size: 1.15em;
+  }
 }

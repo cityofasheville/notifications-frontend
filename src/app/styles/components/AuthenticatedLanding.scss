@@ -1,0 +1,15 @@
+#authenticated-landing > ul > li {
+  display: flex;
+}
+
+#authenticated-landing > ul > li .puck-container, .step-content {
+  display: inline-block;
+}
+
+#authenticated-landing > ul > li .puck-container {
+  padding: 0 1em;
+}
+
+.step-content {
+  width: 100%;
+}
