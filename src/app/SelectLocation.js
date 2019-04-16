@@ -70,8 +70,16 @@ class SelectLocation extends React.Component {
 
   handleAddressSubmit(e) {
     e.preventDefault();
+    // TODO: only add ashevile north carolina if index of those in the address text is -1
+    let searchText = this.state.addressText;
+    if (searchText.indexOf('Asheville') === -1) {
+      searchText += ' Asheville';
+    }
+    if (searchText.indexOf('North Carolina') === -1) {
+      searchText += ' North Carolina';
+    }
     getCoordsFromAddress(
-      `${this.state.addressText} Asheville North Carolina`,
+      searchText,
       (result) => {
         if (result.length === 1) {
           this.setState({
