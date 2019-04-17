@@ -27,10 +27,8 @@ class Categories extends React.Component {
       fetchPolicy="network-only"
     >
       { ({ loading, error, data }) => {
-        if (loading) return null;
+        if (loading) return <div>Loading...</div>;
         if (error) return <div className="alert-danger">Sorry, there was an error.</div>;
-
-        console.log(data);
 
         return (
           <div className="categories-list">
