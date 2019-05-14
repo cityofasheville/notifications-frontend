@@ -16,7 +16,9 @@ const CATEGORIES_QUERY = gql`
   }
 `;
 
-const CREATE_USER_PREFERENCES = gql`
+
+// TODO: also wrap map in same mutation? wrap entire 2 and 3 in mutation?
+const CREATE_USER_PREFERENCE = gql`
   mutation createUserPreference(
     $location_x: Float!,
     $location_y: Float!,
@@ -50,7 +52,7 @@ const radiusMilesOpts = [
   1,
   2,
   3,
-  'Whole City',
+  'whole city',
 ]
 
 class Categories extends React.Component {
@@ -75,9 +77,9 @@ class Categories extends React.Component {
                 <ul className="tags-list">
                   {cat.tags && cat.tags.map(tag => {
                     const userSub = this.props.userSubscriptions ? this.props.userSubscriptions.find(sub => sub.tag.id === tag.id) : undefined;
-                    let userPreference = 'Whole City';
+                    let userPreference = 'whole city';
                     if (userSub) {
-                      userPreference = userSub.whole_city ? 'Whole City' : userSub.radius_miles;
+                      userPreference = userSub.whole_city ? 'whole city' : userSub.radius_miles;
                     }
 
                     return (<li key={tag.id} className="tag-item">
@@ -89,7 +91,7 @@ class Categories extends React.Component {
                             key={`${opt}-opt`}
                             value={opt}
                           >
-                            {isNaN(opt) ? opt : `${opt} miles`}
+                            {isNaN(opt) ? opt : `${opt} mile${opt % 1 === 0 ? '' : 's'}`}
                           </option>
                         ))}
                       </select>
