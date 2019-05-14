@@ -14,7 +14,35 @@ const CATEGORIES_QUERY = gql`
       }
     }
   }
-`
+`;
+
+const CREATE_USER_PREFERENCES = gql`
+  mutation createUserPreference(
+    $location_x: Float!,
+    $location_y: Float!,
+    $send_types: [SendType],
+    $subscriptions: [Subscription],
+
+  ) {
+    user_preference(
+      location_x: $location_x,
+      location_y: $location_y,
+      send_types: $send_types,
+      subscriptions: $subscriptions,
+    ) {
+      location_x
+      location_y
+      send_types {
+        email
+      }
+      subscriptions {
+        tag_id
+        radius_miles
+        whole_city
+      }
+    }
+  }
+`;
 
 const radiusMilesOpts = [
   0.25,
