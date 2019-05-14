@@ -34,6 +34,8 @@ const AuthenticatedLanding = ({ userData }) => (
     {({ loading, error, data }) => {
       if (loading) return null;
       if (error) return <div className="alert-danger">Error :(</div>;
+
+      console.log(data)
       return (<div id="authenticated-landing" className="landing">
         <h1>
           Set notification preferences
@@ -69,7 +71,7 @@ const AuthenticatedLanding = ({ userData }) => (
             </div>
             <div className="step-content">
               <div className="list-item-title">Choose which notifications you want to get</div>
-              <Categories />
+              <Categories userSubscriptions={data.user_preferences ? data.userPreferences.subscriptions : null} />
             </div>
           </li>
         </ul>
