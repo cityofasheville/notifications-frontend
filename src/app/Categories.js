@@ -39,8 +39,6 @@ class Categories extends React.Component {
         if (loading) return <div>Loading...</div>;
         if (error) return <div className="alert-danger">Sorry, there was an error.</div>;
 
-        console.log(data.categories)
-
         return (
           <div className="categories-list">
             {data.categories.map(cat => (
@@ -57,11 +55,11 @@ class Categories extends React.Component {
                     return (<li key={tag.id} className="tag-item">
                       <input type="checkbox" name={tag.name} value={tag.id}/>
                       <span>{tag.name}</span>
-                      <select>
+                      <select defaultValue={userPreference}>
                         {radiusMilesOpts.map(opt => (
                           <option
-                            value="opt"
-                            selected={opt === userPreference}
+                            key={`${opt}-opt`}
+                            value={opt}
                           >
                             {isNaN(opt) ? opt : `${opt} miles`}
                           </option>
