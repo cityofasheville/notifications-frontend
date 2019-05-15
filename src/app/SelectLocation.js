@@ -1,8 +1,9 @@
 import React from 'react';
 import L from 'leaflet';
 import 'leaflet-control-geocoder';
-// import { Query } from 'react-apollo';
+import { Mutation } from 'react-apollo';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
+import { CREATE_USER_PREFERENCE } from 'app/mutations';
 import 'app/styles/components/SelectLocation.scss';
 
 const geocoder = L.Control.Geocoder.nominatim();
@@ -31,9 +32,11 @@ function getCoordsFromAddress(addressInputText, callback) {
 class SelectLocation extends React.Component {
   constructor(props) {
     super(props);
+
+    console.log('SelectLocation constructor')
     this.state = {
       // The coordinates of the selected address
-      addressCoords: props.x && props.y ? [props.x, props.y] : undefined,
+      addressCoords: [props.x, props.y],
       // The current text of the input box
       addressInputText: '',
       // The address after it is confirmed to exist
@@ -65,7 +68,7 @@ class SelectLocation extends React.Component {
     }
   }
 
-  updateCoordsFromMap(x, y) {
+  updateCoordsFromMap(x, y, createUserPreference) {
     /*
       If the user clicks the map, set the address coordinates
       TODO: only save address if it's in the city?
@@ -73,13 +76,17 @@ class SelectLocation extends React.Component {
     getAddressFromCoords(
       x,
       y,
-      (result) => this.setState({
-        addressCoords: [ x, y ],
-        selectedAddress: getAddressString(result),
-        addressInputText: getAddressString(result),
-        addressPossibilities: null,
-        addressOutsideCity: result[0].properties.address.city !== 'Asheville',
-      }))
+      (result) => {
+        this.setState({
+          addressCoords: [ x, y ],
+          selectedAddress: getAddressString(result),
+          addressInputText: getAddressString(result),
+          addressPossibilities: null,
+          addressOutsideCity: result[0].properties.address.city !== 'Asheville',
+        });
+        createUserPreference();
+      }
+    )
   }
 
   handleAddressTyping(inputText) {
@@ -90,7 +97,7 @@ class SelectLocation extends React.Component {
     })
   }
 
-  handleAddressSubmit(e) {
+  handleAddressSubmit(e, createUserPreference) {
     /*
       If someone clicks the button to confirm the address, check to see if it's a valid address
     */
@@ -108,6 +115,7 @@ class SelectLocation extends React.Component {
     getCoordsFromAddress(
       searchText,
       (result) => {
+        // If there's only one result
         if (result.length === 1) {
           this.setState({
             addressCoords: [result[0].center.lat, result[0].center.lng],
@@ -116,6 +124,7 @@ class SelectLocation extends React.Component {
             addressPossibilities: result,
             addressOutsideCity: result[0].properties.address.city !== 'Asheville',
           })
+          createUserPreference();
         }
         else {
           this.setState({ addressPossibilities: result, addressOutsideCity: false })
@@ -139,6 +148,9 @@ class SelectLocation extends React.Component {
   }
 
   render() {
+
+    console.log('SelectLocation render')
+
     /*
       TODO:
         * update preferences, SHOW THAT THEY WERE UPDATED
@@ -154,9 +166,23 @@ class SelectLocation extends React.Component {
     } else if (this.state.addressOutsideCity) {
       errorMessage = 'That location is not in Asheville. This application only sends alerts concerning developments within Asheville city limits. Please select a different address.';
     }
-
-    return (<React.Fragment>
-      <form onSubmit={this.handleAddressSubmit}>
+    // TODO: USE EXISTING SEND TYPES AS GRABBED FROM PROPS
+    return (<Mutation
+      mutation={CREATE_USER_PREFERENCE}
+      variables={{
+        user_preference: {
+          location_x: this.state.addressCoords[0],
+          location_y: this.state.addressCoords[1],
+          send_types: [{
+            type: 'EMAIL',
+            email: 'mmazanec@ashevillenc.gov',
+          }],
+          subscriptions: []
+        }
+      }}
+    >
+      {createUserPreference => <React.Fragment>
+      <form onSubmit={(e) => this.handleAddressSubmit(e, createUserPreference)}>
         <div className="form-element label-input-assembly">
           <label className="SelectLocation-label">Address</label>
           <input
@@ -191,7 +217,7 @@ class SelectLocation extends React.Component {
         <Map
           center={this.state.addressCoords}
           zoom={14}
-          onClick={e => this.updateCoordsFromMap(e.latlng.lat, e.latlng.lng)}
+          onClick={e => this.updateCoordsFromMap(e.latlng.lat, e.latlng.lng, createUserPreference)}
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -202,9 +228,15 @@ class SelectLocation extends React.Component {
           </Marker>
         </Map>
       </div>
-    </React.Fragment>)
+    </React.Fragment>}
+    </Mutation>)
   }
 
 }
+
+SelectLocation.defaultProps = {
+  x: 35.595385,
+  y: -82.548808,
+};
 
 export default SelectLocation;

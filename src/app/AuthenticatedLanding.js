@@ -34,8 +34,7 @@ const AuthenticatedLanding = ({ userData }) => (
     {({ loading, error, data }) => {
       if (loading) return null;
       if (error) return <div className="alert-danger">Error :(</div>;
-
-      console.log(data)
+      console.log('auth landing render', userData, data)
       return (<div id="authenticated-landing" className="landing">
         <h1>
           Set notification preferences
@@ -58,10 +57,8 @@ const AuthenticatedLanding = ({ userData }) => (
               <div className="list-item-title">Choose a location</div>
               <p>Click on the map or type to choose any address in the City of Asheville-- work, home, or somewhere else.</p>
               <SelectLocation
-                // x={data.user_preferences ? data.user_preferences.location_x : undefined}
-                // y={data.user_preferences ? data.user_preferences.location_y : undefined}
-                x={35.619466}
-                y={-82.556432}
+                x={data.user_preferences ? data.user_preferences.location_x : undefined}
+                y={data.user_preferences ? data.user_preferences.location_y : undefined}
               />
             </div>
           </li>
