@@ -226,7 +226,7 @@ class SelectLocation extends React.Component {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
           />
-          <Marker position={[ this.state.addressCoords.lat, this,state.addressCoords.lon ]}>
+          <Marker position={[ this.state.addressCoords.lat, this.state.addressCoords.lon ]}>
             <Popup>{this.state.selectedAddress}</Popup>
           </Marker>
         </Map>

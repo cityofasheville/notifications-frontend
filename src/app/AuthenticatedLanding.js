@@ -31,7 +31,7 @@ const AuthenticatedLanding = ({ userData }) => (
   >
     {({ loading, error, data }) => {
       console.log('auth landing render', userData, data)
-      if (loading) return null;
+      if (loading) return <div>Loading...</div>;
       if (error) return <div className="alert-danger">Error :(</div>;
       return (<div id="authenticated-landing" className="landing">
         <h1>
