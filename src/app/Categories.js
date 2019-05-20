@@ -51,7 +51,8 @@ class Categories extends React.Component {
                   {data.categories.length > 1 && <div className="category-title">Category: {cat.name}</div>}
                   <ul className="tags-list">
                     {cat.tags && cat.tags.map(tag => {
-                      const userSub = this.props.userSubscriptions ? this.props.userSubscriptions.find(sub => sub.tag.id === tag.id) : undefined;
+                      // const userSub = this.props.userSubscriptions ? this.props.userSubscriptions.find(sub => sub.tag.id === tag.id) : undefined;
+                      const userSub = undefined;
                       let userPreference = 'whole city';
                       if (userSub) {
                         userPreference = userSub.whole_city ? 'whole city' : userSub.radius_miles;

@@ -9,16 +9,13 @@ import SelectLocation from 'app/SelectLocation';
 import 'app/styles/components/AuthenticatedLanding.scss';
 
 const GET_USER_PREFERENCES = gql`
-  query getUserPreferences {
-    user_preferences {
+  query getUserPreference($email: String!) {
+    user_preference(email: $email) {
       id
       location_x
       location_y
       subscriptions {
         id
-        tag {
-          id
-        }
         radius_miles
         whole_city
       }
@@ -29,12 +26,13 @@ const GET_USER_PREFERENCES = gql`
 const AuthenticatedLanding = ({ userData }) => (
   <Query
     query={GET_USER_PREFERENCES}
+    variables={{ email: userData.user.email }}
     fetchPolicy="network-only"
   >
     {({ loading, error, data }) => {
+      console.log('auth landing render', userData, data)
       if (loading) return null;
       if (error) return <div className="alert-danger">Error :(</div>;
-      console.log('auth landing render', userData, data)
       return (<div id="authenticated-landing" className="landing">
         <h1>
           Set notification preferences
@@ -57,8 +55,8 @@ const AuthenticatedLanding = ({ userData }) => (
               <div className="list-item-title">Choose a location</div>
               <p>Click on the map or type to choose any address in the City of Asheville-- work, home, or somewhere else.</p>
               <SelectLocation
-                x={data.user_preferences ? data.user_preferences.location_x : undefined}
-                y={data.user_preferences ? data.user_preferences.location_y : undefined}
+                x={data.user_preference ? data.user_preference.location_x : undefined}
+                y={data.user_preference ? data.user_preference.location_y : undefined}
               />
             </div>
           </li>
@@ -68,7 +66,7 @@ const AuthenticatedLanding = ({ userData }) => (
             </div>
             <div className="step-content">
               <div className="list-item-title">Choose which notifications you want to get</div>
-              <Categories userSubscriptions={data.user_preferences ? data.userPreferences.subscriptions : null} />
+              <Categories userSubscriptions={data && data.user_preference ? data.user_preference.subscriptions : null} />
             </div>
           </li>
         </ul>

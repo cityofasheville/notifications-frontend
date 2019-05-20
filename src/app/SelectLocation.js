@@ -17,8 +17,8 @@ function getAddressString(reverseGeocodeResults) {
   ].join(' ').trim();
 }
 
-function getAddressFromCoords(x, y, callback) {
-  geocoder.reverse(L.latLng(x, y), 1, function(result) {
+function getAddressFromCoords(lat, lon, callback) {
+  geocoder.reverse(L.latLng(lat, lon), 1, function(result) {
     callback(result);
   });
 }
@@ -36,7 +36,10 @@ class SelectLocation extends React.Component {
     console.log('SelectLocation constructor')
     this.state = {
       // The coordinates of the selected address
-      addressCoords: [props.x, props.y],
+      addressCoords: {
+        lat: props.y,
+        lon: props.x,
+      },
       // The current text of the input box
       addressInputText: '',
       // The address after it is confirmed to exist
@@ -56,8 +59,8 @@ class SelectLocation extends React.Component {
     */
     if (this.state.addressCoords) {
       getAddressFromCoords(
-        this.state.addressCoords[0],
-        this.state.addressCoords[1],
+        this.state.addressCoords.lat,
+        this.state.addressCoords.lon,
         (result) =>
           this.setState({
             selectedAddress: getAddressString(result),
@@ -68,17 +71,17 @@ class SelectLocation extends React.Component {
     }
   }
 
-  updateCoordsFromMap(x, y, createUserPreference) {
+  updateCoordsFromMap(lat, lon, createUserPreference) {
     /*
       If the user clicks the map, set the address coordinates
       TODO: only save address if it's in the city?
     */
     getAddressFromCoords(
-      x,
-      y,
+      lat,
+      lon,
       (result) => {
         this.setState({
-          addressCoords: [ x, y ],
+          addressCoords: { lat, lon },
           selectedAddress: getAddressString(result),
           addressInputText: getAddressString(result),
           addressPossibilities: null,
@@ -118,7 +121,7 @@ class SelectLocation extends React.Component {
         // If there's only one result
         if (result.length === 1) {
           this.setState({
-            addressCoords: [result[0].center.lat, result[0].center.lng],
+            addressCoords: { lat: result[0].center.lat, lon: result[0].center.lng },
             selectedAddress: getAddressString(result),
             addressInputText: getAddressString(result),
             addressPossibilities: result,
@@ -135,7 +138,7 @@ class SelectLocation extends React.Component {
 
   handlePossibilityClick(possibility) {
     this.setState({
-      addressCoords: [possibility.center.lat, possibility.center.lng],
+      addressCoords: { lat: possibility.center.lat, lon: possibility.center.lng },
       selectedAddress: getAddressString([possibility]),
       addressInputText: getAddressString([possibility]),
       addressPossibilities: [possibility],
@@ -149,7 +152,7 @@ class SelectLocation extends React.Component {
 
   render() {
 
-    console.log('SelectLocation render')
+    console.log(this.state, 'SelectLocation render')
 
     /*
       TODO:
@@ -171,8 +174,8 @@ class SelectLocation extends React.Component {
       mutation={CREATE_USER_PREFERENCE}
       variables={{
         user_preference: {
-          location_x: this.state.addressCoords[0],
-          location_y: this.state.addressCoords[1],
+          location_y: this.state.addressCoords.lat,
+          location_x: this.state.addressCoords.lon,
           send_types: [{
             type: 'EMAIL',
             email: 'mmazanec@ashevillenc.gov',
@@ -215,7 +218,7 @@ class SelectLocation extends React.Component {
       }
       <div>
         <Map
-          center={this.state.addressCoords}
+          center={[ this.state.addressCoords.lat, this.state.addressCoords.lon ]}
           zoom={14}
           onClick={e => this.updateCoordsFromMap(e.latlng.lat, e.latlng.lng, createUserPreference)}
         >
@@ -223,7 +226,7 @@ class SelectLocation extends React.Component {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
           />
-          <Marker position={this.state.addressCoords}>
+          <Marker position={[ this.state.addressCoords.lat, this,state.addressCoords.lon ]}>
             <Popup>{this.state.selectedAddress}</Popup>
           </Marker>
         </Map>
