@@ -19,7 +19,7 @@ function getAddressString(reverseGeocodeResults) {
 
 function getAddressFromCoords(lat, lon, callback) {
   geocoder.reverse(L.latLng(lat, lon), 1, function(result) {
-    console.log(lat, lon, callback)
+    console.log('getAddressFromCoords', 'lat', lat, 'lon', lon, callback)
     callback(result);
   });
 }
@@ -34,7 +34,6 @@ class SelectLocation extends React.Component {
   constructor(props) {
     super(props);
 
-    console.log('SelectLocation constructor')
     this.state = {
       // The coordinates of the selected address
       addressCoords: {
@@ -63,7 +62,6 @@ class SelectLocation extends React.Component {
         this.state.addressCoords.lat,
         this.state.addressCoords.lon,
         (result) => {
-          console.log(result)
           this.setState({
             selectedAddress: getAddressString(result),
             addressInputText: getAddressString(result),
@@ -79,6 +77,7 @@ class SelectLocation extends React.Component {
       If the user clicks the map, set the address coordinates
       TODO: only save address if it's in the city?
     */
+    console.log('updateCoordsFromMap')
     getAddressFromCoords(
       lat,
       lon,
@@ -122,6 +121,7 @@ class SelectLocation extends React.Component {
       searchText,
       (result) => {
         // If there's only one result
+        console.log(result)
         if (result.length === 1) {
           this.setState({
             addressCoords: { lat: result[0].center.lat, lon: result[0].center.lng },
@@ -130,6 +130,7 @@ class SelectLocation extends React.Component {
             addressPossibilities: result,
             addressOutsideCity: result[0].properties.address.city !== 'Asheville',
           })
+          console.log(this.state)
           createUserPreference();
         }
         else {
@@ -154,9 +155,6 @@ class SelectLocation extends React.Component {
   }
 
   render() {
-
-    console.log(this.state, 'SelectLocation render')
-
     /*
       TODO:
         * update preferences, SHOW THAT THEY WERE UPDATED
