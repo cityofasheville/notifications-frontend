@@ -44,6 +44,8 @@ class Categories extends React.Component {
         if (loading) return <div>Loading...</div>;
         if (error) return <div className="alert-danger">Sorry, there was an error.</div>;
           // <Mutation mutation={CREATE_USER_PREFERENCE} variables={{ location_x, location_y, send_types, subscriptions }}>
+          // USE EXISTING LOCATION AND OTHER SEND TYPES AS GRABBED FROM PROPS
+        console.log(this.props)
         return (
             <div className="categories-list">
               {data.categories.map(cat => (

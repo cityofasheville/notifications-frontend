@@ -66,7 +66,7 @@ const AuthenticatedLanding = ({ userData }) => (
               </div>
               <div className="step-content">
                 <div className="list-item-title">Choose which notifications you want to get</div>
-                <Categories userSubscriptions={data && data.user_preference ? data.user_preference.subscriptions : null} />
+                <Categories userPreferences={data && data.user_preference ? data.user_preference : undefined} />
               </div>
             </li>
           </ul>
