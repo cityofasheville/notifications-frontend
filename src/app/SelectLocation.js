@@ -19,7 +19,6 @@ function getAddressString(reverseGeocodeResults) {
 
 function getAddressFromCoords(lat, lon, callback) {
   geocoder.reverse(L.latLng(lat, lon), 1, function(result) {
-    console.log('getAddressFromCoords', 'lat', lat, 'lon', lon, callback)
     callback(result);
   });
 }
@@ -77,7 +76,6 @@ class SelectLocation extends React.Component {
       If the user clicks the map, set the address coordinates
       TODO: only save address if it's in the city?
     */
-    console.log('updateCoordsFromMap')
     getAddressFromCoords(
       lat,
       lon,
@@ -121,7 +119,6 @@ class SelectLocation extends React.Component {
       searchText,
       (result) => {
         // If there's only one result
-        console.log(result)
         if (result.length === 1) {
           this.setState({
             addressCoords: { lat: result[0].center.lat, lon: result[0].center.lng },
@@ -130,7 +127,6 @@ class SelectLocation extends React.Component {
             addressPossibilities: result,
             addressOutsideCity: result[0].properties.address.city !== 'Asheville',
           })
-          console.log(this.state)
           createUserPreference();
         }
         else {
