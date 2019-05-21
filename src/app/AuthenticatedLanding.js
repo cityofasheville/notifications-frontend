@@ -30,48 +30,50 @@ const AuthenticatedLanding = ({ userData }) => (
     fetchPolicy="network-only"
   >
     {({ loading, error, data }) => {
-      console.log('auth landing render', userData, data)
       if (loading) return <div>Loading...</div>;
       if (error) return <div className="alert-danger">Error :(</div>;
-      return (<div id="authenticated-landing" className="landing">
-        <h1>
-          Set notification preferences
-        </h1>
-        <ul>
-          <li>
-            <div className="puck-container">
-              <TextPuck text="1" />
-            </div>
-            <div className="step-content">
-              <div className="list-item-title">Confirm email</div>
-              <p>You are logged in as {userData.user.email}.  <a href={config.logoutURL}>Not you?</a></p>
-            </div>
-          </li>
-          <li>
-            <div className="puck-container">
-              <TextPuck text="2" />
-            </div>
-            <div className="step-content">
-              <div className="list-item-title">Choose a location</div>
-              <p>Click on the map or type to choose any address in the City of Asheville-- work, home, or somewhere else.</p>
-              <SelectLocation
-                x={data.user_preference ? data.user_preference.location_x : undefined}
-                y={data.user_preference ? data.user_preference.location_y : undefined}
-              />
-            </div>
-          </li>
-          <li>
-            <div className="puck-container">
-              <TextPuck text="3" />
-            </div>
-            <div className="step-content">
-              <div className="list-item-title">Choose which notifications you want to get</div>
-              <Categories userSubscriptions={data && data.user_preference ? data.user_preference.subscriptions : null} />
-            </div>
-          </li>
-        </ul>
-        <NoEmergencyAlertsNotice />
-      </div>);
+      console.log(data)
+      return (
+        <div id="authenticated-landing" className="landing">
+          <h1>
+            Set notification preferences
+          </h1>
+          <ul>
+            <li>
+              <div className="puck-container">
+                <TextPuck text="1" />
+              </div>
+              <div className="step-content">
+                <div className="list-item-title">Confirm email</div>
+                <p>You are logged in as {userData.user.email}.  <a href={config.logoutURL}>Not you?</a></p>
+              </div>
+            </li>
+            <li>
+              <div className="puck-container">
+                <TextPuck text="2" />
+              </div>
+              <div className="step-content">
+                <div className="list-item-title">Choose a location</div>
+                <p>Click on the map or type to choose any address in the City of Asheville-- work, home, or somewhere else.</p>
+                <SelectLocation
+                  x={data.user_preference ? data.user_preference.location_x : undefined}
+                  y={data.user_preference ? data.user_preference.location_y : undefined}
+                />
+              </div>
+            </li>
+            <li>
+              <div className="puck-container">
+                <TextPuck text="3" />
+              </div>
+              <div className="step-content">
+                <div className="list-item-title">Choose which notifications you want to get</div>
+                <Categories userSubscriptions={data && data.user_preference ? data.user_preference.subscriptions : null} />
+              </div>
+            </li>
+          </ul>
+          <NoEmergencyAlertsNotice />
+        </div>
+      );
     }}
   </Query>
 );

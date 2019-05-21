@@ -19,6 +19,7 @@ function getAddressString(reverseGeocodeResults) {
 
 function getAddressFromCoords(lat, lon, callback) {
   geocoder.reverse(L.latLng(lat, lon), 1, function(result) {
+    console.log(lat, lon, callback)
     callback(result);
   });
 }
@@ -61,12 +62,14 @@ class SelectLocation extends React.Component {
       getAddressFromCoords(
         this.state.addressCoords.lat,
         this.state.addressCoords.lon,
-        (result) =>
+        (result) => {
+          console.log(result)
           this.setState({
             selectedAddress: getAddressString(result),
             addressInputText: getAddressString(result),
             addressOutsideCity: result[0].properties.address.city !== 'Asheville',
-          })
+          });
+        }
       )
     }
   }
@@ -170,76 +173,83 @@ class SelectLocation extends React.Component {
       errorMessage = 'That location is not in Asheville. This application only sends alerts concerning developments within Asheville city limits. Please select a different address.';
     }
     // TODO: USE EXISTING SEND TYPES AS GRABBED FROM PROPS
-    return (<Mutation
-      mutation={CREATE_USER_PREFERENCE}
-      variables={{
-        user_preference: {
-          location_y: this.state.addressCoords.lat,
-          location_x: this.state.addressCoords.lon,
-          send_types: [{
-            type: 'EMAIL',
-            email: 'mmazanec@ashevillenc.gov',
-          }],
-          subscriptions: []
-        }
-      }}
-    >
-      {createUserPreference => <React.Fragment>
-      <form onSubmit={(e) => this.handleAddressSubmit(e, createUserPreference)}>
-        <div className="form-element label-input-assembly">
-          <label className="SelectLocation-label">Address</label>
-          <input
-            className="SelectLocation-input"
-            type="text"
-            value={this.state.addressInputText}
-            onChange={(e) => this.handleAddressTyping(e.target.value)}
-            onFocus={this.handleFocus}
-          />
-        </div>
-        <div className="form-element submit-button">
-          <button type="submit">Confirm Address</button>
-        </div>
-      </form>
-      {errorMessage &&
-        <div className="alert-danger address-message">{errorMessage}</div>
-      }
-      {this.state.addressPossibilities && this.state.addressPossibilities.length > 1 &&
-        <div className="address-message">
-          <span>Did you mean one of these?</span>
-          {this.state.addressPossibilities.length > 0 && this.state.addressPossibilities.map(possibility => {
-            return (<button
-              key={possibility.properties.place_id}
-              onClick={() => this.handlePossibilityClick(possibility)}
-            >
-              {getAddressString([possibility])}
-            </button>)
-          })}
-        </div>
-      }
-      <div>
-        <Map
-          center={[ this.state.addressCoords.lat, this.state.addressCoords.lon ]}
-          zoom={14}
-          onClick={e => this.updateCoordsFromMap(e.latlng.lat, e.latlng.lng, createUserPreference)}
-        >
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-          />
-          <Marker position={[ this.state.addressCoords.lat, this.state.addressCoords.lon ]}>
-            <Popup>{this.state.selectedAddress}</Popup>
-          </Marker>
-        </Map>
-      </div>
-    </React.Fragment>}
-    </Mutation>)
+    return (
+      <Mutation
+        mutation={CREATE_USER_PREFERENCE}
+        variables={{
+          user_preference: {
+            location_y: this.state.addressCoords.lat,
+            location_x: this.state.addressCoords.lon,
+            send_types: [{
+              type: 'EMAIL',
+              email: 'mmazanec@ashevillenc.gov',
+            }],
+            subscriptions: []
+          }
+        }}
+      >
+        {createUserPreference => (
+          <React.Fragment>
+            <form onSubmit={e => this.handleAddressSubmit(e, createUserPreference)}>
+              <div className="form-element label-input-assembly">
+                <label className="SelectLocation-label">Address</label>
+                <input
+                  className="SelectLocation-input"
+                  type="text"
+                  value={this.state.addressInputText}
+                  onChange={e => this.handleAddressTyping(e.target.value)}
+                  onFocus={this.handleFocus}
+                />
+              </div>
+              <div className="form-element submit-button">
+                <button type="submit">Confirm Address</button>
+              </div>
+            </form>
+            {errorMessage &&
+              <div className="alert-danger address-message">{errorMessage}</div>
+            }
+            {this.state.addressPossibilities && this.state.addressPossibilities.length > 1 && (
+              <div className="address-message">
+                <span>Did you mean one of these?</span>
+                {this.state.addressPossibilities.length > 0 && this.state.addressPossibilities.map((possibility) => {
+                  return (
+                    <button
+                      key={possibility.properties.place_id}
+                      onClick={() => this.handlePossibilityClick(possibility)}
+                      type="submit"
+                    >
+                      {getAddressString([possibility])}
+                    </button>
+                  )
+                })}
+              </div>
+            )}
+            <div>
+              <Map
+                center={[ this.state.addressCoords.lat, this.state.addressCoords.lon ]}
+                zoom={14}
+                onClick={e =>
+                  this.updateCoordsFromMap(e.latlng.lat, e.latlng.lng, createUserPreference)}
+              >
+                <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+                />
+                <Marker position={[ this.state.addressCoords.lat, this.state.addressCoords.lon ]}>
+                  <Popup>{this.state.selectedAddress}</Popup>
+                </Marker>
+              </Map>
+            </div>
+          </React.Fragment>
+        )}
+      </Mutation>
+    );
   }
-
 }
 
 SelectLocation.defaultProps = {
-  x: 35.595385,
-  y: -82.548808,
+  y: 35.595385,
+  x: -82.548808,
 };
 
 export default SelectLocation;
