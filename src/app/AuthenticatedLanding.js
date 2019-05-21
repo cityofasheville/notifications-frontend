@@ -1,33 +1,18 @@
 import React from 'react';
-import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import config from 'app/config';
 import NoEmergencyAlertsNotice from 'app/NoEmergencyAlertsNotice';
 import TextPuck from 'app/TextPuck';
 import Categories from 'app/Categories';
 import SelectLocation from 'app/SelectLocation';
+import { GET_USER_PREFERENCES } from 'app/queries';
 import 'app/styles/components/AuthenticatedLanding.scss';
-
-const GET_USER_PREFERENCES = gql`
-  query getUserPreference($email: String!) {
-    user_preference(email: $email) {
-      id
-      location_x
-      location_y
-      subscriptions {
-        id
-        radius_miles
-        whole_city
-      }
-    }
-  }
-`;
 
 const AuthenticatedLanding = ({ userData }) => (
   <Query
     query={GET_USER_PREFERENCES}
     variables={{ email: userData.user.email }}
-    fetchPolicy="network-only"
+    fetchPolicy="cache-and-network"
   >
     {({ loading, error, data }) => {
       if (loading) return <div>Loading...</div>;
@@ -55,8 +40,7 @@ const AuthenticatedLanding = ({ userData }) => (
                 <div className="list-item-title">Choose a location</div>
                 <p>Click on the map or type to choose any address in the City of Asheville-- work, home, or somewhere else.</p>
                 <SelectLocation
-                  x={data.user_preference ? data.user_preference.location_x : undefined}
-                  y={data.user_preference ? data.user_preference.location_y : undefined}
+                  userPreference={data && data.user_preference ? data.user_preference : undefined}
                 />
               </div>
             </li>
@@ -66,7 +50,7 @@ const AuthenticatedLanding = ({ userData }) => (
               </div>
               <div className="step-content">
                 <div className="list-item-title">Choose which notifications you want to get</div>
-                <Categories userPreferences={data && data.user_preference ? data.user_preference : undefined} />
+                <Categories userPreference={data && data.user_preference ? data.user_preference : undefined} />
               </div>
             </li>
           </ul>
@@ -76,5 +60,6 @@ const AuthenticatedLanding = ({ userData }) => (
     }}
   </Query>
 );
+
 
 export default AuthenticatedLanding;

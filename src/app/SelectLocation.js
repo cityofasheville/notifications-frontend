@@ -4,6 +4,8 @@ import 'leaflet-control-geocoder';
 import { Mutation } from 'react-apollo';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import { CREATE_USER_PREFERENCE } from 'app/mutations';
+import { GET_USER_PREFERENCES } from 'app/queries';
+import { omitTypeName } from 'app/utils';
 import 'app/styles/components/SelectLocation.scss';
 
 const geocoder = L.Control.Geocoder.nominatim();
@@ -33,12 +35,21 @@ class SelectLocation extends React.Component {
   constructor(props) {
     super(props);
 
+    let addressCoords = {
+      lat: 35.595385,
+      lon: -82.548808,
+    }
+
+    if (props.userPreference && props.userPreference.location_y) {
+      addressCoords = {
+        lat: props.userPreference.location_y,
+        lon: props.userPreference.location_x,
+      }
+    }
+
     this.state = {
       // The coordinates of the selected address
-      addressCoords: {
-        lat: props.y,
-        lon: props.x,
-      },
+      addressCoords,
       // The current text of the input box
       addressInputText: '',
       // The address after it is confirmed to exist
@@ -136,7 +147,7 @@ class SelectLocation extends React.Component {
     )
   }
 
-  handlePossibilityClick(possibility) {
+  handlePossibilityClick(possibility, createUserPreference) {
     this.setState({
       addressCoords: { lat: possibility.center.lat, lon: possibility.center.lng },
       selectedAddress: getAddressString([possibility]),
@@ -144,6 +155,7 @@ class SelectLocation extends React.Component {
       addressPossibilities: [possibility],
       addressOutsideCity: possibility.properties.address.city !== 'Asheville',
     })
+    createUserPreference();
   }
 
   handleFocus(e) {
@@ -166,7 +178,6 @@ class SelectLocation extends React.Component {
     } else if (this.state.addressOutsideCity) {
       errorMessage = 'That location is not in Asheville. This application only sends alerts concerning developments within Asheville city limits. Please select a different address.';
     }
-    // TODO: USE EXISTING SEND TYPES AS GRABBED FROM PROPS
     return (
       <Mutation
         mutation={CREATE_USER_PREFERENCE}
@@ -174,13 +185,16 @@ class SelectLocation extends React.Component {
           user_preference: {
             location_y: this.state.addressCoords.lat,
             location_x: this.state.addressCoords.lon,
-            send_types: [{
-              type: 'EMAIL',
-              email: 'mmazanec@ashevillenc.gov',
-            }],
-            subscriptions: []
-          }
+            send_types: omitTypeName(this.props.userPreference.send_types),
+            subscriptions: omitTypeName(this.props.userPreference.subscriptions || []),
+          },
         }}
+        refetchQueries={[
+          {
+            query: GET_USER_PREFERENCES,
+            variables: { email: this.props.userPreference.send_types.find(typeObj => typeObj.type === 'EMAIL').email },
+          },
+        ]}
       >
         {createUserPreference => (
           <React.Fragment>
@@ -209,7 +223,7 @@ class SelectLocation extends React.Component {
                   return (
                     <button
                       key={possibility.properties.place_id}
-                      onClick={() => this.handlePossibilityClick(possibility)}
+                      onClick={() => this.handlePossibilityClick(possibility, createUserPreference)}
                       type="submit"
                     >
                       {getAddressString([possibility])}
@@ -240,10 +254,5 @@ class SelectLocation extends React.Component {
     );
   }
 }
-
-SelectLocation.defaultProps = {
-  y: 35.595385,
-  x: -82.548808,
-};
 
 export default SelectLocation;
