@@ -5,7 +5,7 @@ import UnauthenticatedLanding from 'app/UnauthenticatedLanding';
 import AuthenticatedLanding from 'app/AuthenticatedLanding';
 import 'app/styles/components/Home.scss';
 
-const Home = () => {
+const Home = ({ history }) => {
   let loggedIn = localStorage.getItem('loggedIn') === 'true';
   return (
     <Query
@@ -15,10 +15,13 @@ const Home = () => {
       {({ loading, error, data }) => {
         if (loading) return null;
         if (error) return <div className="alert-danger">Login Unavailable</div>;
-        // TODO: REDIRECT? MAKE IT SO THAT IT DOESN'T SAY "LOG OUT" IN CORNER
         loggedIn = loggedIn && data.user.email;
-        if (loggedIn) {
+        if (loggedIn && data.user.email) {
           return <AuthenticatedLanding userData={data} />;
+        } else if (loggedIn) {
+          // Solve issue that is maybe only caused by server restarting?
+          localStorage.setItem('loggedIn', false);
+          history.push('/');
         }
         return <UnauthenticatedLanding />;
       }}
