@@ -35,11 +35,13 @@ class SelectLocation extends React.Component {
   constructor(props) {
     super(props);
 
+    // Default to city hall, which is roughly the center of town
     let addressCoords = {
       lat: 35.595385,
       lon: -82.548808,
     }
 
+    // If the user already has a location, use that instead
     if (props.userPreference && props.userPreference.location_y) {
       addressCoords = {
         lat: props.userPreference.location_y,
@@ -65,27 +67,27 @@ class SelectLocation extends React.Component {
 
   componentWillMount() {
     /*
-      If there are coordinates supplied as props, get the address to display
+      Get the address text to display
+      TODO: handle errors
     */
-    if (this.state.addressCoords) {
-      getAddressFromCoords(
-        this.state.addressCoords.lat,
-        this.state.addressCoords.lon,
-        (result) => {
-          this.setState({
-            selectedAddress: getAddressString(result),
-            addressInputText: getAddressString(result),
-            addressOutsideCity: result[0].properties.address.city !== 'Asheville',
-          });
-        }
-      )
-    }
+    getAddressFromCoords(
+      this.state.addressCoords.lat,
+      this.state.addressCoords.lon,
+      (result) => {
+        this.setState({
+          selectedAddress: getAddressString(result),
+          addressInputText: getAddressString(result),
+          addressOutsideCity: result[0].properties.address.city !== 'Asheville',
+        });
+      }
+    )
   }
 
   updateCoordsFromMap(lat, lon, createUserPreference) {
     /*
       If the user clicks the map, set the address coordinates
       TODO: only save address if it's in the city?
+      TODO: handle errors (see component will mount also)
     */
     getAddressFromCoords(
       lat,
@@ -107,6 +109,7 @@ class SelectLocation extends React.Component {
     // Update the state as the user types in the input box
     this.setState({
       addressInputText: inputText,
+      // Set this to false to make error message go away while user is typing something new
       addressOutsideCity: false,
     })
   }
@@ -114,6 +117,7 @@ class SelectLocation extends React.Component {
   handleAddressSubmit(e, createUserPreference) {
     /*
       If someone clicks the button to confirm the address, check to see if it's a valid address
+      TODO: handle errors
     */
     e.preventDefault(); // Do not refresh the page
     let searchText = this.state.addressInputText;
@@ -148,6 +152,7 @@ class SelectLocation extends React.Component {
   }
 
   handlePossibilityClick(possibility, createUserPreference) {
+    // If there was more than one possible address, handle the user selection between those
     this.setState({
       addressCoords: { lat: possibility.center.lat, lon: possibility.center.lng },
       selectedAddress: getAddressString([possibility]),
@@ -159,6 +164,7 @@ class SelectLocation extends React.Component {
   }
 
   handleFocus(e) {
+    // Select the text in the input box so that new typing will erase it
     e.target.select();
   }
 
@@ -166,10 +172,8 @@ class SelectLocation extends React.Component {
     /*
       TODO:
         * update preferences, SHOW THAT THEY WERE UPDATED
-        * make center default to 70 court plaza
         * if they unfocus and there are not valid coordinates, make next section tell them to select a valid address
         * reject map clicks outside of asheville-- different city value?  no city value? - give bounding box?
-      TODO with simplicity-- check results and show dropdown?
     */
     let errorMessage = null;
     if (this.state.addressPossibilities && this.state.addressPossibilities.length < 1) {
@@ -184,8 +188,8 @@ class SelectLocation extends React.Component {
           user_preference: {
             location_y: this.state.addressCoords.lat,
             location_x: this.state.addressCoords.lon,
-            send_types: this.props.userPreference ? omitTypeName(this.props.userPreference.send_types) : undefined,
-            subscriptions: this.props.userPreference ? omitTypeName(this.props.userPreference.subscriptions || []) : undefined,
+            send_types: this.props.userPreference ? omitTypeName(this.props.userPreference.send_types) : null,
+            subscriptions: this.props.userPreference ? omitTypeName(this.props.userPreference.subscriptions || []) : null,
           },
         }}
         refetchQueries={[
