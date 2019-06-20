@@ -40,11 +40,12 @@ const AuthenticatedLanding = ({ userData }) => (
                 <div className="list-item-title">Choose a location</div>
                 <p>Click on the map or type to choose any address in the City of Asheville-- work, home, or somewhere else.</p>
                 <SelectLocation
+                  // TODO: SHOULD THIS JUST BE DATA.USERPREF BECAUSE IT WILL BE UNDEFINED ANYWAY?
                   userPreference={data && data.user_preference ? data.user_preference : undefined}
                 />
               </div>
             </li>
-            <li>
+            {/*<li>
               <div className="puck-container">
                 <TextPuck text="3" />
               </div>
@@ -52,7 +53,7 @@ const AuthenticatedLanding = ({ userData }) => (
                 <div className="list-item-title">Choose which notifications you want to get</div>
                 <Categories userPreference={data && data.user_preference ? data.user_preference : undefined} />
               </div>
-            </li>
+            </li>*/}
           </ul>
           <NoEmergencyAlertsNotice />
         </div>

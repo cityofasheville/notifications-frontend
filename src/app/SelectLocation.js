@@ -171,7 +171,6 @@ class SelectLocation extends React.Component {
         * reject map clicks outside of asheville-- different city value?  no city value? - give bounding box?
       TODO with simplicity-- check results and show dropdown?
     */
-
     let errorMessage = null;
     if (this.state.addressPossibilities && this.state.addressPossibilities.length < 1) {
       errorMessage = 'No results found. Please try another address.';
@@ -185,14 +184,16 @@ class SelectLocation extends React.Component {
           user_preference: {
             location_y: this.state.addressCoords.lat,
             location_x: this.state.addressCoords.lon,
-            send_types: omitTypeName(this.props.userPreference.send_types),
-            subscriptions: omitTypeName(this.props.userPreference.subscriptions || []),
+            send_types: this.props.userPreference ? omitTypeName(this.props.userPreference.send_types) : undefined,
+            subscriptions: this.props.userPreference ? omitTypeName(this.props.userPreference.subscriptions || []) : undefined,
           },
         }}
         refetchQueries={[
           {
             query: GET_USER_PREFERENCES,
-            variables: { email: this.props.userPreference.send_types.find(typeObj => typeObj.type === 'EMAIL').email },
+            variables: {
+              email: this.props.userPreference ? this.props.userPreference.send_types.find(typeObj => typeObj.type === 'EMAIL').email : undefined,
+            },
           },
         ]}
       >
