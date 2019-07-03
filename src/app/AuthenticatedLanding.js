@@ -41,7 +41,7 @@ const AuthenticatedLanding = ({ userData }) => (
                 <p>Click on the map or type to choose any address in the City of Asheville-- work, home, or somewhere else.</p>
                 <SelectLocation
                   // TODO: SHOULD THIS JUST BE DATA.USERPREF BECAUSE IT WILL BE UNDEFINED ANYWAY?
-                  userPreference={data && data.user_preference ? data.user_preference : undefined}
+                  user_preference={data ? data.user_preference : undefined}
                 />
               </div>
             </li>
@@ -51,7 +51,7 @@ const AuthenticatedLanding = ({ userData }) => (
               </div>
               <div className="step-content">
                 <div className="list-item-title">Choose which notifications you want to get</div>
-                <Categories userPreference={data && data.user_preference ? data.user_preference : undefined} />
+                <Categories user_preference={data && data.user_preference ? data.user_preference : undefined} />
               </div>
             </li>*/}
           </ul>

@@ -1,14 +1,24 @@
 import React from 'react';
 import L from 'leaflet';
 import 'leaflet-control-geocoder';
-import { Mutation, Query } from 'react-apollo';
+import { Mutation } from 'react-apollo';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import { CREATE_USER_PREFERENCE, UPDATE_USER_PREFERENCE } from 'app/mutations';
-import { ADDRESS_SEARCH_QUERY } from 'app/queries';
+import { GET_USER_PREFERENCES } from 'app/queries';
 import { omitTypeName } from 'app/utils';
 import 'app/styles/components/SelectLocation.scss';
-import simpliCityClient from 'app/SimpliCityClient';
 
+// https://nominatim.org/release-docs/develop/api/Search/
+
+
+function getAddressString(addressObj) {
+  return [
+    addressObj[0].properties.address.house_number || '',
+    addressObj[0].properties.address.road || '',
+    addressObj[0].properties.address.city || '',
+    addressObj[0].properties.address.postcode || '',
+  ].join(' ').trim();
+}
 
 function getAddressFromCoords(lat, lon, callback) {
   const geocoder = L.Control.Geocoder.nominatim({
@@ -19,15 +29,34 @@ function getAddressFromCoords(lat, lon, callback) {
   });
 }
 
-function getNominatimAddressString(addressObj) {
-  return [
-    addressObj[0].properties.address.house_number || '',
-    addressObj[0].properties.address.road || '',
-    addressObj[0].properties.address.city || '',
-    addressObj[0].properties.address.postcode || '',
-  ].join(' ').trim();
+function getCoordsFromAddress(addressInputObj, callback, string = true) {
+  let geocoder;
+  if (string) {
+    geocoder = L.Control.Geocoder.nominatim({
+      geocodingQueryParams: { bounded: 1, viewbox: '-82.671024,35.421592,-82.459938,35.656121' },
+    });
+    const asString = `${addressInputObj.number} ${addressInputObj.street}`;
+    geocoder.geocode(asString, function(result) {
+      if (result.length === 0) {
+        getCoordsFromAddress(addressInputObj, callback, false)
+      } else {
+        callback(result);
+      }
+    })
+  } else {
+      geocoder = L.Control.Geocoder.nominatim({
+        geocodingQueryParams: {
+          bounded: 1,
+          viewbox: '-82.671024,35.421592,-82.459938,35.656121',
+          city: 'Asheville',
+          street: addressInputObj.street,
+        },
+      });
+      geocoder.geocode(addressInputObj.number, function(result) {
+        callback(result);
+      })
+  }
 }
-
 
 class SelectLocation extends React.Component {
   constructor(props) {
@@ -50,7 +79,9 @@ class SelectLocation extends React.Component {
     this.state = {
       // The coordinates of the selected address
       addressCoords,
-      addressInputText: '',
+      // The current text of the input box
+      addressInputNumber: '',
+      addressInputStreet: '',
       // Whether or not the address is in the city
       addressOutsideCity: false,
       // If the entered address matches 0 or more than one, an array of the results
@@ -60,13 +91,30 @@ class SelectLocation extends React.Component {
     this.handlePossibilityClick = this.handlePossibilityClick.bind(this);
   }
 
-  componentDidMount() {
-    getAddressFromCoords(this.state.addressCoords.lat, this.state.addressCoords.lon, result =>
-      this.setState({ addressInputText: getNominatimAddressString(result) })
+  componentWillMount() {
+    /*
+      Get the address text to display
+      TODO: handle errors
+    */
+    getAddressFromCoords(
+      this.state.addressCoords.lat,
+      this.state.addressCoords.lon,
+      (result) => {
+        this.setState({
+          addressInputNumber: result[0].properties.address.house_number,
+          addressInputStreet: result[0].properties.address.road,
+          addressOutsideCity: result[0].properties.address.city !== 'Asheville',
+        });
+      }
     )
   }
 
   updateCoordsFromMap(lat, lon, setUserPreference) {
+    /*
+      If the user clicks the map, set the address coordinates
+      TODO: only save address if it's in the city?
+      TODO: handle errors (see component will mount also)
+    */
     getAddressFromCoords(
       lat,
       lon,
@@ -97,6 +145,26 @@ class SelectLocation extends React.Component {
       TODO: handle errors
     */
     e.preventDefault(); // Do not refresh the page
+
+    getCoordsFromAddress(
+      { number: this.state.addressInputNumber, street: this.state.addressInputStreet },
+      (result) => {
+        // If there's only one result
+        if (result.length === 1) {
+          this.setState({
+            addressCoords: { lat: result[0].center.lat, lon: result[0].center.lng },
+            addressInputNumber: result[0].properties.address.house_number,
+            addressInputStreet: result[0].properties.address.road,
+            addressPossibilities: result,
+            addressOutsideCity: result[0].properties.address.city !== 'Asheville',
+          })
+          setUserPreference();
+        }
+        else {
+          this.setState({ addressPossibilities: result, addressOutsideCity: false })
+        }
+      }
+    )
   }
 
   handlePossibilityClick(possibility, setUserPreference) {
@@ -118,6 +186,12 @@ class SelectLocation extends React.Component {
   }
 
   render() {
+    /*
+      TODO:
+        * update preferences, SHOW THAT THEY WERE UPDATED
+        * make sure error handling is accessible
+        * if they unfocus and there are not valid coordinates, make next section tell them to select a valid address
+    */
     let errorMessage = null;
     if (this.state.addressPossibilities && this.state.addressPossibilities.length < 1) {
       errorMessage = 'No results found. Please try another address.';
@@ -137,18 +211,33 @@ class SelectLocation extends React.Component {
             subscriptions: [],
           },
         }}
+        // refetchQueries={[
+        //   {
+        //     query: GET_USER_PREFERENCES,
+        //     variables: {
+        //       email: this.props.userPreference ? this.props.userPreference.send_types.find(typeObj => typeObj.type === 'EMAIL').email : undefined,
+        //     },
+        //   },
+        // ]}
       >
         {setUserPreference => (
           <React.Fragment>
-
             <form onSubmit={e => this.handleAddressSubmit(e, setUserPreference)}>
               <div className="form-element label-input-assembly">
-                <label className="SelectLocation-label">Address</label>
+                <label className="SelectLocation-label">Number</label>
                 <input
                   className="SelectLocation-input"
                   type="text"
-                  value={this.state.addressInputText}
-                  onChange={e => this.handleAddressTyping(e.target.value)}
+                  value={this.state.addressInputNumber}
+                  onChange={e => this.handleAddressTyping({ addressInputNumber: e.target.value })}
+                  onFocus={this.handleFocus}
+                />
+                <label className="SelectLocation-label">Street</label>
+                <input
+                  className="SelectLocation-input"
+                  type="text"
+                  value={this.state.addressInputStreet}
+                  onChange={e => this.handleAddressTyping({ addressInputStreet: e.target.value })}
                   onFocus={this.handleFocus}
                 />
               </div>
@@ -156,22 +245,9 @@ class SelectLocation extends React.Component {
                 <button type="submit">Confirm Address</button>
               </div>
             </form>
-
             {errorMessage &&
               <div className="alert-danger address-message">{errorMessage}</div>
             }
-            <Query
-              query={ADDRESS_SEARCH_QUERY}
-              client={simpliCityClient}
-              variables={{ searchString: this.state.addressInputText }}
-            >
-              { ({ loading, error, data }) => {
-                if (loading) return <div>Loading...</div>;
-                if (error) return <div className="alert-danger">Sorry, there was an error.</div>;
-                console.log(data)
-                return 'foo'
-              }}
-            </Query>
             {this.state.addressPossibilities && this.state.addressPossibilities.length > 1 && (
               <div className="address-message">
                 <span>Did you mean one of these?</span>
@@ -182,14 +258,13 @@ class SelectLocation extends React.Component {
                       onClick={() => this.handlePossibilityClick(possibility, setUserPreference)}
                       type="submit"
                     >
-                      {/*{getAddressString([possibility])}*/}
-                      Option
+                      {getAddressString([possibility])}
                     </button>
                   )
                 })}
               </div>
             )}
-            {/*<div>
+            <div>
               <Map
                 center={[ this.state.addressCoords.lat, this.state.addressCoords.lon ]}
                 zoom={14}
@@ -201,10 +276,10 @@ class SelectLocation extends React.Component {
                   attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                 />
                 <Marker position={[ this.state.addressCoords.lat, this.state.addressCoords.lon ]}>
-                  <Popup>{this.state.selectedAddress}</Popup>
+                  {/*<Popup>{this.state.selectedAddress}</Popup>*/}
                 </Marker>
               </Map>
-            </div>*/}
+            </div>
           </React.Fragment>
         )}
       </Mutation>

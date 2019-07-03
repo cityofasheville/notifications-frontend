@@ -32,3 +32,14 @@ export const CATEGORIES_QUERY = gql`
     }
   }
 `;
+
+export const ADDRESS_SEARCH_QUERY = gql`
+  query search($searchString: String!) {
+    search(searchString: $searchString, searchContexts: ["address"]) {
+      type
+      results {
+        type
+      }
+    }
+  }
+`;
