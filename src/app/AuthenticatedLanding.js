@@ -17,6 +17,7 @@ const AuthenticatedLanding = ({ userData }) => (
     {({ loading, error, data }) => {
       if (loading) return <div>Loading...</div>;
       if (error) return <div className="alert-danger">Error :(</div>;
+      console.log(data)
       return (
         <div id="authenticated-landing" className="landing">
           <h1>
@@ -40,8 +41,8 @@ const AuthenticatedLanding = ({ userData }) => (
                 <div className="list-item-title">Choose a location</div>
                 <p>Click on the map or type to choose any address in the City of Asheville-- work, home, or somewhere else.</p>
                 <SelectLocation
-                  // TODO: SHOULD THIS JUST BE DATA.USERPREF BECAUSE IT WILL BE UNDEFINED ANYWAY?
-                  user_preference={data ? data.user_preference : undefined}
+                  email={userData.user.email}
+                  userPreference={data.user_preference}
                 />
               </div>
             </li>
