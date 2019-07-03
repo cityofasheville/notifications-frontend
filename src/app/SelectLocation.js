@@ -23,8 +23,6 @@ function getNominatimAddressString(addressObj) {
   return [
     addressObj[0].properties.address.house_number || '',
     addressObj[0].properties.address.road || '',
-    addressObj[0].properties.address.city || '',
-    addressObj[0].properties.address.postcode || '',
   ].join(' ').trim();
 }
 
@@ -62,9 +60,15 @@ class SelectLocation extends React.Component {
   }
 
   componentDidMount() {
+    if (!(this.props.userPreference && this.props.userPreference.location_y)) {
+      return;
+    }
     getAddressFromCoords(this.state.addressCoords.lat, this.state.addressCoords.lon, result =>{
-console.log(result)
-      this.setState({ addressInputText: getNominatimAddressString(result) })
+      const resultAddressText = getNominatimAddressString(result);
+      this.setState({
+        addressInputText: resultAddressText,
+        selectedAddress: resultAddressText,
+      })
     })
   }
 
@@ -85,12 +89,13 @@ console.log(result)
     )
   }
 
-  handleAddressTyping(newState) {
+  handleAddressTyping(newVal) {
     // Update the state as the user types in the input box
-    this.setState(Object.assign(
-      { addressOutsideCity: false },
-      newState,
-    ))
+    this.setState({
+      addressOutsideCity: false,
+      addressInputText: newVal,
+      selectedAddress: null,
+    })
   }
 
   handleAddressSubmit(e, setUserPreference) {
@@ -104,12 +109,11 @@ console.log(result)
   handlePossibilityClick(possibility, setUserPreference) {
     // If there was more than one possible address, handle the user selection between those
     this.setState({
-      addressCoords: { lat: possibility.center.lat, lon: possibility.center.lng },
-      // addressInputText: getAddressString([possibility]),
-      addressInputNumber: possibility.properties.address.house_number,
-      addressInputStreet: possibility.properties.address.road,
+      addressCoords: { lat: possibility.y, lon: possibility.x },
+      addressInputText: possibility.address,
+      selectedAddress: possibility.address,
       addressPossibilities: [possibility],
-      addressOutsideCity: possibility.properties.address.city !== 'Asheville',
+      addressOutsideCity: !possibility.is_in_city,
     })
     setUserPreference();
   }
@@ -162,7 +166,7 @@ console.log(result)
             {errorMessage &&
               <div className="alert-danger address-message">{errorMessage}</div>
             }
-            {!this.state.selectedAddress && <Query
+            {!this.state.selectedAddress && this.state.addressInputText.length > 3 && <Query
               query={ADDRESS_SEARCH_QUERY}
               client={simpliCityClient}
               variables={{ searchString: this.state.addressInputText }}
@@ -173,9 +177,9 @@ console.log(result)
                   console.log(error);
                   return <div className="alert-danger">Sorry, there was an error.</div>;
                 }
-                console.log(data.results)
-                if (data.results && data.results.length > 0) {
-                  return data.results.map(possibility => (
+                const possibilities = data.search[0].results;
+                if (possibilities && possibilities.length > 0) {
+                  return possibilities.map(possibility => (
                     <button
                       key={possibility.address}
                       onClick={() => this.handlePossibilityClick(possibility, setUserPreference)}

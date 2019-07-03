@@ -42,6 +42,7 @@ export const ADDRESS_SEARCH_QUERY = gql`
         ...on AddressResult {
           type
           address
+          is_in_city
         }
       }
     }
