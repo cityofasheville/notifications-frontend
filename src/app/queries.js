@@ -39,6 +39,10 @@ export const ADDRESS_SEARCH_QUERY = gql`
       type
       results {
         type
+        ...on AddressResult {
+          type
+          address
+        }
       }
     }
   }

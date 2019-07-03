@@ -55,15 +55,17 @@ class SelectLocation extends React.Component {
       addressOutsideCity: false,
       // If the entered address matches 0 or more than one, an array of the results
       addressPossibilities: null,
+      selectedAddress: null,
     }
     this.handleAddressSubmit = this.handleAddressSubmit.bind(this);
     this.handlePossibilityClick = this.handlePossibilityClick.bind(this);
   }
 
   componentDidMount() {
-    getAddressFromCoords(this.state.addressCoords.lat, this.state.addressCoords.lon, result =>
+    getAddressFromCoords(this.state.addressCoords.lat, this.state.addressCoords.lon, result =>{
+console.log(result)
       this.setState({ addressInputText: getNominatimAddressString(result) })
-    )
+    })
   }
 
   updateCoordsFromMap(lat, lon, setUserPreference) {
@@ -160,35 +162,32 @@ class SelectLocation extends React.Component {
             {errorMessage &&
               <div className="alert-danger address-message">{errorMessage}</div>
             }
-            <Query
+            {!this.state.selectedAddress && <Query
               query={ADDRESS_SEARCH_QUERY}
               client={simpliCityClient}
               variables={{ searchString: this.state.addressInputText }}
             >
               { ({ loading, error, data }) => {
                 if (loading) return <div>Loading...</div>;
-                if (error) return <div className="alert-danger">Sorry, there was an error.</div>;
-                console.log(data)
-                return 'foo'
-              }}
-            </Query>
-            {this.state.addressPossibilities && this.state.addressPossibilities.length > 1 && (
-              <div className="address-message">
-                <span>Did you mean one of these?</span>
-                {this.state.addressPossibilities.length > 0 && this.state.addressPossibilities.map((possibility) => {
-                  return (
+                if (error) {
+                  console.log(error);
+                  return <div className="alert-danger">Sorry, there was an error.</div>;
+                }
+                console.log(data.results)
+                if (data.results && data.results.length > 0) {
+                  return data.results.map(possibility => (
                     <button
-                      key={possibility.properties.place_id}
+                      key={possibility.address}
                       onClick={() => this.handlePossibilityClick(possibility, setUserPreference)}
                       type="submit"
                     >
-                      {/*{getAddressString([possibility])}*/}
-                      Option
+                      {possibility.address}
                     </button>
-                  )
-                })}
-              </div>
-            )}
+                  ))
+                }
+                return <div>Not found</div>
+              }}
+            </Query>}
             {/*<div>
               <Map
                 center={[ this.state.addressCoords.lat, this.state.addressCoords.lon ]}
