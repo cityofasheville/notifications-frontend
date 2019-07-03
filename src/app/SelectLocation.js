@@ -95,6 +95,7 @@ class SelectLocation extends React.Component {
   handlePossibilityClick(possibility, setUserPreference) {
     // If there was more than one possible address, handle the user selection between those
     this.setState({
+      // TODO: IMPLEMENT ONCE X AND Y ARE ADDED TO ADDRESS RESULT IN SIMPLICITY BACKEND
       addressCoords: { lat: possibility.y, lon: possibility.x },
       addressInputText: possibility.address,
       selectedAddress: possibility.address,
@@ -124,6 +125,7 @@ class SelectLocation extends React.Component {
               email: this.props.userPreference ?
                 this.props.userPreference.send_types.find(typeObj => typeObj.type === 'EMAIL').email : this.props.email,
             }],
+            // TODO: DON'T SET HERE
             subscriptions: [],
           },
         }}

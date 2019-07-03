@@ -1,5 +1,4 @@
 import React from 'react';
-import gql from 'graphql-tag';
 import { Mutation, Query } from 'react-apollo';
 import { CREATE_USER_PREFERENCE } from 'app/mutations';
 import { CATEGORIES_QUERY, GET_USER_PREFERENCES } from 'app/queries';
