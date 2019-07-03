@@ -111,8 +111,6 @@ class SelectLocation extends React.Component {
   render() {
     // TODO: ERROR ABOUT THINGS OUTSIDE OF CITY LIMITS??
     // 'That location is not in Asheville. This application only sends alerts concerning developments within Asheville city limits. Please select a different address.';
-
-    console.log(this.state, this.props)
     const mutation = this.props.user_preference ? UPDATE_USER_PREFERENCE : CREATE_USER_PREFERENCE;
     return (
       <Mutation
@@ -121,7 +119,11 @@ class SelectLocation extends React.Component {
           user_preference: {
             location_y: this.state.addressCoords ? this.state.addressCoords.lat : undefined,
             location_x: this.state.addressCoords ? this.state.addressCoords.lon : undefined,
-            send_types: [{ type: 'EMAIL', email: this.props.userPreference ? this.props.userPreference.send_types.find(typeObj => typeObj.type === 'EMAIL').email : this.props.email, }],
+            send_types: [{
+              type: 'EMAIL',
+              email: this.props.userPreference ?
+                this.props.userPreference.send_types.find(typeObj => typeObj.type === 'EMAIL').email : this.props.email,
+            }],
             subscriptions: [],
           },
         }}
