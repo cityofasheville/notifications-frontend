@@ -15,6 +15,10 @@ export const GET_USER_PREFERENCES = gql`
         id
         radius_miles
         whole_city
+        tag {
+          id
+          name
+        }
       }
     }
   }
@@ -43,6 +47,8 @@ export const ADDRESS_SEARCH_QUERY = gql`
           type
           address
           is_in_city
+          x
+          y
         }
       }
     }

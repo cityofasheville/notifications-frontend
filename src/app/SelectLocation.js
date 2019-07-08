@@ -94,6 +94,7 @@ class SelectLocation extends React.Component {
 
   handlePossibilityClick(possibility, setUserPreference) {
     // If there was more than one possible address, handle the user selection between those
+    console.log(possibility)
     this.setState({
       // TODO: IMPLEMENT ONCE X AND Y ARE ADDED TO ADDRESS RESULT IN SIMPLICITY BACKEND
       addressCoords: { lat: possibility.y, lon: possibility.x },
@@ -112,7 +113,7 @@ class SelectLocation extends React.Component {
   render() {
     // TODO: ERROR ABOUT THINGS OUTSIDE OF CITY LIMITS??
     // 'That location is not in Asheville. This application only sends alerts concerning developments within Asheville city limits. Please select a different address.';
-    const mutation = this.props.user_preference ? UPDATE_USER_PREFERENCE : CREATE_USER_PREFERENCE;
+    const mutation = this.props.userPreference ? UPDATE_USER_PREFERENCE : CREATE_USER_PREFERENCE;
     return (
       <Mutation
         mutation={mutation}
@@ -126,7 +127,7 @@ class SelectLocation extends React.Component {
                 this.props.userPreference.send_types.find(typeObj => typeObj.type === 'EMAIL').email : this.props.email,
             }],
             // TODO: DON'T SET HERE
-            subscriptions: [],
+            subscriptions: this.props.userPreference ? this.props.userPreference.subscriptions : [],
           },
         }}
         refetchQueries={[
@@ -164,6 +165,7 @@ class SelectLocation extends React.Component {
                 }
                 const possibilities = data.search[0].results;
                 if (possibilities && possibilities.length > 0) {
+console.log(possibilities)
                   return possibilities.map(possibility => (
                     <button
                       key={possibility.address}
