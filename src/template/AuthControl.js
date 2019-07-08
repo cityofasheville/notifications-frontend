@@ -34,7 +34,7 @@ const getText = (loggedIn, language) => {
 };
 
 const AuthControl = (props) => {
-  const loggedIn = localStorage.getItem('loggedIn') === 'true';
+  const loggedIn = localStorage.getItem('loggedIn') === true;
   const { language, location } = props;
 
   return (
