@@ -5,7 +5,7 @@ import { Mutation, Query } from 'react-apollo';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import { CREATE_USER_PREFERENCE, UPDATE_USER_PREFERENCE } from 'app/mutations';
 import { ADDRESS_SEARCH_QUERY, GET_USER_PREFERENCES } from 'app/queries';
-// import { omitTypeName } from 'app/utils';
+import { omitTypeNameFromArray, stripTypeNameFromObj } from 'app/utils';
 import 'app/styles/components/SelectLocation.scss';
 import simpliCityClient from 'app/SimpliCityClient';
 
@@ -71,13 +71,15 @@ class SelectLocation extends React.Component {
       lon,
       (result) => {
         const addressString = getNominatimAddressString(result);
-        this.setState({
-          addressCoords: { lat, lon },
-          selectedAddress: addressString,
-          addressInputText: addressString,
-          addressOutsideCity: result[0].properties.address.city !== 'Asheville',
-        });
-        setUserPreference();
+        this.setState(
+          {
+            addressCoords: { lat, lon },
+            selectedAddress: addressString,
+            addressInputText: addressString,
+            addressOutsideCity: result[0].properties.address.city !== 'Asheville',
+          },
+          setUserPreference
+        );
       }
     )
   }
@@ -89,19 +91,19 @@ class SelectLocation extends React.Component {
       addressInputText: newVal,
       selectedAddress: null,
     })
-    setUserPreference();
   }
 
   handlePossibilityClick(possibility, setUserPreference) {
     // If there was more than one possible address, handle the user selection between those
-    this.setState({
-      // TODO: IMPLEMENT ONCE X AND Y ARE ADDED TO ADDRESS RESULT IN SIMPLICITY BACKEND
-      addressCoords: { lat: possibility.y, lon: possibility.x },
-      addressInputText: possibility.address,
-      selectedAddress: possibility.address,
-      addressOutsideCity: !possibility.is_in_city,
-    })
-    setUserPreference();
+    this.setState(
+      {
+        addressCoords: { lat: possibility.y, lon: possibility.x },
+        selectedAddress: possibility.address,
+        addressInputText: possibility.address,
+        addressOutsideCity: !possibility.is_in_city,
+      },
+      setUserPreference
+    )
   }
 
   handleFocus(e) {
@@ -112,23 +114,19 @@ class SelectLocation extends React.Component {
   render() {
     // TODO: ERROR ABOUT THINGS OUTSIDE OF CITY LIMITS??
     // 'That location is not in Asheville. This application only sends alerts concerning developments within Asheville city limits. Please select a different address.';
-    const mutation = this.props.user_preference ? UPDATE_USER_PREFERENCE : CREATE_USER_PREFERENCE;
+    const mutation = this.props.userPreference ? UPDATE_USER_PREFERENCE : CREATE_USER_PREFERENCE;
     return (
       <Mutation
         mutation={mutation}
-        variables={{
-          user_preference: {
-            location_y: this.state.addressCoords ? this.state.addressCoords.lat : undefined,
-            location_x: this.state.addressCoords ? this.state.addressCoords.lon : undefined,
-            send_types: [{
-              type: 'EMAIL',
-              email: this.props.userPreference ?
-                this.props.userPreference.send_types.find(typeObj => typeObj.type === 'EMAIL').email : this.props.email,
-            }],
-            // TODO: DON'T SET HERE
-            subscriptions: [],
-          },
-        }}
+        variables={stripTypeNameFromObj({
+          user_preference: Object.assign(
+            {
+              location_y: this.state.addressCoords ? this.state.addressCoords.lat : undefined,
+              location_x: this.state.addressCoords ? this.state.addressCoords.lon : undefined,
+            },
+            this.props.userPreference
+          ),
+        })}
         refetchQueries={[
           // TODO: we shouldn't need this if we set up the updates properly, include IDs
           {

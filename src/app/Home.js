@@ -15,11 +15,9 @@ const Home = ({ history }) => {
       {({ loading, error, data }) => {
         if (loading) return null;
         if (error) return <div className="alert-danger">Login Unavailable</div>;
-        loggedIn = loggedIn && data.user.email;
         if (loggedIn && data.user.email) {
           return <AuthenticatedLanding userData={data} />;
         } else if (loggedIn) {
-          // Solve issue that is maybe only caused by server restarting?
           localStorage.setItem('loggedIn', false);
           history.push('/');
         }

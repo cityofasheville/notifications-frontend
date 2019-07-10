@@ -45,15 +45,15 @@ const AuthenticatedLanding = ({ userData }) => (
                 />
               </div>
             </li>
-            {/*<li>
+            <li>
               <div className="puck-container">
                 <TextPuck text="3" />
               </div>
               <div className="step-content">
                 <div className="list-item-title">Choose which notifications you want to get</div>
-                <Categories user_preference={data && data.user_preference ? data.user_preference : undefined} />
+                <Categories userPreference={data.user_preference} />
               </div>
-            </li>*/}
+            </li>
           </ul>
           <NoEmergencyAlertsNotice />
         </div>

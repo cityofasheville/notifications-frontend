@@ -1,8 +1,8 @@
 import React from 'react';
 import { Mutation, Query } from 'react-apollo';
-import { CREATE_USER_PREFERENCE } from 'app/mutations';
+import { CREATE_USER_PREFERENCE, UPDATE_USER_PREFERENCE } from 'app/mutations';
 import { CATEGORIES_QUERY, GET_USER_PREFERENCES } from 'app/queries';
-import { omitTypeName } from 'app/utils';
+import { omitTypeNameFromArray, stripTypeNameFromObj } from 'app/utils';
 import 'app/styles/components/Categories.scss';
 
 
@@ -25,27 +25,31 @@ class Categories extends React.Component {
   }
 
 
-  handleBoxCheck(tagId, checked, createUserPreference) {
+  handleBoxCheck(tagId, checked, setUserPref) {
     const subscriptions = [].concat(this.state.subscriptions);
     if (checked) {
-      subscriptions.push({ tag_id: tagId, whole_city: true });
+      subscriptions.push({ tag: { id: tagId }, whole_city: true, radius_miles: null });
     } else {
-      const thisSubIndex = subscriptions.indexOf(d => d.tag_id === tagId)
+      const thisSubIndex = subscriptions.indexOf(d => d.tag.id === tagId)
       subscriptions.splice(thisSubIndex, 1);
     }
     this.setState(
       {
         subscriptions,
-      },
-      createUserPreference
+      }
     )
+    setUserPref();
   }
 
-  handleDropdownChange(tagId, createUserPreference) {
+  handleDropdownChange(tagId, setUserPref) {
 
   }
 
   render() {
+    const mutation = this.props.userPreference ? UPDATE_USER_PREFERENCE : CREATE_USER_PREFERENCE;
+    const email = this.props.userPreference && this.props.userPreference.send_types ?
+      this.props.userPreference.send_types.find(typeObj => typeObj.type === 'EMAIL').email :
+      this.props.email;
     return <Query
       query={CATEGORIES_QUERY}
       fetchPolicy="network-only"
@@ -53,35 +57,34 @@ class Categories extends React.Component {
       { ({ loading, error, data }) => {
         if (loading) return <div>Loading...</div>;
         if (error) return <div className="alert-danger">Sorry, there was an error.</div>;
-        console.log(this.props, this.state)
         return (
           <Mutation
-            mutation={CREATE_USER_PREFERENCE}
-            variables={{
-              user_preference: {
-                location_y: this.props.userPreference.location_y,
-                location_x: this.props.userPreference.location_x,
-                send_types: omitTypeName(this.props.userPreference.send_types),
-                subscriptions: omitTypeName(this.state.subscriptions),
-              },
-            }}
+            mutation={mutation}
+            variables={stripTypeNameFromObj({
+              user_preference: Object.assign(
+                { subscriptions: this.state.subscriptions },
+                this.props.userPreference
+              ),
+            })}
             refetchQueries={[
+              // TODO: we shouldn't need this if we set up the updates properly, include IDs
               {
                 query: GET_USER_PREFERENCES,
                 variables: {
-                  email: this.props.userPreference.send_types.find(typeObj => typeObj.type === 'EMAIL').email
+                  email,
                 },
               },
             ]}
           >
-            {createUserPreference => (
+            {setUserPref => (
               <div className="categories-list">
                 {data.categories.map(cat => (
                   <div key={cat.id} className="category-item">
                     {data.categories.length > 1 && <div className="category-title">Category: {cat.name}</div>}
                     <ul className="tags-list">
                       {cat.tags && cat.tags.map(tag => {
-                        const userSub = this.state.subscriptions ? this.state.subscriptions.find(sub => sub.tag_id === tag.id) : undefined;
+                        const userSub = this.state.subscriptions ?
+                          this.state.subscriptions.find(sub => sub.tag.id === tag.id) : undefined;
                         let userPreference = 'whole city';
                         if (userSub) {
                           userPreference = userSub.whole_city ? 'whole city' : userSub.radius_miles;
@@ -93,10 +96,17 @@ class Categories extends React.Component {
                             name={tag.name}
                             value={tag.id}
                             checked={userSub !== undefined}
-                            onChange={(e) => this.handleBoxCheck(tag.id, e.target.checked, createUserPreference)}
+                            onChange={(e) => this.handleBoxCheck(
+                              tag.id,
+                              e.target.checked,
+                              setUserPref
+                            )}
                           />
                           <span>{tag.name}</span>
-                          <select defaultValue={userPreference} disabled={userSub === undefined}>
+                          <select
+                            defaultValue={userPreference}
+                            disabled={userSub === undefined}
+                          >
                             {radiusMilesOpts.map(opt => (
                               <option
                                 key={`${opt}-opt`}
