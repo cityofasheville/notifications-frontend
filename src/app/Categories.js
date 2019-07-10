@@ -33,7 +33,6 @@ class Categories extends React.Component {
       const thisSubIndex = subscriptions.indexOf(d => d.tag.id === tagId)
       subscriptions.splice(thisSubIndex, 1);
     }
-console.log(subscriptions)
     this.setState(
       {
         subscriptions,
@@ -55,13 +54,12 @@ console.log(subscriptions)
       { ({ loading, error, data }) => {
         if (loading) return <div>Loading...</div>;
         if (error) return <div className="alert-danger">Sorry, there was an error.</div>;
-        console.log(this.props.userPreference, this.props.userPreference.subscriptions, this.state.subscriptions)
         return (
           <Mutation
             mutation={mutation}
             variables={{
               user_preference: {
-                subscriptions: this.state.subscriptions,
+                subscriptions: omitTypeName(this.state.subscriptions),
               },
             }}
             refetchQueries={[
@@ -81,7 +79,6 @@ console.log(subscriptions)
                     {data.categories.length > 1 && <div className="category-title">Category: {cat.name}</div>}
                     <ul className="tags-list">
                       {cat.tags && cat.tags.map(tag => {
-console.log(this.state.subscriptions, tag)
                         const userSub = this.state.subscriptions ?
                           this.state.subscriptions.find(sub => sub.tag.id === tag.id) : undefined;
                         let userPreference = 'whole city';

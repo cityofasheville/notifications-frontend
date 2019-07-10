@@ -5,7 +5,7 @@ import { Mutation, Query } from 'react-apollo';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import { CREATE_USER_PREFERENCE, UPDATE_USER_PREFERENCE } from 'app/mutations';
 import { ADDRESS_SEARCH_QUERY, GET_USER_PREFERENCES } from 'app/queries';
-// import { omitTypeName } from 'app/utils';
+import { omitTypeName } from 'app/utils';
 import 'app/styles/components/SelectLocation.scss';
 import simpliCityClient from 'app/SimpliCityClient';
 
@@ -71,13 +71,15 @@ class SelectLocation extends React.Component {
       lon,
       (result) => {
         const addressString = getNominatimAddressString(result);
-        this.setState({
-          addressCoords: { lat, lon },
-          selectedAddress: addressString,
-          addressInputText: addressString,
-          addressOutsideCity: result[0].properties.address.city !== 'Asheville',
-        });
-        setUserPreference();
+        this.setState(
+          {
+            addressCoords: { lat, lon },
+            selectedAddress: addressString,
+            addressInputText: addressString,
+            addressOutsideCity: result[0].properties.address.city !== 'Asheville',
+          },
+          setUserPreference
+        );
       }
     )
   }
@@ -89,20 +91,19 @@ class SelectLocation extends React.Component {
       addressInputText: newVal,
       selectedAddress: null,
     })
-    setUserPreference();
   }
 
   handlePossibilityClick(possibility, setUserPreference) {
     // If there was more than one possible address, handle the user selection between those
-    console.log(possibility)
-    this.setState({
-      // TODO: IMPLEMENT ONCE X AND Y ARE ADDED TO ADDRESS RESULT IN SIMPLICITY BACKEND
-      addressCoords: { lat: possibility.y, lon: possibility.x },
-      addressInputText: possibility.address,
-      selectedAddress: possibility.address,
-      addressOutsideCity: !possibility.is_in_city,
-    })
-    setUserPreference();
+    this.setState(
+      {
+        addressCoords: { lat: possibility.y, lon: possibility.x },
+        selectedAddress: possibility.address,
+        addressInputText: possibility.address,
+        addressOutsideCity: !possibility.is_in_city,
+      },
+      setUserPreference
+    )
   }
 
   handleFocus(e) {
@@ -126,8 +127,7 @@ class SelectLocation extends React.Component {
               email: this.props.userPreference ?
                 this.props.userPreference.send_types.find(typeObj => typeObj.type === 'EMAIL').email : this.props.email,
             }],
-            // TODO: DON'T SET HERE
-            subscriptions: this.props.userPreference ? this.props.userPreference.subscriptions : [],
+            subscriptions: this.props.userPreference ? omitTypeName(this.props.userPreference.subscriptions) : [],
           },
         }}
         refetchQueries={[
@@ -165,7 +165,6 @@ class SelectLocation extends React.Component {
                 }
                 const possibilities = data.search[0].results;
                 if (possibilities && possibilities.length > 0) {
-console.log(possibilities)
                   return possibilities.map(possibility => (
                     <button
                       key={possibility.address}
