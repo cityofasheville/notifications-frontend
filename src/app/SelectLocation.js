@@ -5,7 +5,7 @@ import { Mutation, Query } from 'react-apollo';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import { CREATE_USER_PREFERENCE, UPDATE_USER_PREFERENCE } from 'app/mutations';
 import { ADDRESS_SEARCH_QUERY, GET_USER_PREFERENCES } from 'app/queries';
-import { omitTypeName } from 'app/utils';
+import { omitTypeNameFromArray } from 'app/utils';
 import 'app/styles/components/SelectLocation.scss';
 import simpliCityClient from 'app/SimpliCityClient';
 
@@ -127,7 +127,7 @@ class SelectLocation extends React.Component {
               email: this.props.userPreference ?
                 this.props.userPreference.send_types.find(typeObj => typeObj.type === 'EMAIL').email : this.props.email,
             }],
-            subscriptions: this.props.userPreference ? omitTypeName(this.props.userPreference.subscriptions) : [],
+            subscriptions: this.props.userPreference ? omitTypeNameFromArray(this.props.userPreference.subscriptions) : [],
           },
         }}
         refetchQueries={[

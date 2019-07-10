@@ -1,10 +1,10 @@
-export const omitTypeName = function(input) {
+export const omitTypeNameFromArray = function(input) {
   // due to stupid issue
   // https://github.com/apollographql/apollo-feature-requests/issues/6
   return input.map(inputObject => stripTypeNameFromObj(inputObject))
 }
 
-function stripTypeNameFromObj(inputObj) {
+export const stripTypeNameFromObj = function(inputObj) {
   if (!inputObj) {
     return inputObj;
   }

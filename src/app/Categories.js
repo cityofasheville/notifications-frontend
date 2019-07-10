@@ -2,7 +2,7 @@ import React from 'react';
 import { Mutation, Query } from 'react-apollo';
 import { CREATE_USER_PREFERENCE, UPDATE_USER_PREFERENCE } from 'app/mutations';
 import { CATEGORIES_QUERY, GET_USER_PREFERENCES } from 'app/queries';
-import { omitTypeName } from 'app/utils';
+import { omitTypeNameFromArray, stripTypeNameFromObj } from 'app/utils';
 import 'app/styles/components/Categories.scss';
 
 
@@ -28,7 +28,7 @@ class Categories extends React.Component {
   handleBoxCheck(tagId, checked, setUserPref) {
     const subscriptions = [].concat(this.state.subscriptions);
     if (checked) {
-      subscriptions.push({ tag: { id: tagId }, whole_city: true });
+      subscriptions.push({ tag: { id: tagId }, whole_city: true, radius_miles: null });
     } else {
       const thisSubIndex = subscriptions.indexOf(d => d.tag.id === tagId)
       subscriptions.splice(thisSubIndex, 1);
@@ -47,6 +47,9 @@ class Categories extends React.Component {
 
   render() {
     const mutation = this.props.userPreference ? UPDATE_USER_PREFERENCE : CREATE_USER_PREFERENCE;
+    const email = this.props.userPreference && this.props.userPreference.send_types ?
+      this.props.userPreference.send_types.find(typeObj => typeObj.type === 'EMAIL').email :
+      this.props.email;
     return <Query
       query={CATEGORIES_QUERY}
       fetchPolicy="network-only"
@@ -57,17 +60,18 @@ class Categories extends React.Component {
         return (
           <Mutation
             mutation={mutation}
-            variables={{
-              user_preference: {
-                subscriptions: omitTypeName(this.state.subscriptions),
-              },
-            }}
+            variables={stripTypeNameFromObj({
+              user_preference: Object.assign(
+                { subscriptions: this.state.subscriptions },
+                this.props.userPreference
+              ),
+            })}
             refetchQueries={[
               // TODO: we shouldn't need this if we set up the updates properly, include IDs
               {
                 query: GET_USER_PREFERENCES,
                 variables: {
-                  email: this.props.userPreference ? this.props.userPreference.send_types.find(typeObj => typeObj.type === 'EMAIL').email : this.props.email,
+                  email,
                 },
               },
             ]}
@@ -99,7 +103,10 @@ class Categories extends React.Component {
                             )}
                           />
                           <span>{tag.name}</span>
-                          <select defaultValue={userPreference} disabled={userSub === undefined}>
+                          <select
+                            defaultValue={userPreference}
+                            disabled={userSub === undefined}
+                          >
                             {radiusMilesOpts.map(opt => (
                               <option
                                 key={`${opt}-opt`}
