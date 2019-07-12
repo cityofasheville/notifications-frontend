@@ -2,6 +2,8 @@ version: 0.1
 
 phases:
   install:
+    runtime-versions:
+      nodejs: 8
     commands:
       - echo "install step"
       - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
