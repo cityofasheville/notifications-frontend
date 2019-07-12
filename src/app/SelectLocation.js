@@ -4,8 +4,8 @@ import 'leaflet-control-geocoder';
 import { Mutation, Query } from 'react-apollo';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import { CREATE_USER_PREFERENCE, UPDATE_USER_PREFERENCE } from 'app/mutations';
-import { ADDRESS_SEARCH_QUERY, GET_USER_PREFERENCES } from 'app/queries';
-import { omitTypeNameFromArray, stripTypeNameFromObj } from 'app/utils';
+import { ADDRESS_SEARCH_QUERY } from 'app/queries';
+import { stripTypeNameFromObj } from 'app/utils';
 import 'app/styles/components/SelectLocation.scss';
 import simpliCityClient from 'app/SimpliCityClient';
 
@@ -28,6 +28,8 @@ function getNominatimAddressString(addressObj) {
 
 
 class SelectLocation extends React.Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
 
@@ -53,15 +55,19 @@ class SelectLocation extends React.Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     if (!(this.props.userPreference && this.props.userPreference.location_y)) {
       return;
     }
-    getAddressFromCoords(this.state.addressCoords.lat, this.state.addressCoords.lon, result =>{
+    getAddressFromCoords(this.state.addressCoords.lat, this.state.addressCoords.lon, result => {
       const resultAddressText = getNominatimAddressString(result);
-      this.setState({
-        addressInputText: resultAddressText,
-        selectedAddress: resultAddressText,
-      })
+      if (this._isMounted) {
+        this.setState({
+          addressInputText: resultAddressText,
+          selectedAddress: resultAddressText,
+        })
+      }
     })
   }
 
@@ -111,31 +117,28 @@ class SelectLocation extends React.Component {
     e.target.select();
   }
 
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
   render() {
     // TODO: ERROR ABOUT THINGS OUTSIDE OF CITY LIMITS??
     // 'That location is not in Asheville. This application only sends alerts concerning developments within Asheville city limits. Please select a different address.';
     const mutation = this.props.userPreference ? UPDATE_USER_PREFERENCE : CREATE_USER_PREFERENCE;
+    const email = this.props.userPreference && this.props.userPreference.send_types ?
+      this.props.userPreference.send_types.find(typeObj => typeObj.type === 'EMAIL').email :
+      this.props.email;
+    const newUserPref = stripTypeNameFromObj(Object.assign(
+      this.props.userPreference || { send_types: { type: 'EMAIL', email }},
+      {
+        location_y: this.state.addressCoords ? this.state.addressCoords.lat : undefined,
+        location_x: this.state.addressCoords ? this.state.addressCoords.lon : undefined,
+      }
+    ));
     return (
       <Mutation
         mutation={mutation}
-        variables={stripTypeNameFromObj({
-          user_preference: Object.assign(
-            {
-              location_y: this.state.addressCoords ? this.state.addressCoords.lat : undefined,
-              location_x: this.state.addressCoords ? this.state.addressCoords.lon : undefined,
-            },
-            this.props.userPreference
-          ),
-        })}
-        refetchQueries={[
-          // TODO: we shouldn't need this if we set up the updates properly, include IDs
-          {
-            query: GET_USER_PREFERENCES,
-            variables: {
-              email: this.props.userPreference ? this.props.userPreference.send_types.find(typeObj => typeObj.type === 'EMAIL').email : this.props.email,
-            },
-          },
-        ]}
+        variables={{ user_preference: newUserPref }}
       >
         {setUserPreference => (
           <React.Fragment>
