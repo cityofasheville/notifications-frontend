@@ -9,7 +9,6 @@ import { Query } from 'react-apollo';
 import config from 'app/config';
 import { withLanguage } from 'template/LanguageContext';
 import { GET_USER_INFO } from 'template/Queries';
-import Error from 'template/shared/Error';
 
 const saveLocationThenLogin = (location) => {
   localStorage.setItem('preLoginPathname', location.pathname);
@@ -45,7 +44,7 @@ const AuthControl = (props) => {
     >
       {({ loading, error, data }) => {
         if (loading) return null;
-        if (error) return <a href="#" className="alert-danger">Login Unavailable</a>;
+        if (error) return <div className="alert-danger">Login Unavailable</div>;
         if (loggedIn) {
           return (
             <a href={config.logoutURL}>{getText(true, language.language)}</a>

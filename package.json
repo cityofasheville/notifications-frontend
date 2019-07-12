@@ -1,5 +1,5 @@
 {
-  "name": "react-starter-app",
+  "name": "coa-notify-frontend",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
@@ -25,6 +25,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "deploy": "aws s3 sync build s3://notifications-frontend.ashevillenc.gov --delete --exclude \"*.map\"",
+    "devDeploy": "aws s3 sync build s3://dev-notifications-frontend.ashevillenc.gov --delete --exclude \"*.map\"",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "update:packages": "node wipe-dependencies.js && rm -rf node_modules && npm update --save-dev && npm update --save"

@@ -1,14 +1,91 @@
-.SelectLocation-container {
+form {
   display: flex;
 }
 
+input {
+  overflow: auto;
+}
+
+form input, form button {
+  border-radius: 6px;
+  font-size: inherit;
+}
+
+.form-element.submit-button button {
+  height: 100%;
+  margin-left: 1em;
+  background-color: #0088cc;
+  color: white;
+  font-weight: 500;
+  padding: 0.25rem;
+}
+
+.form-element.submit-button button:hover, .form-element.submit-button button:focus {
+  background-color: #0099e6;
+  cursor: pointer;
+}
+
+.label-input-assembly {
+  position: relative;
+  display: flex;
+  flex-grow: 1;
+  vertical-align: middle;
+}
+
 .SelectLocation-label {
-  margin-right: 1em;
-  padding: 0.25em 0;
+  position: absolute;
+  font-size: 0.75em;
+  padding: 0.25rem 0 0 0.5rem;
+  color: gray;
 }
 
 .SelectLocation-input {
-  padding: 0.25em;
   align-content: stretch;
   flex-grow: 1;
+  padding: 1rem 0.25rem 0.25rem 0.25rem;
+}
+
+.address-message {
+  padding: 1em 0;
+}
+
+.address-message button {
+  display: block;
+  font-size: inherit;
+  padding: 0.5em;
+  margin: 0.25em 0;
+  background-color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.address-message button:hover, .address-message button:focus {
+  background-color: #f2f2f2;
+}
+
+.leaflet-container {
+  height: 250px;
+  margin: 0 auto;
+  margin: 2em 0;
+  text-align: center;
+}
+
+.footer {
+  z-index: 1000;
+}
+
+@media (max-width: 700px) {
+  form {
+    display: unset;
+  }
+  form .form-element {
+    width: 100%;
+    margin: 0.5em 0;
+  }
+  .form-element.submit-button {
+    text-align: center;
+  }
+  .form-element.submit-button button {
+    margin-left: 0;
+  }
 }

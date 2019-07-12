@@ -28,6 +28,10 @@ This is a CSS file for the css for your Home.js page, if needed.
 }
 
 @media (max-width: 700px) {
+  .landing > ul > li {
+    margin: 1em 0.25em;
+  }
+
   #content h1 {
     font-weight: 600;
     letter-spacing: 0.015em;

@@ -5,8 +5,8 @@ import UnauthenticatedLanding from 'app/UnauthenticatedLanding';
 import AuthenticatedLanding from 'app/AuthenticatedLanding';
 import 'app/styles/components/Home.scss';
 
-const Home = () => {
-  const loggedIn = localStorage.getItem('loggedIn') === 'true';
+const Home = ({ history }) => {
+  let loggedIn = localStorage.getItem('loggedIn') === 'true';
   return (
     <Query
       query={GET_USER_INFO}
@@ -14,9 +14,12 @@ const Home = () => {
     >
       {({ loading, error, data }) => {
         if (loading) return null;
-        if (error) return <a href="#" className="alert-danger">Login Unavailable</a>;
-        if (loggedIn) {
+        if (error) return <div className="alert-danger">Login Unavailable</div>;
+        if (loggedIn && data.user.email) {
           return <AuthenticatedLanding userData={data} />;
+        } else if (loggedIn) {
+          localStorage.setItem('loggedIn', false);
+          history.push('/');
         }
         return <UnauthenticatedLanding />;
       }}
