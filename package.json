@@ -3,17 +3,17 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "apollo-cache-inmemory": "*",
-    "apollo-client": "*",
-    "apollo-link-http": "*",
-    "graphql": "*",
+    "apollo-cache-inmemory": "^1.6.2",
+    "apollo-client": "^2.6.3",
+    "apollo-link-http": "^1.5.15",
+    "graphql": "^14.4.2",
     "graphql-tag": "*",
     "leaflet": "^1.4.0",
     "leaflet-control-geocoder": "^1.7.0",
     "moment": "*",
-    "node-sass": "^4.11.0",
+    "node-sass": "^4.12.0",
     "prop-types": "*",
-    "query-string": "^6.4.0",
+    "query-string": "^6.8.1",
     "react": "^16.8.6",
     "react-apollo": "^2.5.8",
     "react-dom": "^16.8.6",
@@ -32,9 +32,9 @@
     "update:packages": "node wipe-dependencies.js && rm -rf node_modules && npm update --save-dev && npm update --save"
   },
   "devDependencies": {
-    "eslint-config-airbnb": "*",
-    "eslint-plugin-import": "^2.16.0",
-    "eslint-plugin-react": "*"
+    "eslint-config-airbnb": "^17.1.1",
+    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-react": "^7.14.2"
   },
   "description": "This is the starter template for all City of Asheville React web projects. It contains the basic file structure, shared templates and icons (e.g., navbar, authentication, language components). It is intended to be paired with a back-end application based on the [GraphQL Starter Template](https://github.com/cityofasheville/graphql-starter-template).",
   "main": "index.js",
