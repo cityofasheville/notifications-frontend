@@ -15,7 +15,7 @@ const Home = ({ history }) => {
       {({ loading, error, data }) => {
         if (loading) return null;
         if (error) return <div className="alert-danger">Login Unavailable</div>;
-        if (loggedIn && data.user.email) {
+        if (loggedIn && data && data.user && data.user.email) {
           return <AuthenticatedLanding userData={data} />;
         } else if (loggedIn) {
           localStorage.setItem('loggedIn', false);
