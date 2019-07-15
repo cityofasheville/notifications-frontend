@@ -12,7 +12,7 @@ const AuthenticatedLanding = ({ userData }) => (
   <Query
     query={GET_USER_PREFERENCES}
     variables={{ email: userData.user.email }}
-    fetchPolicy="cache-and-network"
+    fetchPolicy="network-only"
   >
     {({ loading, error, data }) => {
       if (loading) return <div>Loading...</div>;
@@ -51,7 +51,10 @@ const AuthenticatedLanding = ({ userData }) => (
               </div>
               <div className="step-content">
                 <div className="list-item-title">Choose which notifications you want to get</div>
-                <Categories userPreference={data.user_preference} />
+                <Categories
+                  email={userData.user.email}
+                  userPreference={data.user_preference}
+                />
               </div>
             </li>
           </ul>

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Mutation, Query } from 'react-apollo';
 import { CREATE_USER_PREFERENCE, UPDATE_USER_PREFERENCE } from 'app/mutations';
-import { CATEGORIES_QUERY, GET_USER_PREFERENCES } from 'app/queries';
-import { omitTypeNameFromArray, stripTypeNameFromObj } from 'app/utils';
+import { CATEGORIES_QUERY } from 'app/queries';
+import { stripTypeNameFromObj } from 'app/utils';
 import 'app/styles/components/Categories.scss';
 
 
@@ -19,26 +19,21 @@ class Categories extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      subscriptions: props.userPreference.subscriptions || [],
+      subscriptions: props.userPreference ? (props.userPreference.subscriptions || []) : [],
     }
     this.handleBoxCheck = this.handleBoxCheck.bind(this);
   }
 
 
-  handleBoxCheck(tagId, checked, setUserPref) {
+  handleBoxCheck(tag, checked, setUserPref) {
     const subscriptions = [].concat(this.state.subscriptions);
     if (checked) {
-      subscriptions.push({ tag: { id: tagId }, whole_city: true, radius_miles: null });
+      subscriptions.push({ tag, whole_city: true, radius_miles: null });
     } else {
-      const thisSubIndex = subscriptions.indexOf(d => d.tag.id === tagId)
+      const thisSubIndex = subscriptions.findIndex(d => d.tag.id === tag.id);
       subscriptions.splice(thisSubIndex, 1);
     }
-    this.setState(
-      {
-        subscriptions,
-      }
-    )
-    setUserPref();
+    this.setState({ subscriptions }, setUserPref);
   }
 
   handleDropdownChange(tagId, setUserPref) {
@@ -50,9 +45,12 @@ class Categories extends React.Component {
     const email = this.props.userPreference && this.props.userPreference.send_types ?
       this.props.userPreference.send_types.find(typeObj => typeObj.type === 'EMAIL').email :
       this.props.email;
+    const newUserPref = stripTypeNameFromObj(Object.assign(
+      this.props.userPreference || { send_types: { type: 'EMAIL', email }},
+      { subscriptions: this.state.subscriptions }
+    ))
     return <Query
       query={CATEGORIES_QUERY}
-      fetchPolicy="network-only"
     >
       { ({ loading, error, data }) => {
         if (loading) return <div>Loading...</div>;
@@ -60,23 +58,9 @@ class Categories extends React.Component {
         return (
           <Mutation
             mutation={mutation}
-            variables={stripTypeNameFromObj({
-              user_preference: Object.assign(
-                { subscriptions: this.state.subscriptions },
-                this.props.userPreference
-              ),
-            })}
-            refetchQueries={[
-              // TODO: we shouldn't need this if we set up the updates properly, include IDs
-              {
-                query: GET_USER_PREFERENCES,
-                variables: {
-                  email,
-                },
-              },
-            ]}
+            variables={{ user_preference: newUserPref }}
           >
-            {setUserPref => (
+            {(setUserPref) => (
               <div className="categories-list">
                 {data.categories.map(cat => (
                   <div key={cat.id} className="category-item">
@@ -89,7 +73,6 @@ class Categories extends React.Component {
                         if (userSub) {
                           userPreference = userSub.whole_city ? 'whole city' : userSub.radius_miles;
                         }
-
                         return (<li key={tag.id} className="tag-item">
                           <input
                             type="checkbox"
@@ -97,13 +80,13 @@ class Categories extends React.Component {
                             value={tag.id}
                             checked={userSub !== undefined}
                             onChange={(e) => this.handleBoxCheck(
-                              tag.id,
+                              tag,
                               e.target.checked,
                               setUserPref
                             )}
                           />
                           <span>{tag.name}</span>
-                          <select
+                          {/*<select
                             defaultValue={userPreference}
                             disabled={userSub === undefined}
                           >
@@ -115,7 +98,7 @@ class Categories extends React.Component {
                                 {isNaN(opt) ? opt : `${opt} mile${opt % 1 === 0 ? '' : 's'}`}
                               </option>
                             ))}
-                          </select>
+                          </select>*/}
                         </li>);
                       })}
                     </ul>
