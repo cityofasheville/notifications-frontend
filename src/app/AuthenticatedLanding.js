@@ -29,7 +29,9 @@ const AuthenticatedLanding = ({ userData }) => (
               </div>
               <div className="step-content">
                 <div className="list-item-title">Confirm email</div>
-                <p>You are logged in as {userData.user.email}.  <a href={config.logoutURL}>Not you?</a></p>
+                <p>
+                  You are logged in as {userData.user.email}.  <a href={config.logoutURL}>Not you?</a>
+                </p>
               </div>
             </li>
             <li>
