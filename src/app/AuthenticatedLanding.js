@@ -29,9 +29,8 @@ const AuthenticatedLanding = ({ userData }) => (
               </div>
               <div className="step-content">
                 <div className="list-item-title">Confirm email</div>
-                <p>
-                  You are logged in as {userData.user.email}.  <a href={config.logoutURL}>Not you?</a>
-                </p>
+                {/* eslint-disable-next-line */}
+                <p>You are logged in as {userData.user.email}.  <a href={config.logoutURL}>Not you?</a></p>
               </div>
             </li>
             <li>
@@ -40,6 +39,7 @@ const AuthenticatedLanding = ({ userData }) => (
               </div>
               <div className="step-content">
                 <div className="list-item-title">Choose a location</div>
+                {/* eslint-disable-next-line */}
                 <p>Click on the map or type to choose any address in the City of Asheville-- work, home, or somewhere else.</p>
                 <SelectLocation
                   email={userData.user.email}
