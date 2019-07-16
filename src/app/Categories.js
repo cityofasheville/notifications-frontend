@@ -36,8 +36,26 @@ class Categories extends React.Component {
     this.setState({ subscriptions }, setUserPref);
   }
 
-  handleDropdownChange(tagId, setUserPref) {
-
+  handleDropdownChange(tag, selectedValue, setUserPref) {
+    const subscriptions = [].concat(this.state.subscriptions);
+    const thisSubIndex = subscriptions.findIndex(d => d.tag.id === tag.id);
+    let newSub;
+    if (selectedValue === 'whole city') {
+      // Make that subscription whole city, set radius to null
+      newSub = Object.assign(
+        subscriptions[thisSubIndex],
+        { whole_city: true }
+      );
+    } else {
+      // Make whole city null, set radius miles
+      newSub = Object.assign(
+        subscriptions[thisSubIndex],
+        { whole_city: false, radius_miles: selectedValue }
+      );
+    }
+    subscriptions.splice(thisSubIndex, 1);
+    subscriptions.push(newSub);
+    this.setState({ subscriptions }, setUserPref);
   }
 
   render() {
@@ -53,6 +71,7 @@ class Categories extends React.Component {
       query={CATEGORIES_QUERY}
     >
       { ({ loading, error, data }) => {
+        // TODO: get data back from mutation, set state with that?  To avoid subscription ID messes?
         if (loading) return <div>Loading...</div>;
         if (error) return <div className="alert-danger">Sorry, there was an error.</div>;
         return (
@@ -86,19 +105,24 @@ class Categories extends React.Component {
                             )}
                           />
                           <span>{tag.name}</span>
-                          {/*<select
+                          <select
                             defaultValue={userPreference}
                             disabled={userSub === undefined}
+                            onChange={(e) => this.handleDropdownChange(
+                              tag,
+                              e.target.value,
+                              setUserPref,
+                            )}
                           >
                             {radiusMilesOpts.map(opt => (
                               <option
                                 key={`${opt}-opt`}
                                 value={opt}
                               >
-                                {isNaN(opt) ? opt : `${opt} mile${opt % 1 === 0 ? '' : 's'}`}
+                                {isNaN(opt) ? opt : `${opt} mile${opt === 1 ? '' : 's'}`}
                               </option>
                             ))}
-                          </select>*/}
+                          </select>
                         </li>);
                       })}
                     </ul>
