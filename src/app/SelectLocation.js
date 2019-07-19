@@ -189,7 +189,8 @@ class SelectLocation extends React.Component {
                         <option value={null}>Select the address to confirm</option>
                         {possibilities.map(possibility => (
                           <option
-                            key={possibility.address}
+                            // TODO: SOLVE ISSUE OF MULTIPLES OF SAME-- search 600 merrimon
+                            key={`possibility-${possibility.address}-${possibility.x}`}
                             value={possibility.address}
                           >
                             {possibility.address}
