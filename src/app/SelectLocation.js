@@ -88,7 +88,7 @@ class SelectLocation extends React.Component {
             addressInputText: addressString,
             addressOutsideCity: result[0].properties.address.city !== 'Asheville',
           },
-          setUserPreference
+          () => { setUserPreference(); this.props.onPrefSaved(); }
         );
       }
     );
@@ -112,7 +112,7 @@ class SelectLocation extends React.Component {
         addressInputText: possibility.address,
         addressOutsideCity: !possibility.is_in_city,
       },
-      setUserPreference
+      () => { setUserPreference(); this.props.onPrefSaved(); }
     );
   }
 
