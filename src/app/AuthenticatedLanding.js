@@ -64,7 +64,7 @@ const AuthenticatedLanding = ({ userData }) => (
           <div id="pref-saved">
             <div className="text">
               Preference saved
-              <div className="close">&#10006;</div></div>
+              <button className="close">&#10006;</button></div>
             </div>
         </div>
       );
