@@ -54,9 +54,7 @@ form input, form button {
 }
 
 .possibilities-container {
-  padding: 1rem 0;
-}
-.possibilities-container button {
+  margin: 1rem 0;
   font-size: inherit;
   width: 100%;
   background-color: white;
@@ -68,17 +66,6 @@ form input, form button {
 .address-message {
   padding: 1em 0;
 }
-
-// .address-message button {
-//   display: block;
-//   font-size: inherit;
-//   padding: 0.5em;
-//   margin: 0.25em 0;
-// }
-
-// .address-message button:hover, .address-message button:focus {
-//   background-color: #f2f2f2;
-// }
 
 .leaflet-container {
   height: 275px;

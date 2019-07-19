@@ -186,7 +186,7 @@ class SelectLocation extends React.Component {
                           );
                         }}
                       >
-                        <option value={null}>Select the address to confirm:</option>
+                        <option value={null}>Select the address to confirm</option>
                         {possibilities.map(possibility => (
                           <option
                             key={possibility.address}
