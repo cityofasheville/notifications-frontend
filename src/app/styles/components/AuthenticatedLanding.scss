@@ -1,3 +1,53 @@
+#pref-saved {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: green;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 700;
+  padding: 1.25rem 0;
+  z-index: 9999;
+}
+
+#pref-saved {
+  animation-duration: 0.5s;
+  animation-name: slidein;
+}
+
+@keyframes slidein {
+  from {
+    top: -2rem;
+  }
+
+  to {
+    top: 0;
+  }
+}
+
+#pref-saved .text {
+  text-align: center;
+  position: relative;
+}
+
+#pref-saved button.close {
+  position: absolute;
+  padding: 0.5rem 2rem;
+  right: 1vw;
+  top: -.5rem;
+  background-color: inherit;
+  color: inherit;
+  font-size: inherit;
+  border: 1px solid transparent;
+  border-radius: 6px;
+}
+
+#pref-saved button.close:focus {
+  background-color: white;
+  color: green;
+}
+
 #authenticated-landing > ul > li {
   display: flex;
 }

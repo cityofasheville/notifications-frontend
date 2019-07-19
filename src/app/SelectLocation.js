@@ -2,7 +2,12 @@ import React from 'react';
 import L from 'leaflet';
 import 'leaflet-control-geocoder';
 import { Mutation, Query } from 'react-apollo';
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
+import {
+  Map,
+  Marker,
+  Popup,
+  TileLayer,
+} from 'react-leaflet';
 import { CREATE_USER_PREFERENCE, UPDATE_USER_PREFERENCE } from 'app/mutations';
 import { ADDRESS_SEARCH_QUERY } from 'app/queries';
 import { stripTypeNameFromObj } from 'app/utils';
@@ -14,7 +19,7 @@ function getAddressFromCoords(lat, lon, callback) {
   const geocoder = L.Control.Geocoder.nominatim({
     geocodingQueryParams: { bounded: 1, viewbox: '-82.671024,35.421592,-82.459938,35.656121' },
   });
-  geocoder.reverse(L.latLng(lat, lon), 1, function(result) {
+  geocoder.reverse(L.latLng(lat, lon), 1, (result) => {
     callback(result);
   });
 }
@@ -28,47 +33,46 @@ function getNominatimAddressString(addressObj) {
 
 
 class SelectLocation extends React.Component {
-  _isMounted = false;
+  isItMountedYet = false;
 
   constructor(props) {
     super(props);
-
     let addressCoords;
     // If the user already has a location, use that instead
     if (props.userPreference && props.userPreference.location_y) {
       addressCoords = {
         lat: props.userPreference.location_y,
         lon: props.userPreference.location_x,
-      }
+      };
     }
 
     this.state = {
       // The coordinates of the selected address
-      addressCoords: addressCoords,
+      addressCoords,
       addressInputText: '',
       // Whether or not the address is in the city
       addressOutsideCity: false,
       // If the entered address matches 0 or more than one, an array of the results
       selectedAddress: null,
-    }
+    };
     this.handlePossibilityClick = this.handlePossibilityClick.bind(this);
   }
 
   componentDidMount() {
-    this._isMounted = true;
+    this.isItMountedYet = true;
 
     if (!(this.props.userPreference && this.props.userPreference.location_y)) {
       return;
     }
-    getAddressFromCoords(this.state.addressCoords.lat, this.state.addressCoords.lon, result => {
+    getAddressFromCoords(this.state.addressCoords.lat, this.state.addressCoords.lon, (result) => {
       const resultAddressText = getNominatimAddressString(result);
-      if (this._isMounted) {
+      if (this.isItMountedYet) {
         this.setState({
           addressInputText: resultAddressText,
           selectedAddress: resultAddressText,
-        })
+        });
       }
-    })
+    });
   }
 
   updateCoordsFromMap(lat, lon, setUserPreference) {
@@ -84,10 +88,10 @@ class SelectLocation extends React.Component {
             addressInputText: addressString,
             addressOutsideCity: result[0].properties.address.city !== 'Asheville',
           },
-          setUserPreference
+          () => { setUserPreference(); this.props.onPrefSaved(); }
         );
       }
-    )
+    );
   }
 
   handleAddressTyping(newVal, setUserPreference) {
@@ -96,7 +100,7 @@ class SelectLocation extends React.Component {
       addressOutsideCity: false,
       addressInputText: newVal,
       selectedAddress: null,
-    })
+    });
   }
 
   handlePossibilityClick(possibility, setUserPreference) {
@@ -108,17 +112,17 @@ class SelectLocation extends React.Component {
         addressInputText: possibility.address,
         addressOutsideCity: !possibility.is_in_city,
       },
-      setUserPreference
-    )
+      () => { setUserPreference(); this.props.onPrefSaved(); }
+    );
   }
 
-  handleFocus(e) {
+  static handleFocus(e) {
     // Select the text in the input box so that new typing will erase it
     e.target.select();
   }
 
   componentWillUnmount() {
-    this._isMounted = false;
+    this.isItMountedYet = false;
   }
 
   render() {
@@ -129,7 +133,7 @@ class SelectLocation extends React.Component {
       this.props.userPreference.send_types.find(typeObj => typeObj.type === 'EMAIL').email :
       this.props.email;
     const newUserPref = stripTypeNameFromObj(Object.assign(
-      this.props.userPreference || { send_types: { type: 'EMAIL', email }},
+      this.props.userPreference || { send_types: { type: 'EMAIL', email } },
       {
         location_y: this.state.addressCoords ? this.state.addressCoords.lat : undefined,
         location_x: this.state.addressCoords ? this.state.addressCoords.lon : undefined,
@@ -143,49 +147,70 @@ class SelectLocation extends React.Component {
         {setUserPreference => (
           <React.Fragment>
             <div className="form-element label-input-assembly">
-              <label className="SelectLocation-label">Address</label>
-              <input
-                className="SelectLocation-input"
-                type="text"
-                value={this.state.addressInputText}
-                onChange={e => this.handleAddressTyping(e.target.value, setUserPreference)}
-                onFocus={this.handleFocus}
-              />
+              <label className="SelectLocation-label" htmlFor="address-input">
+                <span>
+                  Search for an address
+                </span>
+                <input
+                  id="address-input"
+                  className="SelectLocation-input"
+                  type="text"
+                  value={this.state.addressInputText}
+                  onChange={e => this.handleAddressTyping(e.target.value, setUserPreference)}
+                  onFocus={SelectLocation.handleFocus}
+                />
+              </label>
             </div>
-            {!this.state.selectedAddress && this.state.addressInputText.length > 3 && <Query
-              query={ADDRESS_SEARCH_QUERY}
-              client={simpliCityClient}
-              variables={{ searchString: this.state.addressInputText }}
-            >
-              { ({ loading, error, data }) => {
-                if (loading) return <div>Loading...</div>;
-                if (error) {
-                  console.log(error);
-                  return <div className="alert-danger">Sorry, there was an error.</div>;
-                }
-                const possibilities = data.search[0].results;
-                if (possibilities && possibilities.length > 0) {
-                  return possibilities.map(possibility => (
-                    <button
-                      key={possibility.address}
-                      onClick={() => this.handlePossibilityClick(possibility, setUserPreference)}
-                      type="submit"
-                    >
-                      {possibility.address}
-                    </button>
-                  ))
-                }
-                let errorMessage = 'No results found. Please try another address.';
-                return (<div className="alert-danger address-message">{errorMessage}</div>)
-              }}
-            </Query>}
+            {!this.state.selectedAddress && this.state.addressInputText.length > 3 && (
+              <Query
+                query={ADDRESS_SEARCH_QUERY}
+                client={simpliCityClient}
+                variables={{ searchString: this.state.addressInputText }}
+              >
+                { ({ loading, error, data }) => {
+                  if (loading) return <div>Loading...</div>;
+                  if (error) {
+                    console.log(error);
+                    return <div className="alert-danger">Sorry, there was an error.</div>;
+                  }
+                  const possibilities = data.search[0].results;
+                  if (possibilities && possibilities.length > 0) {
+                    return (
+                      <select
+                        className="possibilities-container"
+                        onChange={(e) => {
+                          if (!e.target.value) { return; }
+                          this.handlePossibilityClick(
+                            possibilities[e.nativeEvent.target.selectedIndex - 1],
+                            setUserPreference
+                          );
+                        }}
+                      >
+                        <option value={null}>Select the address to confirm</option>
+                        {possibilities.map(possibility => (
+                          <option
+                            // TODO: SOLVE ISSUE OF MULTIPLES OF SAME-- search 600 merrimon
+                            key={`possibility-${possibility.address}-${possibility.x}`}
+                            value={possibility.address}
+                          >
+                            {possibility.address}
+                          </option>
+                        ))}
+                      </select>
+                    );
+                  }
+                  const errorMessage = 'No results found. Please try another address.';
+                  return (<div className="alert-danger address-message">{errorMessage}</div>);
+                }}
+              </Query>
+            )}
             <div>
               <Map
                 center={this.state.addressCoords ?
                   [ this.state.addressCoords.lat, this.state.addressCoords.lon ] :
                   [ 35.595385, -82.548808 ]
                 }
-                zoom={14}
+                zoom={12}
                 onClick={e =>
                   this.updateCoordsFromMap(e.latlng.lat, e.latlng.lng, setUserPreference)}
               >
@@ -193,9 +218,11 @@ class SelectLocation extends React.Component {
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                 />
-                {this.state.addressCoords && <Marker position={[ this.state.addressCoords.lat, this.state.addressCoords.lon ]}>
-                  { this.state.selectedAddress && <Popup>{this.state.selectedAddress}</Popup> }
-                </Marker>}
+                {this.state.addressCoords && (
+                  <Marker position={[ this.state.addressCoords.lat, this.state.addressCoords.lon ]}>
+                    { this.state.selectedAddress && <Popup>{this.state.selectedAddress}</Popup> }
+                  </Marker>
+                )}
               </Map>
             </div>
           </React.Fragment>

@@ -33,6 +33,11 @@ form input, form button {
 }
 
 .SelectLocation-label {
+  align-content: stretch;
+  flex-grow: 1;
+}
+
+.SelectLocation-label span {
   position: absolute;
   font-size: 0.75em;
   padding: 0.25rem 0 0 0.5rem;
@@ -40,31 +45,30 @@ form input, form button {
 }
 
 .SelectLocation-input {
-  align-content: stretch;
-  flex-grow: 1;
-  padding: 1rem 0.25rem 0.25rem 0.25rem;
+  width: 100%;
+  width: -moz-available;          /* WebKit-based browsers will ignore this. */
+  width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+  width: fill-available;
+  padding: 1rem 0.5rem 0.15rem 0.5rem;
+  font-size: 1.15rem;
+}
+
+.possibilities-container {
+  margin: 1rem 0;
+  font-size: inherit;
+  width: 100%;
+  background-color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
 }
 
 .address-message {
   padding: 1em 0;
 }
 
-.address-message button {
-  display: block;
-  font-size: inherit;
-  padding: 0.5em;
-  margin: 0.25em 0;
-  background-color: white;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.address-message button:hover, .address-message button:focus {
-  background-color: #f2f2f2;
-}
-
 .leaflet-container {
-  height: 250px;
+  height: 275px;
   margin: 0 auto;
   margin: 2em 0;
   text-align: center;

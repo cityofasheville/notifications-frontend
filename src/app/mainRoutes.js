@@ -12,7 +12,7 @@ const mainRoutes = (
     <Route path="/about" component={About} />
     <Route path="/login" component={Login} />
     <Route path="/logout" component={Logout} />
-    <Route component={Home}/>
+    <Route component={Home} />
   </Switch>
 );
 
