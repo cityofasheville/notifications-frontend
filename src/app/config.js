@@ -59,7 +59,7 @@ const config = {
   // cognito settings
   loginURL: process.env.REACT_APP_COGNITO_LOGIN, // eslint-disable-line
   logoutURL: process.env.REACT_APP_COGNITO_LOGOUT, // eslint-disable-line
-  redirect_uri: 'http://localhost:3000/login', // eslint-disable-line
+  redirect_uri: process.env.REACT_APP_REDIRECT_URI, // eslint-disable-line
   loginText: {
     defaultText: 'Log in',
     translations: [
