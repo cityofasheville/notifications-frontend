@@ -175,15 +175,21 @@ class SelectLocation extends React.Component {
                   }
                   const possibilities = data.search[0].results;
                   if (possibilities && possibilities.length > 0) {
-                    return possibilities.map(possibility => (
-                      <button
-                        key={possibility.address}
-                        onClick={() => this.handlePossibilityClick(possibility, setUserPreference)}
-                        type="submit"
-                      >
-                        {possibility.address}
-                      </button>
-                    ));
+                    return (
+                      <div>
+                        Please select the address:
+                        {possibilities.map(possibility => (
+                          <button
+                            key={possibility.address}
+                            onClick={() =>
+                              this.handlePossibilityClick(possibility, setUserPreference)}
+                            type="submit"
+                          >
+                            {possibility.address}
+                          </button>
+                        ))}
+                      </div>
+                    );
                   }
                   const errorMessage = 'No results found. Please try another address.';
                   return (<div className="alert-danger address-message">{errorMessage}</div>);
@@ -196,7 +202,7 @@ class SelectLocation extends React.Component {
                   [ this.state.addressCoords.lat, this.state.addressCoords.lon ] :
                   [ 35.595385, -82.548808 ]
                 }
-                zoom={14}
+                zoom={12}
                 onClick={e =>
                   this.updateCoordsFromMap(e.latlng.lat, e.latlng.lng, setUserPreference)}
               >

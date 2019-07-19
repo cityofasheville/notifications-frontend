@@ -49,7 +49,8 @@ form input, form button {
   width: -moz-available;          /* WebKit-based browsers will ignore this. */
   width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
   width: fill-available;
-  padding: 1rem 0.25rem 0.25rem 0.25rem;
+  padding: 1rem 0.5rem 0.15rem 0.5rem;
+  font-size: 1.15rem;
 }
 
 .address-message {
@@ -71,7 +72,7 @@ form input, form button {
 }
 
 .leaflet-container {
-  height: 250px;
+  height: 275px;
   margin: 0 auto;
   margin: 2em 0;
   text-align: center;

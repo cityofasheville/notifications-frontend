@@ -61,6 +61,11 @@ const AuthenticatedLanding = ({ userData }) => (
             </li>
           </ul>
           <NoEmergencyAlertsNotice />
+          <div id="pref-saved">
+            <div className="text">
+              Preference saved
+              <div className="close">&#10006;</div></div>
+            </div>
         </div>
       );
     }}

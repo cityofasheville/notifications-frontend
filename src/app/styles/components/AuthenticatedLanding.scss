@@ -1,3 +1,28 @@
+#pref-saved {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: green;
+  color: white;
+  font-weight: 700;
+  padding: 1.5rem 0;
+  font-size: 1.25rem;
+  z-index: 9999;
+}
+
+#pref-saved .text {
+  text-align: center;
+  position: relative;
+}
+
+#pref-saved .close {
+  position: absolute;
+  padding: 2rem;
+  right: 0;
+  top: -2rem;
+}
+
 #authenticated-landing > ul > li {
   display: flex;
 }
