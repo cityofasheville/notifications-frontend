@@ -25,7 +25,7 @@ class Categories extends React.Component {
   }
 
 
-  handleBoxCheck(tag, checked, setUserPref) {
+  handleBoxCheck(tag, checked, setUserPreference) {
     let { subscriptions } = this.state;
     subscriptions = [].concat(subscriptions);
     if (checked) {
@@ -34,10 +34,10 @@ class Categories extends React.Component {
       const thisSubIndex = subscriptions.findIndex(d => d.tag.id === tag.id);
       subscriptions.splice(thisSubIndex, 1);
     }
-    this.setState({ subscriptions }, setUserPref);
+    this.setState({ subscriptions }, () => { setUserPreference(); this.props.onPrefSaved(); });
   }
 
-  handleDropdownChange(tag, selectedValue, setUserPref) {
+  handleDropdownChange(tag, selectedValue, setUserPreference) {
     let { subscriptions } = this.state;
     subscriptions = [].concat(subscriptions);
     const thisSubIndex = subscriptions.findIndex(d => d.tag.id === tag.id);
@@ -57,7 +57,7 @@ class Categories extends React.Component {
     }
     subscriptions.splice(thisSubIndex, 1);
     subscriptions.push(newSub);
-    this.setState({ subscriptions }, setUserPref);
+    this.setState({ subscriptions }, () => { setUserPreference(); this.props.onPrefSaved(); });
   }
 
   render() {
@@ -81,7 +81,7 @@ class Categories extends React.Component {
               mutation={mutation}
               variables={{ user_preference: newUserPref }}
             >
-              {setUserPref => (
+              {setUserPreference => (
                 <div className="categories-list">
                   {data.categories.map(cat => (
                     <div key={cat.id} className="category-item">
@@ -109,7 +109,7 @@ class Categories extends React.Component {
                                 onChange={e => this.handleBoxCheck(
                                   tag,
                                   e.target.checked,
-                                  setUserPref
+                                  setUserPreference
                                 )}
                               />
                               <span>{tag.name}</span>
@@ -119,7 +119,7 @@ class Categories extends React.Component {
                                 onChange={e => this.handleDropdownChange(
                                   tag,
                                   e.target.value,
-                                  setUserPref,
+                                  setUserPreference,
                                 )}
                               >
                                 {radiusMilesOpts.map(opt => (
@@ -127,7 +127,7 @@ class Categories extends React.Component {
                                     key={`${opt}-opt`}
                                     value={opt}
                                   >
-                                    {Number.isNaN(opt) ? opt : `${opt} mile${opt === 1 ? '' : 's'}`}
+                                    {(typeof opt === 'string') ? opt : `${opt} mile${opt === 1 ? '' : 's'}`}
                                   </option>
                                 ))}
                               </select>
