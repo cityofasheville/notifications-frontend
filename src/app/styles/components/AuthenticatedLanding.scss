@@ -11,6 +11,21 @@
   z-index: 9999;
 }
 
+#pref-saved {
+  animation-duration: 0.5s;
+  animation-name: slidein;
+}
+
+@keyframes slidein {
+  from {
+    top: -2rem;
+  }
+
+  to {
+    top: 0;
+  }
+}
+
 #pref-saved .text {
   text-align: center;
   position: relative;
