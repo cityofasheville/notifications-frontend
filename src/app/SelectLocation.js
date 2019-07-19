@@ -148,7 +148,9 @@ class SelectLocation extends React.Component {
           <React.Fragment>
             <div className="form-element label-input-assembly">
               <label className="SelectLocation-label" htmlFor="address-input">
-                Address
+                <span>
+                  Address
+                </span>
                 <input
                   id="address-input"
                   className="SelectLocation-input"

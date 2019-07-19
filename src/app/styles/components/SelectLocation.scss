@@ -33,6 +33,11 @@ form input, form button {
 }
 
 .SelectLocation-label {
+  align-content: stretch;
+  flex-grow: 1;
+}
+
+.SelectLocation-label span {
   position: absolute;
   font-size: 0.75em;
   padding: 0.25rem 0 0 0.5rem;
@@ -40,8 +45,10 @@ form input, form button {
 }
 
 .SelectLocation-input {
-  align-content: stretch;
-  flex-grow: 1;
+  width: 100%;
+  width: -moz-available;          /* WebKit-based browsers will ignore this. */
+  width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+  width: fill-available;
   padding: 1rem 0.25rem 0.25rem 0.25rem;
 }
 

@@ -127,7 +127,7 @@ class Categories extends React.Component {
                                     key={`${opt}-opt`}
                                     value={opt}
                                   >
-                                    {Number.isNaN(opt) ? opt : `${opt} mile${opt === 1 ? '' : 's'}`}
+                                    {(typeof opt === 'string') ? opt : `${opt} mile${opt === 1 ? '' : 's'}`}
                                   </option>
                                 ))}
                               </select>
