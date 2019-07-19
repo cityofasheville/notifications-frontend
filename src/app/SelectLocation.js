@@ -149,7 +149,7 @@ class SelectLocation extends React.Component {
             <div className="form-element label-input-assembly">
               <label className="SelectLocation-label" htmlFor="address-input">
                 <span>
-                  Address
+                  Search for an address
                 </span>
                 <input
                   id="address-input"
@@ -157,7 +157,7 @@ class SelectLocation extends React.Component {
                   type="text"
                   value={this.state.addressInputText}
                   onChange={e => this.handleAddressTyping(e.target.value, setUserPreference)}
-                  onFocus={this.handleFocus}
+                  onFocus={SelectLocation.handleFocus}
                 />
               </label>
             </div>
@@ -176,19 +176,26 @@ class SelectLocation extends React.Component {
                   const possibilities = data.search[0].results;
                   if (possibilities && possibilities.length > 0) {
                     return (
-                      <div>
-                        Please select the address:
+                      <select
+                        className="possibilities-container"
+                        onChange={(e) => {
+                          if (!e.target.value) { return; }
+                          this.handlePossibilityClick(
+                            possibilities[e.nativeEvent.target.selectedIndex - 1],
+                            setUserPreference
+                          );
+                        }}
+                      >
+                        <option value={null}>Select the address to confirm:</option>
                         {possibilities.map(possibility => (
-                          <button
+                          <option
                             key={possibility.address}
-                            onClick={() =>
-                              this.handlePossibilityClick(possibility, setUserPreference)}
-                            type="submit"
+                            value={possibility.address}
                           >
                             {possibility.address}
-                          </button>
+                          </option>
                         ))}
-                      </div>
+                      </select>
                     );
                   }
                   const errorMessage = 'No results found. Please try another address.';

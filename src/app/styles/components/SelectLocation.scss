@@ -53,23 +53,32 @@ form input, form button {
   font-size: 1.15rem;
 }
 
+.possibilities-container {
+  padding: 1rem 0;
+}
+.possibilities-container button {
+  font-size: inherit;
+  width: 100%;
+  background-color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+}
+
 .address-message {
   padding: 1em 0;
 }
 
-.address-message button {
-  display: block;
-  font-size: inherit;
-  padding: 0.5em;
-  margin: 0.25em 0;
-  background-color: white;
-  border-radius: 6px;
-  cursor: pointer;
-}
+// .address-message button {
+//   display: block;
+//   font-size: inherit;
+//   padding: 0.5em;
+//   margin: 0.25em 0;
+// }
 
-.address-message button:hover, .address-message button:focus {
-  background-color: #f2f2f2;
-}
+// .address-message button:hover, .address-message button:focus {
+//   background-color: #f2f2f2;
+// }
 
 .leaflet-container {
   height: 275px;
