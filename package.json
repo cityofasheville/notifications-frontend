@@ -1,5 +1,5 @@
 {
-  "name": "coa-notify-frontend",
+  "name": "coa-notifications-frontend",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
@@ -36,18 +36,18 @@
     "eslint-plugin-import": "^2.18.0",
     "eslint-plugin-react": "^7.14.2"
   },
-  "description": "This is the starter template for all City of Asheville React web projects. It contains the basic file structure, shared templates and icons (e.g., navbar, authentication, language components). It is intended to be paired with a back-end application based on the [GraphQL Starter Template](https://github.com/cityofasheville/graphql-starter-template).",
+  "description": "This is the notifications tool for the City of Asheville.",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cityofasheville/react-starter-template.git"
+    "url": "git+https://github.com/cityofasheville/notifications-frontend.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/cityofasheville/react-starter-template/issues"
+    "url": "https://github.com/cityofasheville/notifications-frontend/issues"
   },
-  "homepage": "https://github.com/cityofasheville/react-starter-template#readme",
+  "homepage": "notifications-frontend.ashevillenc.gov",
   "browserslist": [
     ">0.2%",
     "not dead",
