@@ -10,7 +10,7 @@ phases:
   build:
     commands:
       - npm run build
-      - npm run devDeploy
+      - npm run deploy
   post_build:
     commands:
       # TODO: should these have the same dist id?

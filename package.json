@@ -47,7 +47,7 @@
   "bugs": {
     "url": "https://github.com/cityofasheville/notifications-frontend/issues"
   },
-  "homepage": "notifications-frontend.ashevillenc.gov",
+  "homepage": "",
   "browserslist": [
     ">0.2%",
     "not dead",
