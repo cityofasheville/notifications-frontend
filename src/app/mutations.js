@@ -47,3 +47,11 @@ export const UPDATE_USER_PREFERENCE = gql`
     }
   }
 `;
+
+export const DELETE_USER_PREFERENCE = gql`
+  mutation deleteUserPreferenceSecure(
+    $url: String!
+  ) {
+    url
+  }
+`;
