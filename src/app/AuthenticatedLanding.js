@@ -9,8 +9,6 @@ import { GET_USER_PREFERENCES } from 'app/queries';
 import 'app/styles/components/AuthenticatedLanding.scss';
 
 
-// TODO: MAKE THIS STATEFUL SO THAT PREF SAVED CAN SHOW/LEAVE
-
 class AuthenticatedLanding extends React.Component {
   constructor() {
     super();

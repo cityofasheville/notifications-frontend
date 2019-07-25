@@ -19,6 +19,7 @@ const Home = ({ history }) => {
           return <AuthenticatedLanding userData={data} />;
         }
         if (loggedIn) {
+          // If it's logged in but there's no email address, set it to false
           localStorage.setItem('loggedIn', false);
           history.push('/');
         }

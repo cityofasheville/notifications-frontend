@@ -4,6 +4,7 @@ import { DELETE_USER_PREFERENCE } from 'app/mutations';
 import NoEmergencyAlertsNotice from 'app/NoEmergencyAlertsNotice';
 
 class DoMutation extends React.Component {
+  // Trigger a mutation as soon as a user lands on the page rather than making them click something
   componentDidMount() {
     const { mutate } = this.props;
     mutate();
