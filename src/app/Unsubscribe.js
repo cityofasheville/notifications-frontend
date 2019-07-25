@@ -14,14 +14,16 @@ class DoMutation extends React.Component {
   }
 }
 
-const Unsubscribe = ({ location }) => (
+const Unsubscribe = () => (
   <Mutation
     mutation={DELETE_USER_PREFERENCE}
-    variables={{ url: `${location.pathname}${location.search}` }}
+    variables={{ url: window.location.href }}
   >
-    {(deleteUserPreference, data) => {
+    {(deleteUserPreference, { loading, error, data }) => {
+      if (loading) return <div>Loading...</div>;
+      if (error) return <div className="alert-danger">Error :(</div>;
       return (
-        <div id="unauthenticated-landing" className="landing">
+        <div className="landing">
           <DoMutation mutate={deleteUserPreference} />
           <h1>
             Unsubscribed
