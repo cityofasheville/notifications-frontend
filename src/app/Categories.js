@@ -41,7 +41,7 @@ class Categories extends React.Component {
       const thisSubIndex = subscriptions.findIndex(d => d.tag.id === tag.id);
       subscriptions.splice(thisSubIndex, 1);
     }
-    this.setState({ subscriptions }, () => { setUserPreference(); this.props.onPrefSaved(tag.name); });
+    this.setState({ subscriptions }, () => { setUserPreference(); this.props.onPrefSaved(tagTranslation[tag.name]); });
   }
 
   handleDropdownChange(tag, selectedValue, setUserPreference) {
@@ -64,7 +64,7 @@ class Categories extends React.Component {
     }
     subscriptions.splice(thisSubIndex, 1);
     subscriptions.push(newSub);
-    this.setState({ subscriptions }, () => { setUserPreference(); this.props.onPrefSaved(tag.name); });
+    this.setState({ subscriptions }, () => { setUserPreference(); this.props.onPrefSaved(tagTranslation[tag.name]); });
   }
 
   render() {
