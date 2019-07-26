@@ -12,13 +12,13 @@ import 'app/styles/components/AuthenticatedLanding.scss';
 class AuthenticatedLanding extends React.Component {
   constructor() {
     super();
-    this.state = { prefSavedShowing: false };
+    this.state = { prefSavedShowing: false, prefSavedText: null };
     this.showPrefSaved = this.showPrefSaved.bind(this);
     this.hidePrefSaved = this.hidePrefSaved.bind(this);
   }
 
-  showPrefSaved() {
-    this.setState({ prefSavedShowing: true });
+  showPrefSaved(text = null) {
+    this.setState({ prefSavedShowing: true, prefSavedText: text });
   }
 
   hidePrefSaved() {
@@ -84,7 +84,7 @@ class AuthenticatedLanding extends React.Component {
               {this.state.prefSavedShowing && (
                 <div id="pref-saved">
                   <div className="text" aria-live="polite" role="region">
-                    Preference saved
+                    {`Preference saved${this.state.prefSavedText ? `: ${this.state.prefSavedText}` : ''}`}
                     <button className="close" type="button" onClick={this.hidePrefSaved}>&#10006;</button>
                   </div>
                 </div>
