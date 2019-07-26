@@ -20,6 +20,7 @@ function getAddressFromCoords(lat, lon, callback) {
     geocodingQueryParams: { bounded: 1, viewbox: '-82.671024,35.421592,-82.459938,35.656121' },
   });
   geocoder.reverse(L.latLng(lat, lon), 1, (result) => {
+    // TODO: right now this is using OpenStreetMap's nominatim API.  We should probably use SimpliCity instead for the sake of consistency in how addresses display.
     callback(result);
   });
 }
@@ -55,16 +56,18 @@ class SelectLocation extends React.Component {
       // If the entered address matches 0 or more than one, an array of the results
       selectedAddress: null,
     };
-    this.handlePossibilityClick = this.handlePossibilityClick.bind(this);
+    this.handlePossibilitySelect = this.handlePossibilitySelect.bind(this);
   }
 
   componentDidMount() {
     this.isItMountedYet = true;
+    // Shady
 
     if (!(this.props.userPreference && this.props.userPreference.location_y)) {
       return;
     }
     getAddressFromCoords(this.state.addressCoords.lat, this.state.addressCoords.lon, (result) => {
+      // Get the string from the coords to display in the text input box
       const resultAddressText = getNominatimAddressString(result);
       if (this.isItMountedYet) {
         this.setState({
@@ -80,6 +83,7 @@ class SelectLocation extends React.Component {
       lat,
       lon,
       (result) => {
+        // TODO: this is also using the OpenStreetMap API, should use SimpliCity
         const addressString = getNominatimAddressString(result);
         this.setState(
           {
@@ -88,7 +92,7 @@ class SelectLocation extends React.Component {
             addressInputText: addressString,
             addressOutsideCity: result[0].properties.address.city !== 'Asheville',
           },
-          () => { setUserPreference(); this.props.onPrefSaved(); }
+          () => { setUserPreference(); this.props.onPrefSaved(this.state.selectedAddress); }
         );
       }
     );
@@ -103,8 +107,8 @@ class SelectLocation extends React.Component {
     });
   }
 
-  handlePossibilityClick(possibility, setUserPreference) {
-    // If there was more than one possible address, handle the user selection between those
+  handlePossibilitySelect(possibility, setUserPreference) {
+    // Handle dropdown select event... should probably user test
     this.setState(
       {
         addressCoords: { lat: possibility.y, lon: possibility.x },
@@ -112,7 +116,7 @@ class SelectLocation extends React.Component {
         addressInputText: possibility.address,
         addressOutsideCity: !possibility.is_in_city,
       },
-      () => { setUserPreference(); this.props.onPrefSaved(); }
+      () => { setUserPreference(); this.props.onPrefSaved(this.state.selectedAddress); }
     );
   }
 
@@ -161,6 +165,7 @@ class SelectLocation extends React.Component {
                 />
               </label>
             </div>
+            {this.state.addressOutsideCity && <div style={{ display: 'block', margin: '1rem 0 0' }} className="alert-danger">The selected address is outside the City of Asheville's permitting jurisdiction.  You may still receive notifications for proposed development in Asheville depending on the options you select below.</div>}
             {!this.state.selectedAddress && this.state.addressInputText.length > 3 && (
               <Query
                 query={ADDRESS_SEARCH_QUERY}
@@ -180,7 +185,7 @@ class SelectLocation extends React.Component {
                         className="possibilities-container"
                         onChange={(e) => {
                           if (!e.target.value) { return; }
-                          this.handlePossibilityClick(
+                          this.handlePossibilitySelect(
                             possibilities[e.nativeEvent.target.selectedIndex - 1],
                             setUserPreference
                           );

@@ -15,6 +15,13 @@ const radiusMilesOpts = [
   'whole city',
 ];
 
+const tagTranslation = {
+  Minor: 'Minor development (Level I)',
+  Major: 'Major development (Level II, Major Subdivision, Conditional Zoning, Conditional Use)',
+  Affordable: 'Affordable housing included in initial proposal',
+  Slope: 'Proposed in an area with a steep slope',
+};
+
 class Categories extends React.Component {
   constructor(props) {
     super(props);
@@ -34,7 +41,7 @@ class Categories extends React.Component {
       const thisSubIndex = subscriptions.findIndex(d => d.tag.id === tag.id);
       subscriptions.splice(thisSubIndex, 1);
     }
-    this.setState({ subscriptions }, () => { setUserPreference(); this.props.onPrefSaved(); });
+    this.setState({ subscriptions }, () => { setUserPreference(); this.props.onPrefSaved(tagTranslation[tag.name]); });
   }
 
   handleDropdownChange(tag, selectedValue, setUserPreference) {
@@ -57,7 +64,7 @@ class Categories extends React.Component {
     }
     subscriptions.splice(thisSubIndex, 1);
     subscriptions.push(newSub);
-    this.setState({ subscriptions }, () => { setUserPreference(); this.props.onPrefSaved(); });
+    this.setState({ subscriptions }, () => { setUserPreference(); this.props.onPrefSaved(tagTranslation[tag.name]); });
   }
 
   render() {
@@ -101,19 +108,24 @@ class Categories extends React.Component {
                           }
                           return (
                             <li key={tag.id} className="tag-item">
-                              <input
-                                type="checkbox"
-                                name={tag.name}
-                                value={tag.id}
-                                checked={userSub !== undefined}
-                                onChange={e => this.handleBoxCheck(
-                                  tag,
-                                  e.target.checked,
-                                  setUserPreference
-                                )}
-                              />
-                              <span>{tag.name}</span>
+                              <div className="inline-selectors">
+                                <input
+                                  type="checkbox"
+                                  name={tagTranslation[tag.name]}
+                                  value={tag.name}
+                                  aria-labelledby={tag.name}
+                                  checked={userSub !== undefined}
+                                  onChange={e => this.handleBoxCheck(
+                                    tag,
+                                    e.target.checked,
+                                    setUserPreference
+                                  )}
+                                />
+                                <span className="inline-selectors">
+                                  <label id={tag.name}>{tagTranslation[tag.name]}</label></span>
+                              </div>
                               <select
+                                className="inline-selectors"
                                 defaultValue={userPreference}
                                 disabled={userSub === undefined}
                                 onChange={e => this.handleDropdownChange(
