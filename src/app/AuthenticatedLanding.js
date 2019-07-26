@@ -72,6 +72,7 @@ class AuthenticatedLanding extends React.Component {
                   </div>
                   <div className="step-content">
                     <div className="list-item-title">Choose which notifications you want to get</div>
+                    <div style={{ fontStyle: 'italic', fontSize: '0.85rem', padding: '0.15em 0' }}><a href="https://simplicity.ashevillenc.gov/development/major#types" target="_blank" rel="noopener noreferrer">Visit the large scale development dashboard</a> to learn more about what these categories mean</div>
                     <Categories
                       email={this.props.userData.user.email}
                       userPreference={data.user_preference}
