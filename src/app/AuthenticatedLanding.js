@@ -58,7 +58,7 @@ class AuthenticatedLanding extends React.Component {
                   <div className="step-content">
                     <div className="list-item-title">Choose a location</div>
                     {/* eslint-disable-next-line */}
-                    <p>Click on the map or type to choose any address in the City of Asheville-- work, home, or somewhere else.</p>
+                    <p>Click on the map or type to choose any address in the City of Asheville&mdash;work, home, or somewhere else.</p>
                     <SelectLocation
                       email={this.props.userData.user.email}
                       userPreference={data.user_preference}
