@@ -165,6 +165,7 @@ class SelectLocation extends React.Component {
                 />
               </label>
             </div>
+            {this.state.addressOutsideCity && <div style={{ display: 'block', margin: '1rem 0 0' }} className="alert-danger">The selected address is outside the City of Asheville's permitting jurisdiction.  You may still receive notifications for proposed development in Asheville depending on the options you select below.</div>}
             {!this.state.selectedAddress && this.state.addressInputText.length > 3 && (
               <Query
                 query={ADDRESS_SEARCH_QUERY}
