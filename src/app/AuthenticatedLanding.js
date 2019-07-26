@@ -12,13 +12,13 @@ import 'app/styles/components/AuthenticatedLanding.scss';
 class AuthenticatedLanding extends React.Component {
   constructor() {
     super();
-    this.state = { prefSavedShowing: false };
+    this.state = { prefSavedShowing: false, prefSavedText: null };
     this.showPrefSaved = this.showPrefSaved.bind(this);
     this.hidePrefSaved = this.hidePrefSaved.bind(this);
   }
 
-  showPrefSaved() {
-    this.setState({ prefSavedShowing: true });
+  showPrefSaved(text = null) {
+    this.setState({ prefSavedShowing: true, prefSavedText: text });
   }
 
   hidePrefSaved() {
@@ -58,7 +58,7 @@ class AuthenticatedLanding extends React.Component {
                   <div className="step-content">
                     <div className="list-item-title">Choose a location</div>
                     {/* eslint-disable-next-line */}
-                    <p>Click on the map or type to choose any address in the City of Asheville-- work, home, or somewhere else.</p>
+                    <p>Click on the map or type to choose any address in the City of Asheville&mdash;work, home, or somewhere else.</p>
                     <SelectLocation
                       email={this.props.userData.user.email}
                       userPreference={data.user_preference}
@@ -72,6 +72,7 @@ class AuthenticatedLanding extends React.Component {
                   </div>
                   <div className="step-content">
                     <div className="list-item-title">Choose which notifications you want to get</div>
+                    <div style={{ fontStyle: 'italic', fontSize: '0.85rem', padding: '0.15em 0' }}><a href="https://simplicity.ashevillenc.gov/development/major#types" target="_blank" rel="noopener noreferrer">Visit the large scale development dashboard</a> to learn more about what these categories mean</div>
                     <Categories
                       email={this.props.userData.user.email}
                       userPreference={data.user_preference}
@@ -84,7 +85,7 @@ class AuthenticatedLanding extends React.Component {
               {this.state.prefSavedShowing && (
                 <div id="pref-saved">
                   <div className="text" aria-live="polite" role="region">
-                    Preference saved
+                    {`Preference saved${this.state.prefSavedText ? `: ${this.state.prefSavedText}` : ''}`}
                     <button className="close" type="button" onClick={this.hidePrefSaved}>&#10006;</button>
                   </div>
                 </div>
