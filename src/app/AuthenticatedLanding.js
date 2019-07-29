@@ -84,8 +84,10 @@ class AuthenticatedLanding extends React.Component {
               <NoEmergencyAlertsNotice />
               {this.state.prefSavedShowing && (
                 <div id="pref-saved">
-                  <div className="text" aria-live="polite" role="region">
-                    {`Preference saved${this.state.prefSavedText ? `: ${this.state.prefSavedText}` : ''}`}
+                  <div id="inner-content" aria-live="polite" role="region">
+                    <div className="text" aria-live="polite" role="region">
+                      {`Preference saved${this.state.prefSavedText ? `: ${this.state.prefSavedText}` : ''}`}
+                    </div>
                     <button className="close" type="button" onClick={this.hidePrefSaved}>&#10006;</button>
                   </div>
                 </div>
