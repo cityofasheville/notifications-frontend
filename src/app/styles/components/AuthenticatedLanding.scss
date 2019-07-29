@@ -48,6 +48,10 @@
   color: green;
 }
 
+fieldset {
+  border: 1px solid transparent;
+}
+
 #authenticated-landing > ul > li {
   display: flex;
 }

@@ -45,18 +45,18 @@ class AuthenticatedLanding extends React.Component {
                   <div className="puck-container">
                     <TextPuck text="1" />
                   </div>
-                  <div className="step-content">
-                    <div className="list-item-title">Confirm email</div>
+                  <fieldset className="step-content">
+                    <legend className="list-item-title">Confirm email</legend>
                     {/* eslint-disable-next-line */}
                     <p>You are logged in as {this.props.userData.user.email}.  <a href={config.logoutURL}>Not you?</a></p>
-                  </div>
+                  </fieldset>
                 </li>
                 <li>
                   <div className="puck-container">
                     <TextPuck text="2" />
                   </div>
-                  <div className="step-content">
-                    <div className="list-item-title">Choose a location</div>
+                  <fieldset className="step-content">
+                    <legend className="list-item-title">Choose a location</legend>
                     {/* eslint-disable-next-line */}
                     <p>Click on the map or type to choose any address in the City of Asheville&mdash;work, home, or somewhere else.</p>
                     <SelectLocation
@@ -64,21 +64,21 @@ class AuthenticatedLanding extends React.Component {
                       userPreference={data.user_preference}
                       onPrefSaved={this.showPrefSaved}
                     />
-                  </div>
+                  </fieldset>
                 </li>
                 <li>
                   <div className="puck-container">
                     <TextPuck text="3" />
                   </div>
-                  <div className="step-content">
-                    <div className="list-item-title">Choose which notifications you want to get</div>
+                  <fieldset className="step-content">
+                    <legend className="list-item-title">Choose which notifications you want to get</legend>
                     <div style={{ fontStyle: 'italic', fontSize: '0.85rem', padding: '0.15em 0' }}><a href="https://simplicity.ashevillenc.gov/development/major#types" target="_blank" rel="noopener noreferrer">Visit the large scale development dashboard</a> to learn more about what these categories mean</div>
                     <Categories
                       email={this.props.userData.user.email}
                       userPreference={data.user_preference}
                       onPrefSaved={this.showPrefSaved}
                     />
-                  </div>
+                  </fieldset>
                 </li>
               </ul>
               <NoEmergencyAlertsNotice />
