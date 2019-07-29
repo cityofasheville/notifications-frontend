@@ -12,6 +12,7 @@
   display: flex;
   justify-content: space-between;
   font-size: 1.15rem;
+  align-items: center;
 
   label {
     font-size: inherit;
@@ -22,15 +23,18 @@
   }
 
   .inline-selectors {
-    flex: 1;
     margin: 0.25rem;
   }
 }
 
 
-@media (max-width: 769px) {
+@media (max-width: 500px) {
   .tag-item {
     display: block;
     font-size: 1.15rem;
+  }
+
+  .inline-selectors {
+    width: 100%;
   }
 }
