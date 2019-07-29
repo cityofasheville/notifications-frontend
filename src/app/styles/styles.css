@@ -39,9 +39,9 @@ h1 {
 @media (max-width: 769px) {
   #content {
     min-height: 60vh;
-    width: 98vw;
-    margin-left: 1vw;
-    margin-top: 1rem;
+    padding: 1rem;
+    width: unset;
+    margin: 0 auto;
     font-size: 1.15em;
   }
 }

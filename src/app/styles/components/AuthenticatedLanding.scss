@@ -66,6 +66,11 @@
 }
 
 @media (max-width: 700px) {
+  .step-content {
+    width: unset;
+    margin: 0 auto;
+  }
+
   #authenticated-landing > ul > li {
     display: block;
   }
