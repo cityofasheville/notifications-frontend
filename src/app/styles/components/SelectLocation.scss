@@ -27,9 +27,7 @@ input {
 
 .SelectLocation-input {
   width: 100%;
-  width: -moz-available;          /* WebKit-based browsers will ignore this. */
-  width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
-  width: fill-available;
+  width: stretch;
   padding: 1rem 0.5rem 0.15rem 0.5rem;
   font-size: 1.15rem;
 }
