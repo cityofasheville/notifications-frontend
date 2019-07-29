@@ -10,6 +10,14 @@ input, select, textarea, button {
   font-family:inherit;
 }
 
+a {
+  color: inherit;
+}
+
+a:hover, a:focus {
+  color: #0088cc;
+}
+
 .text-green {
   color: rgb(96, 116, 37);
 }

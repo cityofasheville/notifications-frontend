@@ -1,14 +1,13 @@
 import React from 'react';
+import config from 'app/config';
 import NoEmergencyAlertsNotice from 'app/NoEmergencyAlertsNotice';
 
-const aboutMessage = 'This new application allows you to sign up for non-emergency notifications.  The pilot topic is large scale development.  If you have ideas about what you\'d like to see next, use our feedback form.';
 
 const About = () => (
   <div>
     <h1>About</h1>
     <p>
-      {aboutMessage}
-    </p>
+      This new application allows you to sign up for non-emergency notifications.  The pilot topic is large scale development.  If you have ideas about what you would like to see next, <a href={config.feedbackURL} target="_blank" rel="noopener noreferrer">use the feedback form to tell us</a>.</p>
     <NoEmergencyAlertsNotice />
   </div>
 );

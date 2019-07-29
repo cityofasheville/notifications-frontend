@@ -1,4 +1,5 @@
 import React from 'react';
+import config from 'app/config';
 import NoEmergencyAlertsNotice from 'app/NoEmergencyAlertsNotice';
 import TextPuck from 'app/TextPuck';
 import 'app/styles/components/UnauthenticatedLanding.scss';
@@ -32,7 +33,7 @@ const UnauthenticatedLanding = () => (
         </div>
         <div className="list-item-title">Choose which notifications you want to get</div>
         {/* eslint-disable-next-line */}
-        <p>This program is in its pilot phase.  Currently we offer notifications about new, large-scale permit applications only.  Tell us about your interests or what we can do to improve this tool.</p>
+        <p>This program is in its pilot phase.  Currently we offer notifications about new, large-scale development applications only.  <a href={config.feedbackURL} rel="noopener noreferrer" target="_blank">Tell us what we can do to improve this tool.</a></p>
       </li>
     </ul>
     <NoEmergencyAlertsNotice />
