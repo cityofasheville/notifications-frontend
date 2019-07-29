@@ -80,6 +80,7 @@ class AuthenticatedLanding extends React.Component {
                     />
                   </fieldset>
                 </li>
+                <li><div style={{ padding: '1rem', color: 'white', backgroundColor: '#0088cc', fontWeight: '700', borderRadius: '6px' }}>How did we do?  Was this form easy to use?  Got an idea that would improve it?  <a href={config.feedbackURL} target="_blank" rel="noopener noreferrer">Please give us feedback!</a></div></li>
               </ul>
               <NoEmergencyAlertsNotice />
               {this.state.prefSavedShowing && (
