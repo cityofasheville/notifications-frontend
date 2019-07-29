@@ -110,6 +110,7 @@ class Categories extends React.Component {
                             <li key={tag.id} className="tag-item">
                               <div className="inline-selectors">
                                 <input
+                                  id={`input-${tag.name}`}
                                   type="checkbox"
                                   name={tagTranslation[tag.name]}
                                   value={tag.name}
@@ -122,7 +123,10 @@ class Categories extends React.Component {
                                   )}
                                 />
                                 <span className="inline-selectors">
-                                  <label id={tag.name}>{tagTranslation[tag.name]}</label></span>
+                                  <label id={tag.name} htmlFor={`input-${tag.name}`}>
+                                    {tagTranslation[tag.name]}
+                                  </label>
+                                </span>
                               </div>
                               <select
                                 className="inline-selectors"
