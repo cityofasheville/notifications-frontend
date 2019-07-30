@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 
+
 export const CREATE_USER_PREFERENCE = gql`
   mutation createUserPreference(
     $user_preference: UserPreferenceInput!,

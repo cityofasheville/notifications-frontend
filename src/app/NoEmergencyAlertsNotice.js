@@ -1,5 +1,6 @@
 import React from 'react';
 
+
 const NoEmergencyAlertsNotice = () => (
   <p className="alert-danger" style={{ textAlign: 'center' }}>
     {/* eslint-disable-next-line */}

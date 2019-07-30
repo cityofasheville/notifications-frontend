@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Mutation, Query } from 'react-apollo';
 import { CREATE_USER_PREFERENCE, UPDATE_USER_PREFERENCE } from 'app/mutations';
 import { CATEGORIES_QUERY } from 'app/queries';
@@ -41,7 +42,11 @@ class Categories extends React.Component {
       const thisSubIndex = subscriptions.findIndex(d => d.tag.id === tag.id);
       subscriptions.splice(thisSubIndex, 1);
     }
-    this.setState({ subscriptions }, () => { setUserPreference(); this.props.onPrefSaved(tagTranslation[tag.name]); });
+    this.setState({ subscriptions }, () => {
+      setUserPreference();
+      const { onPrefSaved } = this.props;
+      onPrefSaved(tagTranslation[tag.name]);
+    });
   }
 
   handleDropdownChange(tag, selectedValue, setUserPreference) {
@@ -64,17 +69,25 @@ class Categories extends React.Component {
     }
     subscriptions.splice(thisSubIndex, 1);
     subscriptions.push(newSub);
-    this.setState({ subscriptions }, () => { setUserPreference(); this.props.onPrefSaved(tagTranslation[tag.name]); });
+    this.setState({ subscriptions }, () => {
+      setUserPreference();
+      const { onPrefSaved } = this.props;
+      onPrefSaved(tagTranslation[tag.name]);
+    });
   }
 
   render() {
-    const mutation = this.props.userPreference ? UPDATE_USER_PREFERENCE : CREATE_USER_PREFERENCE;
-    const email = this.props.userPreference && this.props.userPreference.send_types ?
-      this.props.userPreference.send_types.find(typeObj => typeObj.type === 'EMAIL').email :
-      this.props.email;
+    const { userPreference } = this.props;
+    let { email } = this.props;
+    const { subscriptions } = this.state;
+    if (userPreference && userPreference.send_types) {
+      // Linter error because we can't reassign a variable by destructuring
+      email = userPreference.send_types.find(typeObj => typeObj.type === 'EMAIL').email;
+    }
+    const mutation = userPreference ? UPDATE_USER_PREFERENCE : CREATE_USER_PREFERENCE;
     const newUserPref = stripTypeNameFromObj(Object.assign(
-      this.props.userPreference || { send_types: { type: 'EMAIL', email }},
-      { subscriptions: this.state.subscriptions }
+      userPreference || { send_types: { type: 'EMAIL', email } },
+      { subscriptions }
     ));
     return (
       <Query
@@ -99,12 +112,12 @@ class Categories extends React.Component {
                       )}
                       <ul className="tags-list">
                         {cat.tags && cat.tags.map((tag) => {
-                          const userSub = this.state.subscriptions ?
-                            this.state.subscriptions.find(sub => sub.tag.id === tag.id) : undefined;
-                          let userPreference = 'whole city';
+                          const userSub = subscriptions
+                            ? subscriptions.find(sub => sub.tag.id === tag.id) : undefined;
+                          let scopePreference = 'whole city';
                           if (userSub) {
-                            userPreference = userSub.whole_city ?
-                              'whole city' : userSub.radius_miles;
+                            scopePreference = userSub.whole_city
+                              ? 'whole city' : userSub.radius_miles;
                           }
                           return (
                             <li key={tag.id} className="tag-item">
@@ -130,7 +143,7 @@ class Categories extends React.Component {
                               </div>
                               <select
                                 className="inline-selectors"
-                                defaultValue={userPreference}
+                                defaultValue={scopePreference}
                                 disabled={userSub === undefined}
                                 onChange={e => this.handleDropdownChange(
                                   tag,
@@ -162,5 +175,52 @@ class Categories extends React.Component {
     );
   }
 }
+
+Categories.propTypes = {
+  userPreference: PropTypes.shape({
+    id: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+    location_x: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+    location_y: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+    send_types: PropTypes.arrayOf(PropTypes.shape({
+      type: PropTypes.string,
+      email: PropTypes.string,
+    })),
+    subscriptions: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+      ]),
+      radius_miles: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+      ]),
+      whole_city: PropTypes.bool,
+      tag: PropTypes.shape({
+        id: PropTypes.oneOfType([
+          PropTypes.string,
+          PropTypes.number,
+        ]),
+        name: PropTypes.string,
+      }),
+    })),
+  }),
+  email: PropTypes.string,
+  onPrefSaved: PropTypes.func,
+};
+
+Categories.defaultProps = {
+  userPreference: null,
+  email: null,
+  onPrefSaved: () => null,
+};
 
 export default Categories;

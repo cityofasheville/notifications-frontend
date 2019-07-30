@@ -1,8 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Mutation } from 'react-apollo';
 import { DELETE_USER_PREFERENCE } from 'app/mutations';
 import ErrorBoundary from 'template/shared/ErrorBoundary';
 import NoEmergencyAlertsNotice from 'app/NoEmergencyAlertsNotice';
+
 
 class DoMutation extends React.Component {
   // Trigger a mutation as soon as a user lands on the page rather than making them click something
@@ -17,7 +19,13 @@ class DoMutation extends React.Component {
   }
 }
 
-class Unsubscribe  extends React.Component {
+DoMutation.propTypes = {
+  mutate: PropTypes.func.isRequired,
+  onFinish: PropTypes.func.isRequired,
+};
+
+
+class Unsubscribe extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -41,19 +49,22 @@ class Unsubscribe  extends React.Component {
 
           if (error || (data && data.deleteUserPreferenceSecure && data.deleteUserPreferenceSecure.error)) return <div className="alert-danger">Error :(</div>;
 
-          const deletedEmail = data && data.deleteUserPreferenceSecure ? data.deleteUserPreferenceSecure.deletedEmail : null;
-
+          const deletedEmail = data && data.deleteUserPreferenceSecure
+            ? data.deleteUserPreferenceSecure.deletedEmail : null;
+          const { unsubscribeMutationSent } = this.state;
           return (
             <ErrorBoundary>
               <div className="landing">
-                {!this.state.unsubscribeMutationSent && <DoMutation mutate={deleteUserPreference} onFinish={this.updateUnsubscribed} />}
-                {!this.state.unsubscribeMutationSent && <div>Unsubscribing...</div>}
-                {this.state.unsubscribeMutationSent && (
+                {!unsubscribeMutationSent && (
+                  <DoMutation mutate={deleteUserPreference} onFinish={this.updateUnsubscribed} />
+                )}
+                {!unsubscribeMutationSent && <div>Unsubscribing...</div>}
+                {unsubscribeMutationSent && (
                   <React.Fragment>
                     <h1>
                       Unsubscribed
                     </h1>
-                    <p>{`You have unsubscribed ${deletedEmail ?  `${deletedEmail} ` : ''}from all notifications.  Log in to change preferences.`}</p>
+                    <p>{`You have unsubscribed ${deletedEmail ? `${deletedEmail} ` : ''}from all notifications.  Log in to change preferences.`}</p>
                     <NoEmergencyAlertsNotice />
                   </React.Fragment>
                 )}

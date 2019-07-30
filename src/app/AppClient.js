@@ -6,6 +6,7 @@ import ApolloClient from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createHttpLink } from 'apollo-link-http';
 
+
 let NOTIFICATIONS_SERVER_URL = 'https://notify-api.ashevillenc.gov/graphql';
 if (
   window.location.origin.indexOf('dev') > -1

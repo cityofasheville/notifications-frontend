@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 
 const TextPuck = ({ text }) => (
   <svg height="50" width="50">
@@ -20,5 +22,13 @@ const TextPuck = ({ text }) => (
     </text>
   </svg>
 );
+
+TextPuck.propTypes = {
+  text: PropTypes.string,
+};
+
+TextPuck.defaultProps = {
+  text: '',
+};
 
 export default TextPuck;

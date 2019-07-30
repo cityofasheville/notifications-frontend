@@ -5,6 +5,7 @@ import UnauthenticatedLanding from 'app/UnauthenticatedLanding';
 import AuthenticatedLanding from 'app/AuthenticatedLanding';
 import 'app/styles/components/Home.scss';
 
+
 const Home = ({ history }) => {
   const loggedIn = localStorage.getItem('loggedIn') === 'true';
   return (
@@ -16,7 +17,7 @@ const Home = ({ history }) => {
         if (loading) return null;
         if (error) return <div className="alert-danger">Login Unavailable</div>;
         if (loggedIn && data && data.user && data.user.email) {
-          return <AuthenticatedLanding userData={data} />;
+          return <AuthenticatedLanding email={data.user.email} />;
         }
         if (loggedIn) {
           // If it's logged in but there's no email address, set it to false
