@@ -17,7 +17,7 @@ class DoMutation extends React.Component {
   }
 }
 
-class Unsubscribe  extends React.Component {
+class Unsubscribe extends React.Component {
   constructor() {
     super();
     this.state = {
