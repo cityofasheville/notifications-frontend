@@ -19,38 +19,40 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       // You can render any custom fallback UI
-      return (<div className="alert alert-danger alert-sm">
-        <p>
-          There was an error.&nbsp;
-          {config.hasFeedbackForm
-            && (
-              <span>
-                You may report issues using&nbsp;
-                <a
-                  href={config.feedbackURL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ color: '#fff', textDecoration: 'underline' }}
-                >
-                  this form
-                </a>
-                .
-              </span>
-            )
-          }
-          {!config.hasFeedbackForm && (
-            <span>Please report issues to help@ashevillenc.gov.</span>
-          )}
-        </p>
-        <p>
-          Time:&nbsp;
-          {moment().format('M/DD/YYYY HH:mm:ss Z')}
-          &nbsp;UTC
-        </p>
-      </div>)
+      return (
+        <div className="alert alert-danger alert-sm">
+          <p>
+            There was an error.&nbsp;
+            {config.hasFeedbackForm
+              && (
+                <span>
+                  You may report issues using&nbsp;
+                  <a
+                    href={config.feedbackURL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: '#fff', textDecoration: 'underline' }}
+                  >
+                    this form
+                  </a>
+                  .
+                </span>
+              )
+            }
+            {!config.hasFeedbackForm && (
+              <span>Please report issues to help@ashevillenc.gov.</span>
+            )}
+          </p>
+          <p>
+            Time:&nbsp;
+            {moment().format('M/DD/YYYY HH:mm:ss Z')}
+            &nbsp;UTC
+          </p>
+        </div>
+      );
     }
     return this.props.children;
   }
 }
 
-export default Error;
+export default ErrorBoundary;

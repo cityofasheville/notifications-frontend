@@ -31,5 +31,4 @@ City of Asheville applications should not fork but rather clone this project so 
 
 ## To merge changes in this project into another project
 1. git fetch upstream
-1. git checkout master
-1. git merge upstream/master
+1. git merge upstream/master --strategy-option theirs
