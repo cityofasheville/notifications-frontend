@@ -29,6 +29,7 @@ class AuthenticatedLanding extends React.Component {
 
   render() {
     const { email } = this.props;
+    const { prefSavedText, prefSavedShowing } = this.state;
     return (
       <Query
         query={GET_USER_PREFERENCES}
@@ -80,6 +81,7 @@ class AuthenticatedLanding extends React.Component {
                     </div>
                     <fieldset className="step-content">
                       <legend className="list-item-title">Choose which notifications you want to get</legend>
+                      {/* eslint-disable-next-line */}
                       <div style={{ fontStyle: 'italic', fontSize: '0.85rem', padding: '0.15em 0' }}><a href="https://simplicity.ashevillenc.gov/development/major#types" target="_blank" rel="noopener noreferrer">Visit the large scale development dashboard</a> to learn more about what these categories mean</div>
                       <Categories
                         email={email}
@@ -89,14 +91,27 @@ class AuthenticatedLanding extends React.Component {
                     </fieldset>
                   </ErrorBoundary>
                 </li>
-                <li><div style={{ padding: '1rem', color: 'white', backgroundColor: '#0088cc', fontWeight: '700', borderRadius: '6px' }}>How did we do?  Was this form easy to use?  Got an idea that would improve it?  <a href={config.feedbackURL} target="_blank" rel="noopener noreferrer">Please give us feedback!</a></div></li>
+                <li>
+                  <div
+                    style={{
+                      padding: '1rem',
+                      color: 'white',
+                      backgroundColor: '#0088cc',
+                      fontWeight: '700',
+                      borderRadius: '6px',
+                    }}
+                  >
+                    {/* eslint-disable-next-line */}
+                    How did we do?  Was this form easy to use?  Got an idea that would improve it?  <a href={config.feedbackURL} target="_blank" rel="noopener noreferrer">Please give us feedback!</a>
+                  </div>
+                </li>
               </ul>
               <NoEmergencyAlertsNotice />
-              {this.state.prefSavedShowing && (
+              {prefSavedShowing && (
                 <div id="pref-saved">
                   <div id="inner-content" aria-live="polite" role="region">
                     <div className="text" aria-live="polite" role="region">
-                      {`Preference saved${this.state.prefSavedText ? `: ${this.state.prefSavedText}` : ''}`}
+                      {`Preference saved${prefSavedText ? `: ${prefSavedText}` : ''}`}
                     </div>
                     <button className="close" type="button" onClick={this.hidePrefSaved}>&#10006;</button>
                   </div>
