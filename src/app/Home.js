@@ -16,7 +16,7 @@ const Home = ({ history }) => {
         if (loading) return null;
         if (error) return <div className="alert-danger">Login Unavailable</div>;
         if (loggedIn && data && data.user && data.user.email) {
-          return <AuthenticatedLanding userData={data} />;
+          return <AuthenticatedLanding email={data.user.email} />;
         }
         if (loggedIn) {
           // If it's logged in but there's no email address, set it to false

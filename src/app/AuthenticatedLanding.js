@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import config from 'app/config';
 import ErrorBoundary from 'template/shared/ErrorBoundary';
@@ -27,10 +28,11 @@ class AuthenticatedLanding extends React.Component {
   }
 
   render() {
+    const { email } = this.props;
     return (
       <Query
         query={GET_USER_PREFERENCES}
-        variables={{ email: this.props.userData.user.email }}
+        variables={{ email }}
         fetchPolicy="network-only"
       >
         {({ loading, error, data }) => {
@@ -50,7 +52,7 @@ class AuthenticatedLanding extends React.Component {
                     <fieldset className="step-content">
                       <legend className="list-item-title">Confirm email</legend>
                       {/* eslint-disable-next-line */}
-                      <p>You are logged in as {this.props.userData.user.email}.  <a href={config.logoutURL}>Not you?</a></p>
+                      <p>You are logged in as {email}.  <a href={config.logoutURL}>Not you?</a></p>
                     </fieldset>
                   </ErrorBoundary>
                 </li>
@@ -64,7 +66,7 @@ class AuthenticatedLanding extends React.Component {
                       {/* eslint-disable-next-line */}
                       <p>Click on the map or type to choose any address in the City of Asheville&mdash;work, home, or somewhere else.</p>
                       <SelectLocation
-                        email={this.props.userData.user.email}
+                        email={email}
                         userPreference={data.user_preference}
                         onPrefSaved={this.showPrefSaved}
                       />
@@ -80,7 +82,7 @@ class AuthenticatedLanding extends React.Component {
                       <legend className="list-item-title">Choose which notifications you want to get</legend>
                       <div style={{ fontStyle: 'italic', fontSize: '0.85rem', padding: '0.15em 0' }}><a href="https://simplicity.ashevillenc.gov/development/major#types" target="_blank" rel="noopener noreferrer">Visit the large scale development dashboard</a> to learn more about what these categories mean</div>
                       <Categories
-                        email={this.props.userData.user.email}
+                        email={email}
                         userPreference={data.user_preference}
                         onPrefSaved={this.showPrefSaved}
                       />
@@ -107,5 +109,9 @@ class AuthenticatedLanding extends React.Component {
     );
   }
 }
+
+AuthenticatedLanding.propTypes = {
+  email: PropTypes.string.isRequired,
+};
 
 export default AuthenticatedLanding;
