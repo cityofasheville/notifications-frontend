@@ -5,6 +5,7 @@ import UnauthenticatedLanding from 'app/UnauthenticatedLanding';
 import AuthenticatedLanding from 'app/AuthenticatedLanding';
 import 'app/styles/components/Home.scss';
 
+
 const Home = ({ history }) => {
   const loggedIn = localStorage.getItem('loggedIn') === 'true';
   return (

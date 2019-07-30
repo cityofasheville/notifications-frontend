@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+
 const TextPuck = ({ text }) => (
   <svg height="50" width="50">
     <circle r="25" cx="25" cy="25" fill="#0088cc" />

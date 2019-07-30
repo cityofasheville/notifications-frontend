@@ -5,6 +5,7 @@ import ErrorBoundary from 'template/shared/ErrorBoundary';
 import TextPuck from 'app/TextPuck';
 import 'app/styles/components/UnauthenticatedLanding.scss';
 
+
 const UnauthenticatedLanding = () => (
   <div id="unauthenticated-landing" className="landing">
     <h1>
