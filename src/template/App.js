@@ -7,6 +7,7 @@ import client from 'app/AppClient';
 import config from 'app/config';
 import mainRoutes from 'app/mainRoutes';
 import AppTitle from 'template/AppTitle';
+import ErrorBoundary from 'template/shared/ErrorBoundary';
 import Footer from 'template/Footer';
 import LanguageProvider from 'template/LanguageContext';
 import Navbar from 'template/Navbar';
@@ -21,7 +22,9 @@ const App = () => (
           <Navbar />
         </header>
         <main className="container" id="content">
-          {mainRoutes}
+          <ErrorBoundary>
+            {mainRoutes}
+          </ErrorBoundary>
         </main>
         {config.footer && <Footer />}
       </LanguageProvider>
