@@ -37,6 +37,10 @@ a:focus {
   font-size: 1.15rem;
 }
 
+.alert-danger a {
+  color: inherit !important;
+}
+
 h1 {
   text-align: center;
 }
