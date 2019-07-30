@@ -6,51 +6,57 @@ import moment from 'moment';
 import config from 'app/config';
 
 class ErrorBoundary extends React.Component {
-  constructor() {
-    super();
-    this.state = { hasError: false };
+  constructor(props) {
+    super(props);
+    this.state = { error: null, errorInfo: null };
   }
 
-  static getDerivedStateFromError(error) {
-    // Update state so the next render will show the fallback UI.
-    return { hasError: true };
+  componentDidCatch(error, errorInfo) {
+    // Catch errors in any components below and re-render with error message
+    this.setState({
+      error,
+      errorInfo,
+    })
+    // You can also log error messages to an error reporting service here
   }
 
   render() {
-    if (this.state.hasError) {
+    if (this.state.errorInfo) {
       // You can render any custom fallback UI
-      return (<div className="alert alert-danger alert-sm">
-        <p>
-          There was an error.&nbsp;
-          {config.hasFeedbackForm
-            && (
-              <span>
-                You may report issues using&nbsp;
-                <a
-                  href={config.feedbackURL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ color: '#fff', textDecoration: 'underline' }}
-                >
-                  this form
-                </a>
-                .
-              </span>
-            )
-          }
-          {!config.hasFeedbackForm && (
-            <span>Please report issues to help@ashevillenc.gov.</span>
-          )}
-        </p>
-        <p>
-          Time:&nbsp;
-          {moment().format('M/DD/YYYY HH:mm:ss Z')}
-          &nbsp;UTC
-        </p>
-      </div>)
+      return (
+        <div className="alert alert-danger alert-sm">
+          <p>
+            There was an error.&nbsp;
+            {config.hasFeedbackForm
+              && (
+                <span>
+                  You may report issues using&nbsp;
+                  <a
+                    href={config.feedbackURL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: '#fff', textDecoration: 'underline' }}
+                  >
+                    this form
+                  </a>
+                  .
+                </span>
+              )
+            }
+            {!config.hasFeedbackForm && (
+              <span>Please report issues to help@ashevillenc.gov.</span>
+            )}
+          </p>
+          <p>
+            Time:&nbsp;
+            {moment().format('M/DD/YYYY HH:mm:ss Z')}
+            &nbsp;UTC
+          </p>
+        </div>
+      );
     }
     return this.props.children;
   }
 }
 
-export default Error;
+export default ErrorBoundary;
