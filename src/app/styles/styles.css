@@ -10,6 +10,17 @@ input, select, textarea, button {
   font-family:inherit;
 }
 
+a {
+  color: inherit;
+  border: 2px solid transparent;
+  border-radius: 2px;
+  padding: 0.1rem;
+}
+
+a:focus {
+  border: 2px solid orange;
+}
+
 .text-green {
   color: rgb(96, 116, 37);
 }
@@ -24,6 +35,10 @@ input, select, textarea, button {
   margin-left: 15vw;
   margin-top: 2rem;
   font-size: 1.15rem;
+}
+
+.alert-danger a {
+  color: inherit !important;
 }
 
 h1 {
