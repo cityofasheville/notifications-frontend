@@ -20,13 +20,13 @@ class Unsubscribe  extends React.Component {
   constructor() {
     super();
     this.state = {
-      unsubscribed: false,
+      unsubscribeMutationSent: false,
     };
     this.updateUnsubscribed = this.updateUnsubscribed.bind(this);
   }
 
   updateUnsubscribed() {
-    this.setState({ unsubscribed: true });
+    this.setState({ unsubscribeMutationSent: true });
   }
 
   render() {
@@ -37,15 +37,24 @@ class Unsubscribe  extends React.Component {
       >
         {(deleteUserPreference, { loading, error, data }) => {
           if (loading) return <div>Loading...</div>;
-          if (error || (data && data.error)) return <div className="alert-danger">Error :(</div>;
+
+          if (error || (data && data.deleteUserPreferenceSecure && data.deleteUserPreferenceSecure.error)) return <div className="alert-danger">Error :(</div>;
+
+          const deletedEmail = data && data.deleteUserPreferenceSecure ? data.deleteUserPreferenceSecure.deletedEmail : null;
+
           return (
             <div className="landing">
-              {!this.state.unsubscribed && <DoMutation mutate={deleteUserPreference} onFinish={this.updateUnsubscribed} />}
-              <h1>
-                Unsubscribed
-              </h1>
-              <p>{`You have unsubscribed ${data && data.email ?  `${data.email} ` : ''}from all notifications.  Log in to change preferences.`}</p>
-              <NoEmergencyAlertsNotice />
+              {!this.state.unsubscribeMutationSent && <DoMutation mutate={deleteUserPreference} onFinish={this.updateUnsubscribed} />}
+              {!this.state.unsubscribeMutationSent && <div>Unsubscribing...</div>}
+              {this.state.unsubscribeMutationSent && (
+                <React.Fragment>
+                  <h1>
+                    Unsubscribed
+                  </h1>
+                  <p>{`You have unsubscribed ${deletedEmail ?  `${deletedEmail} ` : ''}from all notifications.  Log in to change preferences.`}</p>
+                  <NoEmergencyAlertsNotice />
+                </React.Fragment>
+              )}
             </div>
           );
         }}
