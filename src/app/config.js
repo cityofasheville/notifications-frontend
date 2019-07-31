@@ -89,6 +89,7 @@ const config = {
   // footer
   hasFeedbackForm: true,
   feedbackURL: 'https://forms.gle/ZqJY9U78V6VtpSC3A', // eslint-disable-line
+  useFeedbackForErrors: false,
   hasGitHubURL: true,
   gitHubURL: 'https://github.com/cityofasheville/notifications-frontend',
 
