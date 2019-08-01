@@ -44,7 +44,7 @@ const AuthControl = (props) => {
     >
       {({ loading, error, data }) => {
         if (loading) return null;
-        if (error) return <div className="alert-danger">Login Unavailable</div>;
+        if (error) return <a href="#" className="alert-danger" onClick={e => e.preventDefault()}>Login Unavailable</a>;
         if (loggedIn) {
           return (
             <a href={config.logoutURL}>{getText(true, language.language)}</a>

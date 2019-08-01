@@ -3,6 +3,7 @@
 *********************************************************************************************** */
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { withRouter } from "react-router";
 import config from 'app/config';
 import AuthControl from 'template/AuthControl';
 import { withLanguage } from 'template/LanguageContext';
@@ -64,7 +65,9 @@ class Navbar extends React.Component {
     if (config.langSwitcher) {
       position = { top: 0, right: 90 };
     }
-    position = {}
+    position = {};
+    const { location } = this.props;
+    const { pathname } = location;
     if (windowWidth > 600) {
       return (
         <div className="Navbar-container">
@@ -86,7 +89,7 @@ class Navbar extends React.Component {
                           href={item.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={item.active ? 'active' : ''}
+                          className={item.href === pathname ? 'active' : ''}
                           alt={this.translateMenuItem(item.defaultText)}
                           key={item.defaultText}
                         >
@@ -98,7 +101,7 @@ class Navbar extends React.Component {
                       <li key={item.defaultText}>
                         <Link
                           to={item.href}
-                          className={item.active ? 'active' : ''}
+                          className={item.href === pathname ? 'active' : ''}
                           alt={this.translateMenuItem(item.defaultText)}
                         >
                           {item.icon ? <Icon path={item.icon} size={24} />
@@ -147,7 +150,7 @@ class Navbar extends React.Component {
                             href={item.href}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={item.active ? 'active' : ''}
+                            className={item.href === pathname ? 'active' : ''}
                             alt={this.translateMenuItem(item.defaultText)}
                           >
                             {item.icon ? <Icon path={item.icon} size={24} />
@@ -156,7 +159,7 @@ class Navbar extends React.Component {
                         ) : (
                           <Link
                             to={item.href}
-                            className={item.active ? 'active' : ''}
+                            className={item.href === pathname ? 'active' : ''}
                             alt={this.translateMenuItem(item.defaultText)}
                           >
                             {item.icon ? <Icon path={item.icon} size={24} />
@@ -177,4 +180,4 @@ class Navbar extends React.Component {
   }
 }
 
-export default withLanguage(Navbar);
+export default withRouter(withLanguage(Navbar));

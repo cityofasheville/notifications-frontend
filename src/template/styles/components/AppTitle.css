@@ -11,7 +11,15 @@
   font-size: 2rem;
   font-weight: lighter;
   color: #325d81;
-  margin: 0;
+  margin: 2px;
+}
+
+.AppTitle-title #beta-indicator {
+  margin-left: 1rem;
+  padding: 0 1rem;
+  background-color: purple;
+  color: white;
+  border-radius: 8px;
 }
 
 .AppTitle-title:focus {

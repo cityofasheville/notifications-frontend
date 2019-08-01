@@ -15,6 +15,7 @@ const config = {
         text: 'Notifications',
       },
     ],
+    isBeta: true,
   },
   appIntro: {
     defaultText: 'City of Asheville, NC',
