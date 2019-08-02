@@ -18,7 +18,7 @@
 
 .Navbar-nav ul {
   list-style: none;
-  margin: 0;
+  margin: 2px 2px 2px 5px;
 }
 
 .Navbar-nav  li {

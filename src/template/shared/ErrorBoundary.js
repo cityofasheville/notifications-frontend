@@ -27,7 +27,7 @@ class ErrorBoundary extends React.Component {
         <div className="alert alert-danger alert-sm">
           <p>
             There was an error.&nbsp;
-            {config.hasFeedbackForm
+            {config.hasFeedbackForm && config.useFeedbackForErrors
               && (
                 <span>
                   You may report issues using&nbsp;
@@ -43,7 +43,7 @@ class ErrorBoundary extends React.Component {
                 </span>
               )
             }
-            {!config.hasFeedbackForm && (
+            {(!config.hasFeedbackForm || !config.useFeedbackForErrors) && (
               <span>Please report issues to help@ashevillenc.gov.</span>
             )}
           </p>

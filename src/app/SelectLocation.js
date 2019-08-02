@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import L from 'leaflet';
 import 'leaflet-control-geocoder';
 import { Mutation, Query } from 'react-apollo';
@@ -63,10 +64,13 @@ class SelectLocation extends React.Component {
     this.isItMountedYet = true;
     // Shady
 
-    if (!(this.props.userPreference && this.props.userPreference.location_y)) {
+    const { userPreference } = this.props;
+    const { addressCoords } = this.state;
+
+    if (!(userPreference && userPreference.location_y)) {
       return;
     }
-    getAddressFromCoords(this.state.addressCoords.lat, this.state.addressCoords.lon, (result) => {
+    getAddressFromCoords(addressCoords.lat, addressCoords.lon, (result) => {
       // Get the string from the coords to display in the text input box
       const resultAddressText = getNominatimAddressString(result);
       if (this.isItMountedYet) {
@@ -92,13 +96,18 @@ class SelectLocation extends React.Component {
             addressInputText: addressString,
             addressOutsideCity: result[0].properties.address.city !== 'Asheville',
           },
-          () => { setUserPreference(); this.props.onPrefSaved(this.state.selectedAddress); }
+          () => {
+            setUserPreference();
+            const { onPrefSaved } = this.props;
+            const { selectedAddress } = this.state;
+            onPrefSaved(selectedAddress);
+          }
         );
       }
     );
   }
 
-  handleAddressTyping(newVal, setUserPreference) {
+  handleAddressTyping(newVal) {
     // Update the state as the user types in the input box
     this.setState({
       addressOutsideCity: false,
@@ -116,7 +125,12 @@ class SelectLocation extends React.Component {
         addressInputText: possibility.address,
         addressOutsideCity: !possibility.is_in_city,
       },
-      () => { setUserPreference(); this.props.onPrefSaved(this.state.selectedAddress); }
+      () => {
+        setUserPreference();
+        const { onPrefSaved } = this.props;
+        const { selectedAddress } = this.state;
+        onPrefSaved(selectedAddress);
+      }
     );
   }
 
@@ -132,15 +146,24 @@ class SelectLocation extends React.Component {
   render() {
     // TODO: ERROR ABOUT THINGS OUTSIDE OF CITY LIMITS??
     // 'That location is not in Asheville. This application only sends alerts concerning developments within Asheville city limits. Please select a different address.';
-    const mutation = this.props.userPreference ? UPDATE_USER_PREFERENCE : CREATE_USER_PREFERENCE;
-    const email = this.props.userPreference && this.props.userPreference.send_types ?
-      this.props.userPreference.send_types.find(typeObj => typeObj.type === 'EMAIL').email :
-      this.props.email;
+    const { userPreference } = this.props;
+    let { email } = this.props;
+    const {
+      addressCoords,
+      addressInputText,
+      addressOutsideCity,
+      selectedAddress,
+    } = this.state;
+    if (userPreference && userPreference.send_types) {
+      // Linter error because we can't reassign a variable by destructuring
+      email = userPreference.send_types.find(typeObj => typeObj.type === 'EMAIL').email;
+    }
+    const mutation = userPreference ? UPDATE_USER_PREFERENCE : CREATE_USER_PREFERENCE;
     const newUserPref = stripTypeNameFromObj(Object.assign(
-      this.props.userPreference || { send_types: { type: 'EMAIL', email } },
+      userPreference || { send_types: { type: 'EMAIL', email } },
       {
-        location_y: this.state.addressCoords ? this.state.addressCoords.lat : undefined,
-        location_x: this.state.addressCoords ? this.state.addressCoords.lon : undefined,
+        location_y: addressCoords ? addressCoords.lat : undefined,
+        location_x: addressCoords ? addressCoords.lon : undefined,
       }
     ));
     return (
@@ -159,18 +182,18 @@ class SelectLocation extends React.Component {
                   id="address-input"
                   className="SelectLocation-input"
                   type="text"
-                  value={this.state.addressInputText}
+                  value={addressInputText}
                   onChange={e => this.handleAddressTyping(e.target.value, setUserPreference)}
                   onFocus={SelectLocation.handleFocus}
                 />
               </label>
             </div>
-            {this.state.addressOutsideCity && <div style={{ display: 'block', margin: '1rem 0 0' }} className="alert-danger">The selected address is outside the City of Asheville's permitting jurisdiction.  You may still receive notifications for proposed development in Asheville depending on the options you select below.</div>}
-            {!this.state.selectedAddress && this.state.addressInputText.length > 3 && (
+            {addressOutsideCity && <div style={{ display: 'block', margin: '1rem 0 0' }} className="alert-danger">The selected address is outside the City of Asheville&apos;s permitting jurisdiction.  You could still receive notifications for proposed development in Asheville depending on the options you select below.</div>}
+            {!selectedAddress && addressInputText.length > 3 && (
               <Query
                 query={ADDRESS_SEARCH_QUERY}
                 client={simpliCityClient}
-                variables={{ searchString: this.state.addressInputText }}
+                variables={{ searchString: addressInputText }}
               >
                 { ({ loading, error, data }) => {
                   if (loading) return <div>Loading...</div>;
@@ -211,9 +234,9 @@ class SelectLocation extends React.Component {
             )}
             <div>
               <Map
-                center={this.state.addressCoords ?
-                  [ this.state.addressCoords.lat, this.state.addressCoords.lon ] :
-                  [ 35.595385, -82.548808 ]
+                center={addressCoords
+                  ? [addressCoords.lat, addressCoords.lon]
+                  : [35.595385, -82.548808]
                 }
                 zoom={12}
                 onClick={e =>
@@ -223,9 +246,9 @@ class SelectLocation extends React.Component {
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                 />
-                {this.state.addressCoords && (
-                  <Marker position={[ this.state.addressCoords.lat, this.state.addressCoords.lon ]}>
-                    { this.state.selectedAddress && <Popup>{this.state.selectedAddress}</Popup> }
+                {addressCoords && (
+                  <Marker position={[addressCoords.lat, addressCoords.lon]}>
+                    { selectedAddress && <Popup>{selectedAddress}</Popup> }
                   </Marker>
                 )}
               </Map>
@@ -236,5 +259,34 @@ class SelectLocation extends React.Component {
     );
   }
 }
+
+SelectLocation.propTypes = {
+  userPreference: PropTypes.shape({
+    id: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+    location_x: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+    location_y: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+    send_types: PropTypes.arrayOf(PropTypes.shape({
+      type: PropTypes.string,
+      email: PropTypes.string,
+    })),
+  }),
+  email: PropTypes.string,
+  onPrefSaved: PropTypes.func,
+};
+
+SelectLocation.defaultProps = {
+  userPreference: null,
+  email: null,
+  onPrefSaved: () => null,
+};
 
 export default SelectLocation;
