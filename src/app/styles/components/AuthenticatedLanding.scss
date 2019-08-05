@@ -1,6 +1,6 @@
 #pref-saved {
   position: fixed;
-  top: 0;
+  bottom: 0;
   left: 0;
   width: 100%;
   background-color: green;
@@ -17,11 +17,11 @@
 
 @keyframes slidein {
   from {
-    top: -2rem;
+    bottom: -2rem;
   }
 
   to {
-    top: 0;
+    bottom: 0;
   }
 }
 

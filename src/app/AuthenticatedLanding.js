@@ -92,20 +92,27 @@ class AuthenticatedLanding extends React.Component {
                   </ErrorBoundary>
                 </li>
                 <li>
-                  <div
-                    style={{
-                      padding: '1rem',
-                      color: 'white',
-                      backgroundColor: '#0088cc',
-                      fontWeight: '700',
-                      borderRadius: '6px',
-                    }}
-                  >
-                    {/* eslint-disable-next-line */}
-                    How did we do?  Was this form easy to use?  Got an idea that would improve it?  <a href={config.feedbackURL} target="_blank" rel="noopener noreferrer">Please give us feedback!</a>
+                  <div className="puck-container">
+                    <TextPuck text="&#10003;" color="green" />
+                  </div>
+                  <div className="step-content">
+                    <div className="list-item-title">Preferences are saved automatically</div>
                   </div>
                 </li>
               </ul>
+              <div
+                style={{
+                  padding: '1rem',
+                  textAlign: 'center',
+                  color: 'white',
+                  backgroundColor: '#0088cc',
+                  fontWeight: '700',
+                  borderRadius: '6px',
+                }}
+              >
+                {/* eslint-disable-next-line */}
+                How did we do?  Was this form easy to use?  Got an idea that would improve it?  <a href={config.feedbackURL} target="_blank" rel="noopener noreferrer">Please give us feedback!</a>
+              </div>
               <NoEmergencyAlertsNotice />
               {prefSavedShowing && (
                 <div id="pref-saved">
