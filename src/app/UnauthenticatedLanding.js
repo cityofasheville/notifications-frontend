@@ -21,7 +21,7 @@ const UnauthenticatedLanding = () => (
           </div>
           <div className="list-item-title">Log in or make an account</div>
           {/* eslint-disable-next-line */}
-          <p>Log in with Google or create a new account.  Use the same or a different email address than the one you use for other city applications.  This data is kept separately to protect your privacy.</p>
+          <p><a href={config.loginURL}>Log in with Google or create an account with any email address.</a>  The information you provide <a href="/about">may be subject to public records requests</a>.</p>
         </ErrorBoundary>
       </li>
       <li>
@@ -30,7 +30,7 @@ const UnauthenticatedLanding = () => (
             <TextPuck text="2" />
           </div>
           <div className="list-item-title">Choose a location</div>
-          <p>Enter any address in the City of Asheville-- work or home or somewhere else.</p>
+          <p>Enter any address in the City of Asheville&mdash;work, home, or somewhere else.</p>
         </ErrorBoundary>
       </li>
       <li>
@@ -40,10 +40,12 @@ const UnauthenticatedLanding = () => (
           </div>
           <div className="list-item-title">Choose which notifications you want to get</div>
           {/* eslint-disable-next-line */}
-          <p>This program is in its pilot phase.  Currently we offer notifications about new, large-scale development applications only.  <a href={config.feedbackURL} rel="noopener noreferrer" target="_blank">Tell us what we can do to improve this tool.</a></p>
+          <p>This program is in its pilot phase.  Currently we offer notifications about newly proposed large-scale development.  <a href={config.feedbackURL} rel="noopener noreferrer" target="_blank">Tell us what we can do to improve this tool.</a></p>
         </ErrorBoundary>
       </li>
     </ul>
+    {/* eslint-disable-next-line */}
+    <p>Don't want to to sign up for notifications?  Learn about the development process and stay up-to-date with project information with the <a href="https://simplicity.ashevillenc.gov/development/major" target="_blank" rel="noopener noreferrer">City of Asheville Large-Scale Development Dashboard</a>.</p>
     <NoEmergencyAlertsNotice />
   </div>
 );
