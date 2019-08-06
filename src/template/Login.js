@@ -6,6 +6,7 @@ import gql from 'graphql-tag';
 import queryString from 'query-string';
 import { Mutation, graphql } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
+import { Redirect } from 'react-router';
 import RegisterCode from 'template/RegisterCode';
 import { GET_USER_INFO } from 'template/Queries';
 import Error from 'template/shared/Error';
@@ -85,7 +86,7 @@ class Login extends React.Component {
                       <Error message={message} />
                       : isLoggedIn
                         ? (
-                          <div>You are logged In</div>
+                          <Redirect to="/" />
                         )
                         : <LoadingAnimation />
                     }
