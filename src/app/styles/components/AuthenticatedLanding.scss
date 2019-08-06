@@ -72,13 +72,17 @@ fieldset {
 
 .step-content {
   width: 100%;
-  margin: 0.5rem 0 0 2em;
+  margin: 0.5rem 0 0 1.5em;
 }
 
 @media (max-width: 700px) {
   .step-content {
     width: unset;
     margin: 0 auto;
+  }
+
+  .list-item-title {
+    text-align: center;
   }
 
   #authenticated-landing > ul > li {
