@@ -13,7 +13,7 @@ const Footer = () => (
     <footer className="footer">
       <div className="container">
         <div className="col-sm-12">
-          {config.hasFeedbackForm
+          {config.hasFeedbackForm && config.useFeedbackForErrors
             && (
               <div>
                 We strive for full accessibility. Report issues with our&nbsp;
@@ -30,12 +30,23 @@ const Footer = () => (
               </div>
             )
           }
-          {!config.hasFeedbackForm && (
+          {(!config.hasFeedbackForm || !config.useFeedbackForErrors) && (
             <div>
-              We strive for full accessibility. Report issues to help@ashevillenc.gov.
+              We strive for full accessibility. Report issues to <a href={`mailto:help@ashevillenc.gov?subject=${config.appTitle.defaultText}`} target="_blank" rel="noopener noreferrer">help@ashevillenc.gov</a>.
             </div>
           )}
-          {config.hasGitHubURL
+          <div>
+            Visit&nbsp;
+            <a
+              href="https://ashevillenc.gov"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              AshevilleNC.gov&nbsp;
+            </a>
+            for other city services and information.
+          </div>
+          {/*{config.hasGitHubURL
             && (
               <div>
                 It&apos;s open source! Fork it on&nbsp;
@@ -55,7 +66,7 @@ const Footer = () => (
                 </a>
               </div>
             )
-          }
+          }*/}
         </div>
       </div>
     </footer>

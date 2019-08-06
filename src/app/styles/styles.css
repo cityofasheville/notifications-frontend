@@ -10,6 +10,10 @@ input, select, textarea, button {
   font-family:inherit;
 }
 
+.Navbar-nav {
+  overflow: visible !important;
+}
+
 a {
   color: inherit;
   border: 2px solid transparent;
