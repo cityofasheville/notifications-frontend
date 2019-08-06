@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 
-const TextPuck = ({ text }) => (
+const TextPuck = ({ text, color }) => (
   <svg height="50" width="50">
-    <circle r="25" cx="25" cy="25" fill="#0088cc" />
+    <circle r="25" cx="25" cy="25" fill={color} />
     <text
       x="25"
       y="25"
@@ -25,10 +25,12 @@ const TextPuck = ({ text }) => (
 
 TextPuck.propTypes = {
   text: PropTypes.string,
+  color: PropTypes.string,
 };
 
 TextPuck.defaultProps = {
   text: '',
+  color: '#0088cc',
 };
 
 export default TextPuck;

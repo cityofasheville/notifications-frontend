@@ -23,7 +23,10 @@ const AppTitle = (props) => {
     <Link to="/" className="AppTitle-wrapper-link">
       <img className="AppTitle-logo" src={logo} alt="City of Asheville logo"></img>
       <div className="AppTitle-title-container">
-        <h1 className="AppTitle-title">{appTitle}{config.appTitle.isBeta && <span id="beta-indicator">Beta</span>}</h1>
+        <h1 className="AppTitle-title">
+          <span>{appTitle}</span>
+          {config.appTitle.isBeta && <span id="beta-indicator">Beta</span>}
+        </h1>
         <div className="AppTitle-intro">{appIntro}</div>
       </div>
     </Link>

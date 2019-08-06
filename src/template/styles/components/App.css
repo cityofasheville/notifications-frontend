@@ -17,6 +17,7 @@ h1, h2, body {
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid #c3ebff;
+  align-items: center;
 }
 
 .App-header a {
