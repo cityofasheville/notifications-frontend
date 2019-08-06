@@ -3,8 +3,8 @@
 *********************************************************************************************** */
 import React from 'react';
 import config from 'app/config';
-import { IM_GITHUB } from 'template/assets/iconConstants';
-import Icon from 'template/shared/Icon';
+// import { IM_GITHUB } from 'template/assets/iconConstants';
+// import Icon from 'template/shared/Icon';
 import 'template/styles/components/Footer.css';
 
 const Footer = () => (
