@@ -30,9 +30,9 @@ jobs:
     steps:
       - checkout
       - aws-s3/sync:
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          aws-region: AWS_DEFAULT_REGION
+         # aws-access-key-id: AWS_ACCESS_KEY_ID
+         # aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+         # aws-region: AWS_DEFAULT_REGION
           from: ./build
           to: 's3://${S3_DEPLOY_BUCKET}'
           arguments: |
