@@ -67,16 +67,19 @@ workflows:
     jobs:
       - build
       - deploy-dev:
-          requires: build
+          requires:
+            - build
           filters:
             branches:
               only: development
-          context: [notify-front-dev]
-
+          context: notify-front-dev
+      - hold:
+          type: approval
       - build-prod:
-          requires: build
+          requires:
+            - build
+            - hold
           filters:
             branches:
               only:  master
-          context: [notify-front-prod]
-          type: approval
+          context: notify-front-prod
