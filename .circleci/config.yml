@@ -35,8 +35,7 @@ jobs:
          # aws-region: AWS_DEFAULT_REGION
           from: ./build
           to: 's3://${S3_DEPLOY_BUCKET}'
-          arguments: |
-            --acl public-read
+          arguments: --acl public-read
       - aws-cli/install
       - run:
           # invalidate the cloudfront distribution
