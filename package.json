@@ -13,7 +13,7 @@
     "moment": "*",
     "node-sass": "^4.12.0",
     "prop-types": "*",
-    "query-string": "^6.8.1",
+    "query-string": "^6.13.4",
     "react": "^16.8.6",
     "react-apollo": "^2.5.8",
     "react-dom": "^16.8.6",
