@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "eslint-config-airbnb": "^17.1.1",
-    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-import": "^2.23.3",
     "eslint-plugin-react": "^7.14.2"
   },
   "description": "This is the notifications tool for the City of Asheville.",
