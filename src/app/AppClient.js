@@ -16,9 +16,9 @@ if (
   NOTIFICATIONS_SERVER_URL = 'notifyapi-alb-notifyapiobs-1343772213.us-east-1.elb.amazonaws.com';
 }
 if (window.location.origin.indexOf('localhost') > -1) {
-  //NOTIFICATIONS_SERVER_URL = 'https://dev-notify.ashevillenc.gov/graphql';
+  NOTIFICATIONS_SERVER_URL = 'https://dev-notify.ashevillenc.gov/graphql';
   // NOTIFICATIONS_SERVER_URL = 'http://localhost:4000/graphql';
-  NOTIFICATIONS_SERVER_URL = 'notifyapi-alb-notifyapiobs-1343772213.us-east-1.elb.amazonaws.com';
+  // NOTIFICATIONS_SERVER_URL = 'notifyapi-alb-notifyapiobs-1343772213.us-east-1.elb.amazonaws.com';
 }
 
 const client = new ApolloClient({
