@@ -21,6 +21,7 @@ const tagTranslation = {
   Major: 'Major development (Level II, Major Subdivision, Conditional Zoning, Conditional Use)',
   Affordable: 'Affordable housing included in initial proposal',
   Slope: 'Proposed in an area with a steep slope',
+  SoundExceedance: 'Permits applied for Sound Exceedance',
 };
 
 class Categories extends React.Component {
