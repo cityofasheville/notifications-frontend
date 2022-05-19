@@ -40,7 +40,7 @@ const UnauthenticatedLanding = () => (
           </div>
           <div className="list-item-title">Choose which notifications you want to get</div>
           {/* eslint-disable-next-line */}
-          <p>This program is in its pilot phase.  Currently we offer notifications about newly proposed large-scale development.  <a href={config.feedbackURL} rel="noopener noreferrer" target="_blank">Tell us what we can do to improve this tool.</a></p>
+          <p>Currently we offer notifications about newly proposed large-scale development.  <a href={config.feedbackURL} rel="noopener noreferrer" target="_blank">Tell us what we can do to improve this tool.</a></p>
         </ErrorBoundary>
       </li>
     </ul>
