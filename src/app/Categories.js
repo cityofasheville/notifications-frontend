@@ -65,7 +65,7 @@ class Categories extends React.Component {
       // Make whole city null, set radius miles
       newSub = Object.assign(
         subscriptions[thisSubIndex],
-        { whole_city: false, radius_miles: selectedValue }
+        { whole_city: false, radius_miles: parseFloat(selectedValue) }
       );
     }
     subscriptions.splice(thisSubIndex, 1);
