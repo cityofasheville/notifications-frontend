@@ -15,6 +15,11 @@ npm install
 npm start
 ````
 
+## Deploy
+
+npm run build
+npm run deploy
+npm run devDeploy
 
 ## Based on React Starter Template
 
