@@ -5,21 +5,33 @@ It allows users to sign up for emails, (and perhaps other communications in the 
 
 It is intended to be used with (the notifications API)[https://github.com/cityofasheville/notifications-api], which is based on the city's backend starter template.
 
-````
+```
 git clone git@github.com:cityofasheville/notifications-frontend.git
 cd notifications-frontend  
-````
+```
 Create a file .env based on example.env
-````
+```
 npm install
 npm start
-````
+```
 
 ## Deploy
 
-npm run build
-npm run deploy
-npm run devDeploy
+First switch out the correct .env file
+
+Build:
+```
+  npm run build
+```
+then deploy:
+```
+  npm run deploy
+```
+or
+```
+  npm run devDeploy
+```
+You may need to invalidate the cache in CloudFront (as well as in the browser)
 
 ## Based on React Starter Template
 
